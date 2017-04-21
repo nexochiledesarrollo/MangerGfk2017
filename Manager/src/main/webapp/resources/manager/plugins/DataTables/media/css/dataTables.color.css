@@ -1,0 +1,24 @@
+.datepicker{
+	z-index:1151 !important;
+}
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+td.highgreen {
+    font-weight: bold;
+    color: #3ADF00;
+}
+td.highred {
+    font-weight: bold;
+    color: #FF0000;
+}
+td.highblue {
+    font-weight: bold;
+    color: #348fe2;
+}
+td.highyelow {
+    font-weight: bold;
+    color: #f59c1a;
+}

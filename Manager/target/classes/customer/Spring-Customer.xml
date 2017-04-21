@@ -1,0 +1,160 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<bean id="AccessDao" class="cl.nexo.manager.dao.SqlAccess">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessTraza" class="cl.nexo.manager.imp.traza.Traza">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessPassword" class="cl.nexo.manager.imp.password.PasswordPlataform"></bean>
+	
+	<bean id="AccessGeneralTools" class="cl.nexo.manager.imp.tools.GeneralTools">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessDateParceTools" class="cl.nexo.manager.imp.tools.DateParceTools"></bean>
+	<bean id="AccessUploadFile" class="cl.nexo.manager.imp.tools.UploadFile"></bean>
+	
+	<bean id="AccessServerMail" class="cl.nexo.manager.imp.server.mail.ServerMail"></bean>
+	<bean id="AccessPlantillasLogin" class="cl.nexo.manager.imp.server.mail.plantillas.PlantillasLogin"></bean>
+	
+	<bean id="AccessSector" class="cl.nexo.manager.imp.sector.Sector">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="LoginAccess" class="cl.nexo.manager.imp.login.LoginUser">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="ApoderadoAccess" class="cl.nexo.manager.imp.apoderado.Apoderado">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="InstructivoAccess" class="cl.nexo.manager.imp.instructivo.Instructivo">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+    <bean id="ManejoWorkflowAccess" class="cl.nexo.manager.imp.manejoWorkflow.ManejoWorkFlow">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+
+  <bean id="AgendaAccess" class="cl.nexo.manager.imp.agenda.Agenda">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	  <bean id="AccessReunion" class="cl.nexo.manager.imp.reunion.Reunion">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<bean id="AccessCliente" class="cl.nexo.manager.imp.cliente.Cliente">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessPerfil" class="cl.nexo.manager.imp.login.PerfilUser">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessDivision" class="cl.nexo.manager.imp.division.Division">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessArea" class="cl.nexo.manager.imp.area.Area">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessCargo" class="cl.nexo.manager.imp.cargo.Cargo">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessTipoContrato" class="cl.nexo.manager.imp.tipo.contrato.TipoContrato">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessTipoPago" class="cl.nexo.manager.imp.tipo.pago.TipoPago">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessTipoEstudio" class="cl.nexo.manager.imp.tipo.estudio.TipoEstudio">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessTipoEntrevista" class="cl.nexo.manager.imp.tipo.entrevista.TipoEntrevista">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessMenu" class="cl.nexo.manager.imp.menu.MenuSistema">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessDashboard" class="cl.nexo.manager.imp.dashboard.PanelControl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessTarea" class="cl.nexo.manager.imp.tarea.TareaWorkflow">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessFileUpload" class="cl.nexo.manager.imp.fileupload.FileUpload">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessFileUploadM5" class="cl.nexo.manager.imp.fileupload.FileUploadM5">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessUbicacion" class="cl.nexo.manager.imp.ubicacion.Ubicacion">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessProyecto" class="cl.nexo.manager.imp.proyecto.Proyecto">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessEstudio" class="cl.nexo.manager.imp.proyecto.Estudio">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessCotizacion" class="cl.nexo.manager.imp.proyecto.Cotizacion">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="AccessCuestionario" class="cl.nexo.manager.imp.proyecto.Cuestionario">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessProyectoCosto" class="cl.nexo.manager.imp.proyecto.costo.ProyectoCosto">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessLang" class="cl.nexo.manager.imp.lang.Lang">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessIndustria" class="cl.nexo.manager.imp.industria.Industria">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessProducto" class="cl.nexo.manager.imp.producto.Producto">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessComboBox" class="cl.nexo.manager.imp.combo.box.ComboBox">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessSetUp" class="cl.nexo.manager.imp.setup.SetUp">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<bean id="AccessWorkflow15" class="cl.nexo.manager.imp.workflow.Workflow15">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessWorkflow5" class="cl.nexo.manager.imp.workflow.Workflow5">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="AccessAsignUsers" class="cl.nexo.manager.imp.proyecto.AsignUsers">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+</beans>
