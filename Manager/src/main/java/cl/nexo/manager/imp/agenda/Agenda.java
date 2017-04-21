@@ -14,6 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.login.LoginAccess;
+import cl.nexo.manager.obj.agenda.ObjAgenda;
 import cl.nexo.manager.obj.agenda.ObjPersonaAgenda;
 import cl.nexo.manager.obj.login.ObjLoginUser;
 
@@ -252,19 +253,48 @@ public class Agenda implements AgendaAccess {
 		
 	}
 
+	@Override
+	public void createAgenda(ObjAgenda agen) {
 
+		Connection conn = null;
+    	
+    	String query = "INSERT INTO man_proyecto_manager_agenda_kick_off "
+    				+"	(id_operacion "
+			        +"	 ,id_user "
+			        +"	 ,fecha "
+			        +"   ,hora "
+			        +"   ,lugar  )"			        
+
+			        +" VALUES "
+			        +"   ("+agen.getId_operacion() +" "
+			        +"   ,"+ agen.getId_usuario() + ""
+			    	+"   ,'"+agen.getFecha()+ "'"
+			    	+"   ,'"+agen.getHora() + "'"
+			    	+"   ,'"+agen.getLugar()+ "' )";
+
+    	logger.info(query);
+    	
+    	try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.info(query);
+			ps.executeUpdate();
+			
+    	} catch (SQLException e) {
+    		
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
+		
+	}
 
 	
 }

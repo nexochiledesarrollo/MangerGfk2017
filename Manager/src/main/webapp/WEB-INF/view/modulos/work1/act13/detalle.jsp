@@ -265,6 +265,94 @@
             </div>
             <!-- end row -->
             
+            <!-- Begin row -->
+            <div class="row">
+			    <!-- begin col-12 -->
+			    <div class="col-md-12">
+			        <!-- begin panel -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Datos Agenda</h4>
+                        </div>
+                        
+                        <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
+                           <form class="form-horizontal form-bordered">
+                           		
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Fecha </label>
+										<div class="col-md-8">
+	                                        <input type="text" id="req_fechas_01" class="form-control"  value="" readonly="readonly" />
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Hora </label>
+										<div class="input-group date" id="hora">
+	                                            <input id= "hora" type="text" class="form-control">
+	                                            <span class="input-group-addon">
+	                                                <span class="glyphicon glyphicon-time"></span>
+	                                            </span>
+	                                        </div>
+									</div>
+                           		</div>
+                           		
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Ubicacion </label>
+										<div class="col-md-8">
+	                                       <textarea class="form-control"  id="txt_ubicacion" placeholder=""  rows="3"></textarea>
+										</div>
+									</div>
+									
+									 <div class="form-group col-md-11">
+										<p class="pull-right">
+		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: createAgenda();" id="btn_showhide">
+		                           	  			<i class="fa fa-plus fa-2x pull-left"></i>
+		                           	  			Definir Agenda
+		                           	  		</a>
+		                           	  	</p>
+		                           	  		
+									</div>
+									
+									
+									
+									
+                           		</div>
+                           		
+
+
+                           </form>
+
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end row -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
 			<!-- Begin row -->
             <div class="row">
@@ -284,9 +372,31 @@
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
                            <form class="form-horizontal form-bordered">
+                           		
                            		<div class="row">
-									<div class="form-group col-md-4">
-										<label class="control-label col-md-3" style="background: #f0f3f4; font-weight: bold;">Personal <span style="color: red;">(*)</span> </label>
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Fecha / Hora </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_18" name="txt_detalle_18" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Ubicación </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_18" name="txt_detalle_18" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Personal </label>
 										<div class="col-md-8">
 	                                        <select class="form-control" name="txt_08" id="txt_08" onchange="">
 				                            	<option value="0">Seleccione</option>
@@ -294,53 +404,21 @@
 										</div>
 									</div>
 									
-									<div class="form-group col-md-3">
-										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Fecha </label>
-										<div class="col-md-8">
-	                                        <input type="text" id="req_fechas_01" class="form-control"  value="" readonly="readonly" />
-										</div>
-									</div>
-									
-								
-								<div class="form-group col-md-3">
-									<label class="control-label col-md-4"  style="background: #f0f3f4; font-weight: bold;">Hora</label>
-									<div class="col-md-8">
-								        <div class="input-group date" id="hora">
-                                            <input type="text" class="form-control">
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-								</div>
-								
-								
-								<br>
-								
-								<div class="row">
-									<div class="form-group col-md-10">
-										<label class="control-label col-md-2" style="background: #f0f3f4; font-weight: bold;">Ubicacion</label>
-										<div class="col-md-8">
-											<textarea class="form-control"  id="txt_ubicacion" placeholder=""  rows="5"></textarea>
-		                                   </div>
-									</div>
-
-	 						         <div class="form-group col-md-2">
-										<p class="pull-left">
-		                           	  		<a href="" class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: setAgendado();" id="btn_showhide">
+									<div class="form-group col-md-11">
+										<p class="pull-right">
+		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: setAgendado();" id="btn_showhide">
 		                           	  			<i class="fa fa-plus fa-2x pull-left"></i>
-		                           	  			Agregar
+		                           	  			Agregar Invitado
 		                           	  		</a>
 		                           	  	</p>
 		                           	  		
 									</div>	
-								</div>
-								
-
-						
-	                
+									
+									
+									
+									
+                           		</div>
+                  
                            </form>
                            <br/>
                            <h3 class="m-t-10" style=" color: #f59c1a;">Usuarios Invitados</h3>
@@ -421,8 +499,7 @@
 			</div>
 		</div>
 	
-	
-	
+
 	
 	<!-- Incluir modal generico -->
     <%@ include file="../../../general-modal.jsp" %>

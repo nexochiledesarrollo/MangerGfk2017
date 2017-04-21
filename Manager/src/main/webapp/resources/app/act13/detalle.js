@@ -256,7 +256,7 @@ var initSelect2_1 = function(){
 
 
 
-var setAgendado = function(){
+function setAgendado(){
 
      var param = {
                  
@@ -275,14 +275,14 @@ var setAgendado = function(){
 			beforeSend: function(){
 				//cargando los datos
 				$("#modal-create").modal("hide");
-				$("#modalg-charge").modal("show");
+				//$("#modalg-charge").modal("show");
 			},
 			success: function(data){
-				$("#modalg-charge").modal("hide");
+				//$("#modalg-charge").modal("hide");
 				$("#modalg-success-text" ).empty();
 				$('#modalg-success-text').html('<center>'+ data.text +'</center><br>');
 				$("#modalg-success").modal("show");
-				$('#data-table8').DataTable().ajax.reload();
+			    $('#data-table8').DataTable().ajax.reload();
 			
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -300,6 +300,58 @@ var setAgendado = function(){
 	
 	
 }
+
+
+
+function createAgenda(){
+
+     var param = {
+                 
+            id_oper : $('#txt_idope_1').val(),
+            fecha : $('#req_fechas_01').val(),
+			lugar : $('#txt_ubicacion').val(),
+			hora : $('#hora').val(),
+	}
+	
+
+		$.ajax({
+			url: "/Manager/RestAgenda/createAgenda",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			beforeSend: function(){
+				//cargando los datos
+				$("#modal-create").modal("hide");
+				//$("#modalg-charge").modal("show");
+			},
+			success: function(data){
+				//$("#modalg-charge").modal("hide");
+				$("#modalg-success-text" ).empty();
+				$('#modalg-success-text').html('<center>'+ data.text +'</center><br>');
+				$("#modalg-success").modal("show");
+			    //$('#data-table8').DataTable().ajax.reload();
+			
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		       // alert(xhr.status);
+		       // alert(thrownError);
+		       //alert('Se ha generado un error -- setUserLogin Modulo Usuario -- ,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error: <strong>-- setAgendado Modulo Agenda --</strong> <br/>  Favor contactar mesa de ayuda! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+	
+	
+}
+
+
+
+
+
 
 
 

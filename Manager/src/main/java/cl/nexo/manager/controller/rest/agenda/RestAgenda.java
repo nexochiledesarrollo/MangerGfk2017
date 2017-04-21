@@ -25,6 +25,7 @@ import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.tarea.AccessTarea;
+import cl.nexo.manager.obj.agenda.ObjAgenda;
 import cl.nexo.manager.obj.agenda.ObjDataAgenda;
 import cl.nexo.manager.obj.agenda.ObjPersonaAgenda;
 import cl.nexo.manager.obj.login.ObjLoginUser;
@@ -73,19 +74,58 @@ public class RestAgenda {
        
         	logger.info("NO AGENDO ---- " + estaAgendado);
     		result.setResult(1);
-    		result.setText("El Usuario <strong>" + agenda.getUsuario().getNombre_user() + "</strong> ya se encuenta Agendado ! ");
+    		result.setText("El Usuario <strong>  " + agenda.getUsuario().getNombre_user() + "</strong> ya se encuenta Agendado ! ");
         }else {
         	
         	logger.info("SI AGENDO ---- " + estaAgendado);
         	agendar.setAgendado(agenda);   
         	result.setResult(1);
-    		result.setText("Se Agendo el usuario<strong>" + agenda.getUsuario().getNombre_user() + "</strong> en el sistema! ");
+    		result.setText("Se Agendo el usuario<strong> " + agenda.getUsuario().getNombre_user() + "</strong> en el sistema! ");
         	
         }
 
 		return result;
 		
 	}	
+	
+	
+	
+	
+	@RequestMapping(value = "/createAgenda", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjGeneralResultInt createAgenda(
+			                @RequestParam("fecha") String fecha,
+							@RequestParam("lugar") String lugar,
+							@RequestParam("hora") String hora,
+							@RequestParam("id_oper") int id_oper
+			
+			){
+		//--------BEGIN debug ----------------------------
+		
+		//--------END debug ----------------------------
+		
+		logger.info("POR AQUI PASO");
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+	    SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    
+	    AgendaAccess agendar = (AgendaAccess) context.getBean("AgendaAccess");
+	    ObjGeneralResultInt result = new ObjGeneralResultInt();
+        ObjAgenda agenda = new ObjAgenda();
+        
+        agenda.setId_usuario(user.getId_user());
+        agenda.setFecha(fecha);
+        agenda.setLugar(lugar);
+        agenda.setHora(hora);
+        agenda.setId_operacion(id_oper);
+        
+        agendar.createAgenda(agenda);
+
+		return result;
+		
+	}	
+	
 	
 
 	
