@@ -4,21 +4,18 @@ import cl.nexo.manager.obj.login.ObjLoginUser;
 
 public class ObjPersonaAgenda {
 	
-    int id_operacion;
+    int id_agenda;
     ObjLoginUser usuario;
-	String fecha;
-	String lugar;
 	String email;
-	String hora;
 	int id_usuario;
 	String asiste;
 	
 	
-	public int getId_operacion() {
-		return id_operacion;
+	public int getid_agenda() {
+		return id_agenda;
 	}
-	public void setId_operacion(int id_operacion) {
-		this.id_operacion = id_operacion;
+	public void setid_agenda(int id_agenda) {
+		this.id_agenda = id_agenda;
 	}
 	public ObjLoginUser getUsuario() {
 		return usuario;
@@ -26,30 +23,14 @@ public class ObjPersonaAgenda {
 	public void setUsuario(ObjLoginUser usuario) {
 		this.usuario = usuario;
 	}
-	public String getFecha() {
-		return fecha;
-	}
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
-	}
-	public String getLugar() {
-		return lugar;
-	}
-	public void setLugar(String lugar) {
-		this.lugar = lugar;
-	}
+	
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getHora() {
-		return hora;
-	}
-	public void setHora(String hora) {
-		this.hora = hora;
-	}
+	
 	public int getId_usuario() {
 		return id_usuario;
 	}

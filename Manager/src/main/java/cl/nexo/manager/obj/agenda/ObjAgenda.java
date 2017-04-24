@@ -2,13 +2,24 @@ package cl.nexo.manager.obj.agenda;
 
 public class ObjAgenda {
 	
+	int id_agenda;
     int id_operacion;
     String fecha;
 	String lugar;
 	String hora;
 	int id_usuario;
+	int id_estado_agenda;
+
 
 	
+	public int getId_agenda() {
+		return id_agenda;
+	}
+
+	public void setId_agenda(int id_agenda) {
+		this.id_agenda = id_agenda;
+	}
+
 	public int getId_operacion() {
 		return id_operacion;
 	}
@@ -48,5 +59,17 @@ public class ObjAgenda {
 	public void setId_usuario(int id_usuario) {
 		this.id_usuario = id_usuario;
 	}
+
+	public int getId_estado_agenda() {
+		return id_estado_agenda;
+	}
+
+	public void setId_estado_agenda(int id_estado_agenda) {
+		this.id_estado_agenda = id_estado_agenda;
+	}
+	
+	
+	
+	
 
 }

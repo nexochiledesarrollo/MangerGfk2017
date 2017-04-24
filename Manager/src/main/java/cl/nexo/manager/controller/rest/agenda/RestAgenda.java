@@ -42,9 +42,7 @@ public class RestAgenda {
 	@RequestMapping(value = "/setAgendado", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjGeneralResultInt setAgendado(
 			                @RequestParam("id_user") int id_user,
-			                @RequestParam("fecha") String fecha,
-							@RequestParam("lugar") String lugar,
-							@RequestParam("id_oper") int id_oper
+							@RequestParam("id_agenda") int agenda_select
 			
 			){
 		//--------BEGIN debug ----------------------------
@@ -64,11 +62,9 @@ public class RestAgenda {
         ObjPersonaAgenda agenda = new ObjPersonaAgenda();
         
         agenda.setUsuario(userAgenda);
-        agenda.setFecha(fecha);
-        agenda.setLugar(lugar);
-        agenda.setId_operacion(id_oper);
-        
-        boolean estaAgendado = agendar.getExistUserAgenda(id_user, id_oper);
+        agenda.setid_agenda(agenda_select);
+       
+        boolean estaAgendado = agendar.getExistUserAgenda(id_user, agenda_select);
         	
         if (estaAgendado){
        
@@ -92,7 +88,7 @@ public class RestAgenda {
 	
 	
 	@RequestMapping(value = "/createAgenda", method = RequestMethod.GET,headers="Accept=application/json")
-	public ObjGeneralResultInt createAgenda(
+	public ObjAgenda createAgenda(
 			                @RequestParam("fecha") String fecha,
 							@RequestParam("lugar") String lugar,
 							@RequestParam("hora") String hora,
@@ -119,13 +115,48 @@ public class RestAgenda {
         agenda.setLugar(lugar);
         agenda.setHora(hora);
         agenda.setId_operacion(id_oper);
+        int id_generado = agendar.createAgenda(agenda);
+        agenda.setId_agenda(id_generado);
         
-        agendar.createAgenda(agenda);
-
-		return result;
+		return agenda;
 		
 	}	
 	
+	@RequestMapping(value = "/modificaAgenda", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjAgenda modificaAgenda(
+			                @RequestParam("fecha") String fecha,
+							@RequestParam("lugar") String lugar,
+							@RequestParam("hora") String hora,
+							@RequestParam("id_oper") int id_oper,
+							@RequestParam("agenda") int agenda_id
+						
+			
+			){
+
+		
+		logger.info("POR AQUI PASO");
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+	    SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    
+	    AgendaAccess agendar = (AgendaAccess) context.getBean("AgendaAccess");
+	    ObjGeneralResultInt result = new ObjGeneralResultInt();
+        ObjAgenda agenda = new ObjAgenda();
+        
+        agenda.setId_usuario(user.getId_user());
+        agenda.setFecha(fecha);
+        agenda.setLugar(lugar);
+        agenda.setHora(hora);
+        agenda.setId_operacion(id_oper);
+        agenda.setId_agenda(agenda_id);
+        
+        agendar.modificaAgenda(agenda);
+  
+		return agenda;
+		
+	}	
 	
 
 	
@@ -137,8 +168,8 @@ public class RestAgenda {
 		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
 		AgendaAccess agen = (AgendaAccess) context.getBean("AgendaAccess");
 		ObjDataAgenda result = new ObjDataAgenda();
-		
-		ArrayList<ObjPersonaAgenda> list = agen.getListAgendadosByidOperacion(id);
+		logger.info("LISTADO LUIS");
+		ArrayList<ObjPersonaAgenda> list = agen.getListAgendadosByid(id);
 		logger.info("LISTADO" + list);
 		
 		
@@ -154,7 +185,7 @@ public class RestAgenda {
 	@RequestMapping(value = "/deleteAgendado", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjGeneralResultInt deleteAgendado(
 			                @RequestParam("id_user") int id_user,
-			              	@RequestParam("id_oper") int id_oper
+			              	@RequestParam("id_agenda") int id_agenda
 			
 			){
 
@@ -167,9 +198,8 @@ public class RestAgenda {
 	    AgendaAccess agendar = (AgendaAccess) context.getBean("AgendaAccess");
 
         ObjGeneralResultInt result = new ObjGeneralResultInt();
-        ObjPersonaAgenda agenda = new ObjPersonaAgenda();
         
-        agendar.DeleteAgendado(id_user, id_oper);   
+        agendar.DeleteAgendado(id_user, id_agenda);   
 		
         
 		result.setResult(1);
@@ -182,7 +212,9 @@ public class RestAgenda {
 	
 	
 	@RequestMapping(value = "/aceptarAgenda", method = RequestMethod.GET,headers="Accept=application/json")
-	public ObjGeneralResultInt aceptarAgenda(@RequestParam("id_oper") int id_oper){
+	public ObjGeneralResultInt aceptarAgenda(@RequestParam("id_oper") int id_oper,
+											 @RequestParam("id_agenda") int id_agenda
+			){
 		//--------BEGIN debug ----------------------------
 		
 		//--------END debug ----------------------------
@@ -196,31 +228,21 @@ public class RestAgenda {
 	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
 	    AccessTarea tareas = (AccessTarea) context.getBean("AccessTarea");
 	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
+	    AgendaAccess agen = (AgendaAccess) context.getBean("AgendaAccess");
 	    
         ObjGeneralResultInt result = new ObjGeneralResultInt();
-             
+        agen.aceptarAgenda(id_agenda);
+          
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        int nuevo_estado=11;
+        int nuevo_estado=15;
         int actividad = 19;  // debe corresponder al id de la tarea de agendado
         int id_workFlow;
         String observacion="AGENDADO CON EXITO";
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        ///Buscar si Existe el Registro de WorkFlow para esa Actividad
-        id_workFlow= agendar.buscarIdWorkPorActividad(id_oper, actividad);
-        
-        if (id_workFlow==0){ /// no existe 
-            // Inicio Workflow para esa actividad
-        	agendar.createWorkActividad(id_oper, actividad, nuevo_estado, user.getId_user());
-        	 // Busco el Nuevo Codigo
-        	id_workFlow= agendar.buscarIdWorkPorActividad(id_oper, actividad);
-        }
-        
-        
-	        // Regstro el Ultimo Estado
-	    	agendar.SetUltimoEstado(id_oper, actividad, nuevo_estado, user.getId_user()); 
-	    	// Resgistro la Bitacora
-	    	agendar.SetBitacoraActividad(id_workFlow, observacion, user.getId_user());
+        //REGISTRO DE WORKFLOW Y BITACORA
+        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+
 	    	
 	    	ObjTarea tarea = new ObjTarea();
 
@@ -250,51 +272,43 @@ public class RestAgenda {
 		return result;
 		
 	}	
-	
-	
-	
-	
-	@RequestMapping(value = "/rechazarAgenda", method = RequestMethod.GET,headers="Accept=application/json")
-	public ObjGeneralResultInt rechazarAgenda(@RequestParam("id_oper") int id_oper){
-		//--------BEGIN debug ----------------------------
-		
-		//--------END debug ----------------------------
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
-	    SecurityContext securityContext = SecurityContextHolder.getContext();
-	    Authentication authentication = securityContext.getAuthentication();
-	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
-	    
-	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
-	    AccessTarea tareas = (AccessTarea) context.getBean("AccessTarea");
-	    
-	    
-        ObjGeneralResultInt result = new ObjGeneralResultInt();
-             
-        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        int nuevo_estado=16; /// debe corresponder al ESTADO RECHAZADO
-        int actividad = 5;  // debe corresponder al id de la tarea de agendado
-        int id_workFlow;
-        String observacion="AGENDA RECHAZADA";
-        int usuario= user.getId_user();
-        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
-        //REGISTRO DE WORKFLOW Y BITACORA
-        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, usuario);  	
-	    	
-        
-		result.setResult(1);
-		result.setText("<strong>Agenda Rechazada</strong> ");
-		
-		return result;
-		
-	}	
-	
-	
-	
-	
-	
+//	@RequestMapping(value = "/rechazarAgenda", method = RequestMethod.GET,headers="Accept=application/json")
+//	public ObjGeneralResultInt rechazarAgenda(@RequestParam("id_oper") int id_oper){
+//		//--------BEGIN debug ----------------------------
+//		
+//		//--------END debug ----------------------------
+//
+//		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+//		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+//	    SecurityContext securityContext = SecurityContextHolder.getContext();
+//	    Authentication authentication = securityContext.getAuthentication();
+//	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+//	    
+//	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+//	    AccessTarea tareas = (AccessTarea) context.getBean("AccessTarea");
+//	    
+//	    
+//        ObjGeneralResultInt result = new ObjGeneralResultInt();
+//             
+//        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//        int nuevo_estado=0; /// debe corresponder al ESTADO RECHAZADO
+//        int actividad = 19;  // debe corresponder al id de la tarea de agendado
+//        int id_workFlow;
+//        String observacion="AGENDA RECHAZADA";
+//        int usuario= user.getId_user();
+//        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//        
+//        //REGISTRO DE WORKFLOW Y BITACORA
+//        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, usuario);  	
+//	    	
+//        
+//		result.setResult(1);
+//		result.setText("<strong>Agenda Rechazada</strong> ");
+//		
+//		return result;
+//		
+//	}	
 	
 	
 	@RequestMapping(value = "/setAsistencia", method = RequestMethod.GET,headers="Accept=application/json")

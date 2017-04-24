@@ -24,6 +24,7 @@
  int tipo = Integer.parseInt((String) request.getAttribute("tipo"));
  String urlRestServiceDelivery = (String) request.getAttribute("urlRestServiceDelivery");
  ObjConfigTools tol = (ObjConfigTools) request.getAttribute("tol");
+
  
  //lang option
  String langOption = (String) request.getAttribute("lang");
@@ -121,8 +122,11 @@
 		<input type="hidden" id="combo_1" name="combo_1" value="" />
 		<input type="hidden" id="combo_2" name="combo_2" value="" />
 		<input type="hidden" id="combo_3" name="combo_3" value="" />
+		<input type="hidden" id="agenda_select" name="agenda_select" value="" />
 		<input type="hidden" class="form-control" id="lang_01" value="<%= langOption %>" />
 		<input type="hidden" class="form-control" id="pace_01" value="<%= lang1.getProperty("tipoentrevista") %>" />
+			
+			
 			<!-- END Config General -->	 
 		<!-- begin #content -->
 		<div id="content" class="content">
@@ -171,10 +175,13 @@
                            	  			Enviar
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: rechazarAgenda();" id="btn_deletee">
-                           	  			<i class="fa fa-times fa-2x pull-left"></i>
-                           	  			Rechazar
-                           	  		</a>
+                           	  		
+		                           	  <a class="btn btn-danger m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: updateAgenda();" id="btn_update">
+		                           	  	<i class="fa fa-times fa-2x pull-left"></i>
+		                           	     Modificar Agenda
+		                           	  </a>
+		                           	  	
+                           	  	
                            	  		</p>
                            	  		
                            	  	</div>
@@ -253,6 +260,15 @@
 	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_20" name="txt_detalle_20" value="" readonly="readonly"/>
 										</div>
 									</div>
+									
+									
+									<div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Flujo </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_200" name="txt_detalle_200" value="" readonly="readonly"/>
+										</div>
+									</div>
+									
 								 </div>
 							</div> 
 							</form>
@@ -266,7 +282,7 @@
             <!-- end row -->
             
             <!-- Begin row -->
-            <div class="row">
+            <div class="row" id="datos_agenda">
 			    <!-- begin col-12 -->
 			    <div class="col-md-12">
 			        <!-- begin panel -->
@@ -283,9 +299,7 @@
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
                            <form class="form-horizontal form-bordered">
-                           		
-                           		
-                           		
+
                            		<div class="row">
                            		    <div class="form-group col-md-6">
 										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Fecha </label>
@@ -294,12 +308,11 @@
 										</div>
 									</div>
                            		</div>
-                           		
-                           		
+
                            		<div class="row">
                            		    <div class="form-group col-md-6">
 										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Hora </label>
-										<div class="input-group date" id="hora">
+										<div class="input-group date" id="h">
 	                                            <input id= "hora" type="text" class="form-control">
 	                                            <span class="input-group-addon">
 	                                                <span class="glyphicon glyphicon-time"></span>
@@ -307,9 +320,7 @@
 	                                        </div>
 									</div>
                            		</div>
-                           		
-                           		
-                           		
+                           		        		
                            		<div class="row">
                            		    <div class="form-group col-md-6">
 										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Ubicacion </label>
@@ -320,23 +331,25 @@
 									
 									 <div class="form-group col-md-11">
 										<p class="pull-right">
-		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: createAgenda();" id="btn_showhide">
+		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: createAgenda();" id="btn_definir">
 		                           	  			<i class="fa fa-plus fa-2x pull-left"></i>
 		                           	  			Definir Agenda
 		                           	  		</a>
 		                           	  	</p>
-		                           	  		
+		                           	  	
+		                           	  	<p class="pull-right">
+		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: modificaAgenda();" id="btn_modifica">
+		                           	  			<i class="fa fa-plus fa-2x pull-left"></i>
+		                           	  			Modificar
+		                           	  		</a>
+		                           	  	</p>	
+		                           	  			
 									</div>
 									
 									
 									
-									
                            		</div>
-                           		
-
-
                            </form>
-
                         </div>
                     </div>
                     <!-- end panel -->
@@ -344,18 +357,9 @@
                 <!-- end col-12 -->
             </div>
             <!-- end row -->
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
 			<!-- Begin row -->
-            <div class="row">
+            <div class="row" id="detalle_agenda">
 			    <!-- begin col-12 -->
 			    <div class="col-md-12">
 			        <!-- begin panel -->
@@ -377,7 +381,7 @@
                            		    <div class="form-group col-md-6">
 										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Fecha / Hora </label>
 										<div class="col-md-8">
-	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_18" name="txt_detalle_18" value="" readonly="readonly"/>
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_fecha" name="txt_detalle_fecha" value="" readonly="readonly"/>
 										</div>
 									</div>
                            		</div>
@@ -387,10 +391,12 @@
                            		    <div class="form-group col-md-6">
 										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Ubicación </label>
 										<div class="col-md-8">
-	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_18" name="txt_detalle_18" value="" readonly="readonly"/>
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_ubicacion" name="txt_detalle_ubicacion" value="" readonly="readonly"/>
 										</div>
 									</div>
                            		</div>
+                           		
+                           	
                            		
                            		
                            		
@@ -411,6 +417,8 @@
 		                           	  			Agregar Invitado
 		                           	  		</a>
 		                           	  	</p>
+		                           	  	
+		                           	  	
 		                           	  		
 									</div>	
 									
@@ -430,10 +438,7 @@
                                     	<th width="10"></th>
                                     	<th width="300">Personal</th>
                                         <th width="200">Cargo</th>
-                                        <th width="200">Fecha</th>
-                                        <th width="200">Hora</th>
-                                        <th width="200">Lugar</th>
-                                         <th width="200">Mail</th>
+                                        <th width="200">Mail</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -441,10 +446,7 @@
                                     	<th width="10"></th>
                                     	<th width="300"> Personal</th>
                                         <th width="200">Cargo</th>
-                                        <th width="200">Fecha</th>
-                                        <th width="200">Hora</th>
-                                         <th width="200">Lugar</th>
-                                         <th width="200">Mail</th>
+                                       <th width="200">Mail</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -525,10 +527,8 @@
 			</div>
 		</div>
 	</div>
-    
-    
-    
-    
+	
+	
 		
 	<!-- ================== BEGIN BASE JS ================== -->
 	<!-- ================== BEGIN BASE JS ================== -->

@@ -34,8 +34,42 @@ var getDetailEstudio = function(){
 			//var detalle = data.detalle;
 			//**********************************
 		
-			var es_admin = $('#conf_01').val();
+			
+         
+           
+           if (data.agenda_carga.id_agenda!=0){
+        	  
+               var f= data.agenda_carga.fecha ;
+			   var h= ' / '.concat(data.agenda_carga.hora);
+        	   
+			   $("#agenda_select").val(data.agenda_carga.id_agenda);
+			   $("#detalle_agenda").show();
+               $("#datos_agenda").hide();
+			   $("#txt_detalle_fecha").val(f.concat(h));
+			   $("#txt_detalle_ubicacion").val(data.agenda_carga.lugar);
+			   $("#agenda_select").val(data.agenda_carga.id_agenda);
+			   $("#btn_activae").show();
+			   $("#req_fechas_01").val(data.agenda_carga.fecha);
+			   $("#hora").val(data.agenda_carga.hora);
+			   $("#txt_ubicacion").val(data.agenda_carga.lugar);
+			   $("#btn_modifica").show();
+			   $("#btn_definir").hide();
+			   handleDataTableListaAgendados();
+
+           }else{
+        	   
+	            $("#detalle_agenda").hide();
+			    $("#datos_agenda").show();
+			    $("#btn_activae").hide();
+			    $("#btn_modifica").hide();
+			    $("#btn_definir").show();
+			    $("#btn_update").hide();
+           }
+
+            var es_admin = $('#conf_01').val();
 			var url_service = $('#conf_02').val();
+			
+			$('#txt_detalle_200').val(data.agenda_carga.id_agenda);
 			
 			
 			//alert('Permiso: '+$('#conf_03').val());
@@ -133,6 +167,14 @@ var handleDataTableListaAgendados = function() {
         $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
     } );
 	
+    var agen = 0;
+    
+    if ($('#agenda_select').val()!= ''){
+    	agen= $('#agenda_select').val();
+    }
+    
+ 
+	
 	var table = $("#data-table8").DataTable({
 		dom: 'C<"clear">lBfrtip',
 		"language": {
@@ -172,7 +214,7 @@ var handleDataTableListaAgendados = function() {
         "scrollCollapse": true,
         "scrollX": true,
         ajax: {
-            url: '/Manager/RestAgenda/getListAgendadosById/' + $('#txt_idope_1').val(),
+            url: '/Manager/RestAgenda/getListAgendadosById/' + agen,
             error : function(xhr, status, error) {
         		var data = {
 						status: xhr.status,
@@ -185,9 +227,6 @@ var handleDataTableListaAgendados = function() {
 		       	{ "data": null },
 		        { "data": "usuario.nombre_user" },
 		        { "data": "usuario.str_perfil" },
-		        { "data": "fecha" },
-		        { "data": "hora" },
-		        { "data": "lugar" },
 		        { "data": "email" }
 		      
 		    ],
@@ -259,12 +298,9 @@ var initSelect2_1 = function(){
 function setAgendado(){
 
      var param = {
-                 
-            id_oper : $('#txt_idope_1').val(),
-            id_user : $('#txt_08').val(),
-			fecha : $('#req_fechas_01').val(),
-			lugar : $('#txt_ubicacion').val()
-	}
+    	    id_user : $('#txt_08').val(),  
+            id_agenda : $('#agenda_select').val(),
+     }
 	
 
 		$.ajax({
@@ -326,10 +362,22 @@ function createAgenda(){
 			},
 			success: function(data){
 				//$("#modalg-charge").modal("hide");
-				$("#modalg-success-text" ).empty();
-				$('#modalg-success-text').html('<center>'+ data.text +'</center><br>');
-				$("#modalg-success").modal("show");
-			    //$('#data-table8').DataTable().ajax.reload();
+				//$("#modalg-success-text" ).empty();
+				//$('#modalg-success-text').html('<center>'+ data.text +'</center><br>');
+				//$("#modalg-success").modal("show");
+				
+			   var f= data.fecha; 
+			   var h= ' / '.concat(data.hora);
+			   $("#detalle_agenda").show();
+			   $("#datos_agenda").hide();
+			   $("#txt_detalle_fecha").val(f.concat(h));
+			   $("#txt_detalle_ubicacion").val(data.lugar);
+			   $("#agenda_select").val(data.id_agenda);
+			   $("#btn_activae").show();
+			 
+			   handleDataTableListaAgendados();
+			   
+			   //$('#data-table8').DataTable().ajax.reload();
 			
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -350,14 +398,61 @@ function createAgenda(){
 
 
 
+function modificaAgenda(){
 
+     var param = {
+                 
+            id_oper : $('#txt_idope_1').val(),
+            fecha : $('#req_fechas_01').val(),
+			lugar : $('#txt_ubicacion').val(),
+			hora : $('#hora').val(),
+			agenda : $('#agenda_select').val(),
+	}
+	
 
-
+		$.ajax({
+			url: "/Manager/RestAgenda/modificaAgenda",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			beforeSend: function(){
+				//cargando los datos
+				$("#modal-create").modal("hide");
+				//$("#modalg-charge").modal("show");
+			},
+			success: function(data){
+								
+			   var f= data.fecha; 
+			   var h= ' / '.concat(data.hora);
+			   $("#detalle_agenda").show();
+			   $("#datos_agenda").hide();
+			   $("#txt_detalle_fecha").val(f.concat(h));
+			   $("#txt_detalle_ubicacion").val(data.lugar);
+			   $("#agenda_select").val(data.id_agenda);
+			   $("#btn_activae").show();
+			   $('#data-table8').DataTable().ajax.reload();
+			
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		       // alert(xhr.status);
+		       // alert(thrownError);
+		       //alert('Se ha generado un error -- setUserLogin Modulo Usuario -- ,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error: <strong>-- setAgendado Modulo Agenda --</strong> <br/>  Favor contactar mesa de ayuda! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+	
+	
+}
 
 
 function deleteAgendado (){
 	     var param = {
-            id_oper : $('#aux_del2').val(),
+            id_agenda : $('#agenda_select').val(),
             id_user : $('#aux_del1').val(),
 	     }
 	
@@ -401,6 +496,7 @@ function aceptarAgenda (){
 
 	     var param = {
 	    	 id_oper : $('#txt_idope_1').val(),
+	         id_agenda : $('#agenda_select').val(),
 	     }
 	
 
@@ -476,10 +572,20 @@ function rechazarAgenda(){
 				errorAjaxRequest(data);
 			}
 		});
-
-
-
 }
+
+
+
+function updateAgenda(){
+
+	$("#datos_agenda").show();
+}
+
+
+
+
+
+
 
 
 
@@ -496,12 +602,10 @@ var Proyecto = function() {
 			iniHideData();
 			iniDateSpiker();
 			getDetailEstudio();
-			handleDataTableListaAgendados();
 			initSelect2_1()
-			
-			
-            
-			
+			//$("#detalle_agenda").hide();
+		    //$("#datos_agenda").show();
+		    //$("#btn_activae").hide();
 			
 		}
 	}

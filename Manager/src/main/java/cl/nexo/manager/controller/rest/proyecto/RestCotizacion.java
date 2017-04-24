@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.combo.box.AccessComboBox;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.login.AccessPerfil;
@@ -24,6 +25,7 @@ import cl.nexo.manager.access.producto.AccessProducto;
 import cl.nexo.manager.access.proyecto.AccessCotizacion;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.traza.AccessTraza;
+import cl.nexo.manager.obj.agenda.ObjAgenda;
 import cl.nexo.manager.obj.login.ObjLoginUser;
 import cl.nexo.manager.obj.login.ObjPerfilLogin;
 import cl.nexo.manager.obj.proyecto.ObjDataListEstudio;
@@ -763,6 +765,8 @@ public class RestCotizacion {
 		 SecurityContext securityContext = SecurityContextHolder.getContext();
 		 Authentication authentication = securityContext.getAuthentication();
 		 AccessEstudio estudio = (AccessEstudio) context.getBean("AccessEstudio");
+		 AgendaAccess agenda = (AgendaAccess) context.getBean("AgendaAccess");
+		 
 		 
 		 logger.debug("**********REQUEST PARAM getFullDetalleOperacion********************************************* "); 
 			logger.debug("id: "+ id);
@@ -805,6 +809,17 @@ public class RestCotizacion {
 			 result.setText("Permiso de Acceso");
 		 }
 		 
+		 
+		 logger.info("AGENDA aun no") ;
+		 
+		 ObjAgenda agen = agenda.getAgendaAbiertaByidOperacion(result.getId_operacion());
+		 
+		 logger.info("AGENDA CARGADAAAAAAAAAAAAAAAAAAAAAAA" +  agen.getId_agenda()) ;
+		 
+		 result.setAgenda_carga(agen);
+		 
+		 
+		 
 		 return result;
 		 
 	}
@@ -825,7 +840,7 @@ public class RestCotizacion {
 		 SecurityContext securityContext = SecurityContextHolder.getContext();
 		 Authentication authentication = securityContext.getAuthentication();
 		 AccessEstudio estudio = (AccessEstudio) context.getBean("AccessEstudio");
-		 
+		  
 		 logger.debug("**********REQUEST PARAM getFullDetalleOperacion********************************************* "); 
 			logger.debug("id: "+ id);
 			logger.debug("tipo: "+ tipo);
@@ -868,6 +883,8 @@ public class RestCotizacion {
 			 
 			 result.setText("Permiso de Acceso");
 		 }
+		 
+		 
 		 
 		 return result;
 		 

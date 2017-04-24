@@ -1,9 +1,11 @@
 package cl.nexo.manager.imp.agenda;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.sql.DataSource;
@@ -34,21 +36,15 @@ public class Agenda implements AgendaAccess {
 		
 		Connection conn = null;
     	
-    	String query = "INSERT INTO man_proyecto_manager_agenda_kick_off "
-    				+"	(id_operacion "
+    	String query = "INSERT INTO man_proyecto_manager_inv_agenda_kick_off "
+    				+"	(id_agenda "
 			        +"	 ,id_user "
-			        +"	 ,fecha "
-			        //+",hora "
-			        +"   ,lugar "
 			        + "  ,email,asiste  )"			        
 
 			        +" VALUES "
-			        +"   ("+per.getId_operacion() +" "
+			        +"   ("+per.getid_agenda() +" "
 			        +"   ,"+per.getUsuario().getId_user() + ""
-			    	+"   ,'"+per.getFecha()+ "'"
-			    	//+"   ,'"+per.get+ "'"
-			    	+"   ,'"+per.getLugar()+ "'"
-			    	+"   ,'"+per.getUsuario().getMail_user()+ "','False' )";
+			        +"   ,'"+per.getUsuario().getMail_user()+ "','False' )";
 			    	
 
     	
@@ -79,14 +75,14 @@ public class Agenda implements AgendaAccess {
 
 
 	@Override
-	public ArrayList<ObjPersonaAgenda> getListAgendadosByidOperacion(int id_operacion) {
+	public ArrayList<ObjPersonaAgenda> getListAgendadosByid(int id_agenda) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		Connection conn = null;
 		ArrayList<ObjPersonaAgenda> agendados = new ArrayList<ObjPersonaAgenda>();
 		LoginAccess usuario = (LoginAccess) context.getBean("LoginAccess");
 		
 		String query = " SELECT * " 
-			         + " FROM man_proyecto_manager_agenda_kick_off tb where status=1 and id_operacion=" +  id_operacion; 
+			         + " FROM man_proyecto_manager_inv_agenda_kick_off tb where status=1 and id_agenda=" +  id_agenda; 
 
 			  try {
 				  conn = dataSource.getConnection();
@@ -99,21 +95,17 @@ public class Agenda implements AgendaAccess {
 					  us=usuario.getUserById(rs.getInt("id_user"));
 					  ObjPersonaAgenda per = new ObjPersonaAgenda();
 					  //apoderado.setCedula("<a href='JavaScript: handleDetalleApoderado("+rs.getString("cedula")+");'><strong>"+rs.getString("cedula")+"</strong></a>");
-					  per.setId_operacion(rs.getInt("id_operacion"));
+					  per.setid_agenda(rs.getInt("id_agenda"));
 					  per.setUsuario(us);
-					  per.setFecha(rs.getString("fecha"));
-					  per.setLugar(rs.getString("lugar"));
 					  per.setEmail(us.getMail_user());
-					  per.setHora("Algo");
+					
 					  per.setId_usuario(us.getId_user());
 					  if(rs.getBoolean("asiste")){
-						  per.setAsiste("<input type='checkbox' checked  name='chkusr_asist' id='chkusr_asist'  onClick='if(this.checked == true){JavaScript: asistenteSeleccionado("+us.getId_user()+","  + per.getId_operacion() +")} else{ JavaScript: asistenteNoSeleccionado("+us.getId_user()+","  + per.getId_operacion() +")}'>");
+						  per.setAsiste("<input type='checkbox' checked  name='chkusr_asist' id='chkusr_asist'  onClick='if(this.checked == true){JavaScript: asistenteSeleccionado("+us.getId_user()+","  + per.getid_agenda() +")} else{ JavaScript: asistenteNoSeleccionado("+us.getId_user()+","  + per.getid_agenda() +")}'>");
 					  }else{
-						  per.setAsiste("<input type='checkbox'  name='chkusr_asist' id='chkusr_asist'  onClick='if(this.checked == true){JavaScript: asistenteSeleccionado("+us.getId_user()+","  + per.getId_operacion() +")} else{ JavaScript: asistenteNoSeleccionado("+us.getId_user()+","  + per.getId_operacion() +")}'>");
+						  per.setAsiste("<input type='checkbox'  name='chkusr_asist' id='chkusr_asist'  onClick='if(this.checked == true){JavaScript: asistenteSeleccionado("+us.getId_user()+","  + per.getid_agenda() +")} else{ JavaScript: asistenteNoSeleccionado("+us.getId_user()+","  + per.getid_agenda() +")}'>");
 					  }
-					  
-				
-					  agendados.add(per);
+					      agendados.add(per);
 				  }
 				  
 				  return agendados;
@@ -132,17 +124,14 @@ public class Agenda implements AgendaAccess {
 	}
 
 	@Override
-	public int DeleteAgendado(int user, int operacion) {
+	public int DeleteAgendado(int user, int agenda) {
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		
 		Connection conn = null;
     	
-    	String query = "UPDATE man_proyecto_manager_agenda_kick_off "
-    				+"	SET status=0 where id_operacion= " + operacion + " and id_user= " + user;
-			       		        
+    	String query = "UPDATE man_proyecto_manager_inv_agenda_kick_off "
+    				+"	SET status=0 where id_agenda= " + agenda + " and id_user= " + user;
 
-    	
     	logger.info(query);
     	
     	try {
@@ -167,14 +156,14 @@ public class Agenda implements AgendaAccess {
 	}
 
 	@Override
-	public boolean getExistUserAgenda(int user, int operacion) {
+	public boolean getExistUserAgenda(int user, int agenda) {
 		boolean result = false;
 		Connection conn = null;
 		
 		String query = " SELECT id_user "
-				  +"	 FROM man_proyecto_manager_agenda_kick_off "
+				  +"	 FROM man_proyecto_manager_inv_agenda_kick_off "
 				  +"	 WHERE STATUS=1 AND  "
-				  +" id_user = " + user + " and id_operacion= " + operacion ;
+				  +" id_user = " + user + " and id_agenda= " + agenda ;
 				  
 		
 		try {
@@ -186,8 +175,7 @@ public class Agenda implements AgendaAccess {
 			if(rs.next()) {
 				usuario = rs.getInt("id_user");
 			}
-			
-			
+
 			
 			if (usuario == 0){
 				result = false;
@@ -254,23 +242,68 @@ public class Agenda implements AgendaAccess {
 	}
 
 	@Override
-	public void createAgenda(ObjAgenda agen) {
+	public int createAgenda(ObjAgenda agen) {
 
 		Connection conn = null;
+		ResultSet rs;
+		int idColVar = 0;
     	
     	String query = "INSERT INTO man_proyecto_manager_agenda_kick_off "
     				+"	(id_operacion "
 			        +"	 ,id_user "
 			        +"	 ,fecha "
 			        +"   ,hora "
-			        +"   ,lugar  )"			        
+			        +"   ,lugar,estado_agenda  )"			        
 
 			        +" VALUES "
 			        +"   ("+agen.getId_operacion() +" "
 			        +"   ,"+ agen.getId_usuario() + ""
 			    	+"   ,'"+agen.getFecha()+ "'"
 			    	+"   ,'"+agen.getHora() + "'"
-			    	+"   ,'"+agen.getLugar()+ "' )";
+			    	+"   ,'"+agen.getLugar()+ "' ,14 ) ";
+
+    	logger.info(query);
+    	
+    	try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			logger.info(query);
+			ps.executeUpdate();
+			
+			rs=ps.getGeneratedKeys();
+			
+			while (rs.next()) {
+				  idColVar = Integer.parseInt(rs.getBigDecimal(1).toString());     
+			}
+
+    	} catch (SQLException e) {
+    		
+			throw new RuntimeException(e);
+			
+		} finally {
+			
+			if (conn != null) {
+				try {
+					conn.close();
+					
+				} catch (SQLException e) {}
+			}
+		}
+		return idColVar;
+
+	}
+
+	
+	@Override
+	public void modificaAgenda(ObjAgenda agen) {
+
+		Connection conn = null;
+		
+    	
+    	String query = "UPDATE man_proyecto_manager_agenda_kick_off "
+			        +"	 set fecha = '" +agen.getFecha()+ "'"
+			        +"   ,hora = '" +agen.getHora() + "'"
+			        +"   ,lugar= '" +agen.getLugar() + "'  WHERE id_agend= " + agen.getId_agenda();	        
 
     	logger.info(query);
     	
@@ -279,7 +312,42 @@ public class Agenda implements AgendaAccess {
 			PreparedStatement ps = conn.prepareStatement(query);
 			logger.info(query);
 			ps.executeUpdate();
+
+    	} catch (SQLException e) {
+    		
+			throw new RuntimeException(e);
 			
+		} finally {
+			
+			if (conn != null) {
+				try {
+					conn.close();
+					
+				} catch (SQLException e) {}
+			}
+		}
+		
+
+	}
+	
+	
+	@Override
+	public int aceptarAgenda(int agenda) {
+
+		
+		Connection conn = null;
+    	
+    	String query = "UPDATE man_proyecto_manager_agenda_kick_off "
+    				+"	SET estado_agenda=15 where id_agend= " + agenda;
+
+    	logger.info(query);
+    	
+    	try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.info(query);
+			ps.executeUpdate();
+			return 1;
     	} catch (SQLException e) {
     		
 			throw new RuntimeException(e);
@@ -291,10 +359,55 @@ public class Agenda implements AgendaAccess {
 				} catch (SQLException e) {}
 			}
 		}
+
+		
+	}
+
+	@Override
+	public ObjAgenda getAgendaAbiertaByidOperacion(int operacion) {
+		
+
+		
+		Connection conn = null;
+				
+		String query = " SELECT * " 
+			         + " FROM man_proyecto_manager_agenda_kick_off where estado_agenda=14 and id_operacion=" +  operacion; 
+
+			  try {
+				  conn = dataSource.getConnection();
+				  PreparedStatement ps = conn.prepareStatement(query);
+				  logger.debug(query);
+				  ResultSet rs = ps.executeQuery();
+				  ObjAgenda agen = new ObjAgenda();
+				  
+				  while (rs.next()) {
+					  agen.setId_agenda(rs.getInt("id_agend"));
+					  agen.setId_operacion(rs.getInt("id_operacion"));
+					  agen.setFecha(rs.getString("fecha"));
+					  agen.setLugar(rs.getString("lugar"));
+					  agen.setHora(rs.getString("hora"));
+					  agen.setId_estado_agenda(rs.getInt("estado_agenda"));
+				  }
+				  
+				  return agen;
+				  
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+				
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+
 	
+		
 		
 		
 	}
 
+	
 	
 }
