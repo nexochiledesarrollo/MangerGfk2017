@@ -33,18 +33,19 @@ var getDetailEstudio = function(){
 			//***********************************
 			//var detalle = data.detalle;
 			//**********************************
-		    ////  YA EXISTE UNA REUNION
-			//if (data.existReunionEstudio){
-				 //$('#btn_activae').hide();
-				 //$('#btn_deletee').hide();
+          
+           if (data.agenda_aceptada.id_agenda!=0){
+        	
+               var f= data.agenda_aceptada.fecha ;
+			   var h= ' / '.concat(data.agenda_aceptada.hora);
+        	   
+			   $("#agenda_select").val(data.agenda_aceptada.id_agenda);
+			   $("#txt_detalle_fecha").val(f.concat(h));
+			   $("#txt_detalle_ubicacion").val(data.agenda_aceptada.lugar);
 			
-				 //$("#req_fechas_01").attr('disabled', 'disabled');
-				 //$("#req_fechas_02").attr('disabled', 'disabled');
-				 //$("#req_fechas_03").attr('disabled', 'disabled');
-				// $("#req_fechas_04").attr('disabled', 'disabled');
-				 //$("#req_fechas_05").attr('disabled', 'disabled');
-	
-			//}
+			   handleDataTableListaAgendados();
+
+           }
 			
 			var es_admin = $('#conf_01').val();
 			var url_service = $('#conf_02').val();
@@ -149,6 +150,7 @@ var iniHideData = function(){
 
 
 var handleDataTableListaAgendados = function() {
+	
 	$('#data-table8 tfoot th').each( function () {
         var title = $('#data-table thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
@@ -193,7 +195,7 @@ var handleDataTableListaAgendados = function() {
         "scrollCollapse": true,
         "scrollX": true,
         ajax: {
-            url: '/Manager/RestAgenda/getListAgendadosById/' + $('#txt_idope_1').val(),
+            url: '/Manager/RestAgenda/getListAgendadosById/' + $('#agenda_select').val(),
             error : function(xhr, status, error) {
         		var data = {
 						status: xhr.status,
@@ -206,9 +208,6 @@ var handleDataTableListaAgendados = function() {
 		       	{ "data": null },
 		        { "data": "usuario.nombre_user" },
 		        { "data": "usuario.str_perfil" },
-		        { "data": "fecha" },
-		        { "data": "hora" },
-		        { "data": "lugar" },
 		        { "data": "asiste" }
 		      
 		    ],
@@ -391,11 +390,11 @@ var selectAprobUser = function(){
 
 
 
-function registroAsistencia(user,accion1,oper){
+function registroAsistencia(user,accion1,agen){
 	//alert("Lo Selecciono " + id_user);
 	var param = {
 		id_user : user,
-	    id_oper	: oper,
+	    id_agenda: agen,
 	    accion  : accion1
 
 	}
@@ -465,6 +464,7 @@ function aceptarReunion(){
 		     id_jefe : $('#txt_aprob_02').val(),
 		     id_procesamiento : $('#txt_aprob_03').val(),
 		     id_scripting : $('#txt_aprob_04').val(),
+		     id_agenda : $('#agenda_select').val(),
 
 	     }
 
@@ -518,6 +518,7 @@ function rechazarReunion(){
 		     id_jefe : $('#txt_aprob_02').val(),
 		     id_procesamiento : $('#txt_aprob_03').val(),
 		     id_scripting : $('#txt_aprob_04').val(),
+		     id_agenda : $('#agenda_select').val(),
 
 	     }
 
@@ -571,7 +572,7 @@ var Proyecto = function() {
 			iniHideData();
 			iniDateSpiker();
 			getDetailEstudio();
-			handleDataTableListaAgendados();
+			//handleDataTableListaAgendados();
 			handleDataRepoProyecto();
 			selectAprobUser();
 			

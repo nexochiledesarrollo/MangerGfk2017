@@ -813,10 +813,10 @@ public class RestCotizacion {
 		 logger.info("AGENDA aun no") ;
 		 
 		 ObjAgenda agen = agenda.getAgendaAbiertaByidOperacion(result.getId_operacion());
-		 
-		 logger.info("AGENDA CARGADAAAAAAAAAAAAAAAAAAAAAAA" +  agen.getId_agenda()) ;
-		 
+		 ObjAgenda agen_defin = agenda.getAgendaDefinitivaByidOperacion(result.getId_operacion());
+
 		 result.setAgenda_carga(agen);
+		 result.setAgenda_aceptada(agen_defin);
 		 
 		 
 		 

@@ -87,19 +87,19 @@ public class Agenda implements AgendaAccess {
 			  try {
 				  conn = dataSource.getConnection();
 				  PreparedStatement ps = conn.prepareStatement(query);
-				  logger.debug(query);
+				  logger.debug("LLENANDO LA TABLITA   - ---- " + query);
 				  ResultSet rs = ps.executeQuery();
 				  while (rs.next()) {  
 					  ObjLoginUser us  = new ObjLoginUser();
 					  
 					  us=usuario.getUserById(rs.getInt("id_user"));
 					  ObjPersonaAgenda per = new ObjPersonaAgenda();
-					  //apoderado.setCedula("<a href='JavaScript: handleDetalleApoderado("+rs.getString("cedula")+");'><strong>"+rs.getString("cedula")+"</strong></a>");
+					  
 					  per.setid_agenda(rs.getInt("id_agenda"));
 					  per.setUsuario(us);
 					  per.setEmail(us.getMail_user());
-					
 					  per.setId_usuario(us.getId_user());
+					  
 					  if(rs.getBoolean("asiste")){
 						  per.setAsiste("<input type='checkbox' checked  name='chkusr_asist' id='chkusr_asist'  onClick='if(this.checked == true){JavaScript: asistenteSeleccionado("+us.getId_user()+","  + per.getid_agenda() +")} else{ JavaScript: asistenteNoSeleccionado("+us.getId_user()+","  + per.getid_agenda() +")}'>");
 					  }else{
@@ -202,7 +202,7 @@ public class Agenda implements AgendaAccess {
 
 	
 	@Override
-	public int SetAsistencia(int user, int operacion,int accion) {
+	public int SetAsistencia(int user, int agenda,int accion) {
 
 		
 		Connection conn = null;
@@ -213,8 +213,8 @@ public class Agenda implements AgendaAccess {
 			asistencia = true;
 		}
     	
-    	String query = "UPDATE man_proyecto_manager_agenda_kick_off "
-    				+"	SET asiste='" + asistencia + "' where status=1 and id_operacion= " + operacion + " and id_user= " + user;
+    	String query = "UPDATE man_proyecto_manager_inv_agenda_kick_off "
+    				+"	SET asiste='" + asistencia + "' where status=1 and id_agenda= " + agenda + " and id_user= " + user;
 			       		        
 
     	
@@ -362,12 +362,45 @@ public class Agenda implements AgendaAccess {
 
 		
 	}
+	
+	@Override
+	public int rechazarAgenda(int agenda) {
+
+		
+		Connection conn = null;
+    	
+    	String query = "UPDATE man_proyecto_manager_agenda_kick_off "
+    				+"	SET estado_agenda=16 where id_agend= " + agenda;
+
+    	logger.info(query);
+    	
+    	try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.info(query);
+			ps.executeUpdate();
+			return 1;
+    	} catch (SQLException e) {
+    		
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+
+		
+	}
+	
+	
+	
 
 	@Override
 	public ObjAgenda getAgendaAbiertaByidOperacion(int operacion) {
-		
 
-		
 		Connection conn = null;
 				
 		String query = " SELECT * " 
@@ -407,6 +440,54 @@ public class Agenda implements AgendaAccess {
 		
 		
 	}
+	
+	
+	
+	@Override
+	public ObjAgenda getAgendaDefinitivaByidOperacion(int operacion) {
+		
+		Connection conn = null;
+				
+		String query = " SELECT * " 
+			         + " FROM man_proyecto_manager_agenda_kick_off where estado_agenda=15 and id_operacion=" +  operacion; 
+
+			  try {
+				  conn = dataSource.getConnection();
+				  PreparedStatement ps = conn.prepareStatement(query);
+				  logger.debug(query);
+				  ResultSet rs = ps.executeQuery();
+				  ObjAgenda agen = new ObjAgenda();
+				  
+				  while (rs.next()) {
+					  agen.setId_agenda(rs.getInt("id_agend"));
+					  agen.setId_operacion(rs.getInt("id_operacion"));
+					  agen.setFecha(rs.getString("fecha"));
+					  agen.setLugar(rs.getString("lugar"));
+					  agen.setHora(rs.getString("hora"));
+					  agen.setId_estado_agenda(rs.getInt("estado_agenda"));
+				  }
+				  
+				  return agen;
+				  
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+				
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+
+	
+		
+		
+		
+	}
+	
+	
+	
 
 	
 	

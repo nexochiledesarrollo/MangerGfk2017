@@ -35,33 +35,23 @@ public class Reunion implements AccessReunion {
 	@Override
 	public int aceptarReunion(ObjReunionKickOff reu) {
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+	
 		
 		Connection conn = null;
     	
     	String query = "INSERT INTO man_proyecto_manager_reunion_kick_off "
     				+"	(id_operacion "
-			        +"	 ,f_inicio_campo "
-			        +"	 ,f_fin_campo "
-			        +"   ,f_ini_bbdd "
-			        +"   ,f_fin_bbdd"
-			        +"   ,f_entrega"
 			        +"   ,id_dir_campo"
 			        +"   ,id_jefe_calidad"
 			        +"   ,id_usr_procesamiento"
-			        +"   ,id_usr_scripting  )"			        
+			        +"   ,id_usr_scripting,id_agenda  )"			        
 
 			        +" VALUES "
 			        +"   ("+reu.getId_operacion() +" "
-			    	+"   ,'"+reu.getF_ini_campo()+ "'"
-			    	+"   ,'"+reu.getF_fin_campo()+ "'"
-			    	+"   ,'"+reu.getF_ini_bbdd()+ "'"
-			    	+"   ,'"+reu.getF_fin_bbdd()+ "'"
-			    	+"   ,'"+reu.getF_entrega()+ "'"
 			    	+"   ,"+reu.getDirector_campo().getId_user()+ ""
 			    	+"   ,"+reu.getJefe_calidad().getId_user()+ ""
 			    	+"   ,"+reu.getProcesamiemto().getId_user()+ ""
-			    	+"   ,"+reu.getScripting().getId_user()+ " )";
+			    	+"   ,"+reu.getScripting().getId_user()+ "," + reu.getId_agenda() + " )";
 			    	
 
     	

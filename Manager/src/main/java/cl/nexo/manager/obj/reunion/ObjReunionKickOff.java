@@ -15,6 +15,7 @@ public class ObjReunionKickOff {
    ObjLoginUser jefe_calidad;
    ObjLoginUser procesamiemto;
    ObjLoginUser scripting;
+   int id_agenda;
    
    
 public int getId_reunion() {
@@ -82,6 +83,12 @@ public ObjLoginUser getScripting() {
 }
 public void setScripting(ObjLoginUser scripting) {
 	this.scripting = scripting;
+}
+public int getId_agenda() {
+	return id_agenda;
+}
+public void setId_agenda(int id_agenda) {
+	this.id_agenda = id_agenda;
 }
    
    

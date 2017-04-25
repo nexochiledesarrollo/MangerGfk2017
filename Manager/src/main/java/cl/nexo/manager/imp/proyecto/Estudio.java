@@ -36,6 +36,7 @@ import cl.nexo.manager.obj.proyecto.ObjEstudioRecoleccion;
 import cl.nexo.manager.obj.proyecto.ObjEstudioTabulacion;
 import cl.nexo.manager.obj.proyecto.ObjProyectoEstandar;
 import cl.nexo.manager.obj.proyecto.ObjResultCreaCotOp;
+import cl.nexo.manager.obj.reunion.ObjReunionKickOff;
 
 public class Estudio implements AccessEstudio {
 	
@@ -4211,21 +4212,46 @@ public class Estudio implements AccessEstudio {
 	
 	@Override
 	public void updateColaEstudio(int nuevo_estado , int id_operacion){
-		
-		
-		
 		Connection conn = null;
 		String query=" UPDATE man_proyecto_manager_medicion "
 			         +"  SET cola_operacion = " + nuevo_estado  + " WHERE id_operacion= " + id_operacion;
-			         
-			 
+	 
 		try {
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
 			logger.debug(query);
 			ps.executeUpdate();
 			
+    	} catch (SQLException e) {
+    		
+			throw new RuntimeException(e);
 			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	}
+	
+	
+	@Override
+	public void fechasEstudio(ObjReunionKickOff re) {
+		Connection conn = null;
+		String query=" UPDATE man_proyecto_manager_medicion "
+			         +"  SET fcom_ini_campo = '" + re.getF_ini_campo()  + "' "
+			         +"  ,fcom_fin_campo = '" + re.getF_fin_campo() + "' "
+			         +"  ,fcom_ini_bbdd = '" + re.getF_ini_bbdd() + "' "	
+			         +"  ,fcom_fin_bbdd = '" + re.getF_fin_bbdd() + "' "
+			         +"  ,fcom_entrega = '" + re.getF_entrega()  + "' "
+    	         	 +"  WHERE id_operacion= " + re.getId_operacion();
+	 
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.debug(query);
+			ps.executeUpdate();
 			
     	} catch (SQLException e) {
     		

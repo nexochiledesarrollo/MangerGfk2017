@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
@@ -41,7 +42,9 @@ public class RestReunion {
 			@RequestParam("id_director") int id_director,
 			@RequestParam("id_jefe") int id_jefe,
 			@RequestParam("id_procesamiento") int id_procesamiento,
-			@RequestParam("id_scripting") int id_scripting
+			@RequestParam("id_scripting") int id_scripting,
+			@RequestParam("id_agenda") int id_agenda
+
 
 			){
 		//--------BEGIN debug ----------------------------
@@ -73,8 +76,10 @@ public class RestReunion {
 	    re.setJefe_calidad(logins.getUserById(id_jefe));
 	    re.setProcesamiemto(logins.getUserById(id_procesamiento));
 	    re.setScripting(logins.getUserById(id_scripting));
+	    re.setId_agenda(id_agenda);
 	    
 	    reunion.aceptarReunion(re);
+	    est.fechasEstudio(re);
 	    
 
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,7 +116,8 @@ public class RestReunion {
 			@RequestParam("id_director") int id_director,
 			@RequestParam("id_jefe") int id_jefe,
 			@RequestParam("id_procesamiento") int id_procesamiento,
-			@RequestParam("id_scripting") int id_scripting
+			@RequestParam("id_scripting") int id_scripting,
+			@RequestParam("id_agenda") int id_agenda
 
 			){
 		//--------BEGIN debug ----------------------------
@@ -129,7 +135,7 @@ public class RestReunion {
 	    
 	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
 	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
-	    
+	    AgendaAccess ag = (AgendaAccess) context.getBean("AgendaAccess");
 
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         int nuevo_estado=13;
@@ -140,8 +146,10 @@ public class RestReunion {
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         
-        int nueva_cola_estudio=20; // Cola Pendiente KickOff    	
+        int nueva_cola_estudio=18; // Cola Pendiente KickOff    	
     	est.updateColaEstudio(nueva_cola_estudio, id_operacion);
+    	ag.rechazarAgenda(id_agenda);
+    	
         
     	
 	    //REGISTRO DE WORKFLOW Y BITACORA

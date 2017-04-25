@@ -13,6 +13,7 @@ import cl.nexo.manager.obj.proyecto.ObjEstudioFiltros;
 import cl.nexo.manager.obj.proyecto.ObjEstudioRecoleccion;
 import cl.nexo.manager.obj.proyecto.ObjEstudioTabulacion;
 import cl.nexo.manager.obj.proyecto.ObjResultCreaCotOp;
+import cl.nexo.manager.obj.reunion.ObjReunionKickOff;
 
 public interface AccessEstudio {
 
@@ -139,6 +140,8 @@ public interface AccessEstudio {
 	public ObjEstudio getFullEstudioReunionByUid(int id);
 
 	public void updateColaEstudio(int nuevo_estado,int id_operacion);
+	
+	public void fechasEstudio(ObjReunionKickOff re);
 	
 	
 	

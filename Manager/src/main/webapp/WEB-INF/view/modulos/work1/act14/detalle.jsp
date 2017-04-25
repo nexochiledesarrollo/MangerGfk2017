@@ -116,6 +116,7 @@
 		<input type="hidden" id="combo_1" name="combo_1" value="" />
 		<input type="hidden" id="combo_2" name="combo_2" value="" />
 		<input type="hidden" id="combo_3" name="combo_3" value="" />
+		<input type="hidden" id="agenda_select" name="agenda_select" value="" />
 		<input type="hidden" class="form-control" id="lang_01" value="<%= langOption %>" />
 		<input type="hidden" class="form-control" id="pace_01" value="<%= lang1.getProperty("tipoentrevista") %>" />
 			<!-- END Config General -->	 
@@ -279,6 +280,28 @@
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
                           
+                           <form class="form-horizontal form-bordered">                         		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Fecha / Hora </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_fecha" name="txt_detalle_fecha" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Ubicación </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_ubicacion" name="txt_detalle_ubicacion" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+                           </form>
+
+                          
                            <h3 class="m-t-10" style=" color: #f59c1a;">Usuarios Invitados</h3>
                            <br/>
  
@@ -288,9 +311,7 @@
                                     	<th width="10"></th>
                                     	<th width="300">Personal</th>
                                         <th width="200">Cargo</th>
-                                        <th width="200">Fecha</th>
-                                        <th width="200">Hora</th>
-                                        <th width="200">Lugar</th>
+                                       
                                          <th width="200">Asiste</th>
                                     </tr>
                                 </thead>
@@ -299,9 +320,7 @@
                                     	<th width="10"></th>
                                     	<th width="300"> Personal</th>
                                         <th width="200">Cargo</th>
-                                        <th width="200">Fecha</th>
-                                        <th width="200">Hora</th>
-                                         <th width="200">Lugar</th>
+                                        
                                          <th width="200">Asiste</th>
                                     </tr>
                                 </tfoot>
@@ -413,9 +432,7 @@
 					                                    
 					                                </tbody>
 					                            </table>
-					                            <p class="text-right m-b-0" style="margin-right: 20px;">
-				                           	  		<a href="javascript:;" class="btn btn-primary" id="btn_mod_cal_01"><i class="fa fa-calendar"></i> Actualiza Fecha</a>
-				                           	  	</p>
+					                           
 					                            
 			                           	  	</div>
 			                           	  	

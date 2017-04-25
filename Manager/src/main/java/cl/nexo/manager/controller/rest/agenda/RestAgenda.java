@@ -1,13 +1,6 @@
 package cl.nexo.manager.controller.rest.agenda;
 
-
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -19,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
@@ -133,8 +125,6 @@ public class RestAgenda {
 			
 			){
 
-		
-		logger.info("POR AQUI PASO");
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
 	    SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -151,10 +141,8 @@ public class RestAgenda {
         agenda.setHora(hora);
         agenda.setId_operacion(id_oper);
         agenda.setId_agenda(agenda_id);
-        
         agendar.modificaAgenda(agenda);
-  
-		return agenda;
+        return agenda;
 		
 	}	
 	
@@ -162,21 +150,16 @@ public class RestAgenda {
 	
 	@RequestMapping(value = "/getListAgendadosById/{id}", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjDataAgenda getListAgendadosById(@PathVariable("id") int id){
-		
+	   logger.info("ENTRO A LLENAR");
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
 		AgendaAccess agen = (AgendaAccess) context.getBean("AgendaAccess");
 		ObjDataAgenda result = new ObjDataAgenda();
-		logger.info("LISTADO LUIS");
+		
 		ArrayList<ObjPersonaAgenda> list = agen.getListAgendadosByid(id);
-		logger.info("LISTADO" + list);
-		
-		
-	     result.setData(list);
-		
-		
-		
+        result.setData(list);
+
 		return result;
 	}
 	
@@ -273,48 +256,11 @@ public class RestAgenda {
 		
 	}	
 
-//	@RequestMapping(value = "/rechazarAgenda", method = RequestMethod.GET,headers="Accept=application/json")
-//	public ObjGeneralResultInt rechazarAgenda(@RequestParam("id_oper") int id_oper){
-//		//--------BEGIN debug ----------------------------
-//		
-//		//--------END debug ----------------------------
-//
-//		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-//		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
-//	    SecurityContext securityContext = SecurityContextHolder.getContext();
-//	    Authentication authentication = securityContext.getAuthentication();
-//	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
-//	    
-//	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
-//	    AccessTarea tareas = (AccessTarea) context.getBean("AccessTarea");
-//	    
-//	    
-//        ObjGeneralResultInt result = new ObjGeneralResultInt();
-//             
-//        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//        int nuevo_estado=0; /// debe corresponder al ESTADO RECHAZADO
-//        int actividad = 19;  // debe corresponder al id de la tarea de agendado
-//        int id_workFlow;
-//        String observacion="AGENDA RECHAZADA";
-//        int usuario= user.getId_user();
-//        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//        
-//        //REGISTRO DE WORKFLOW Y BITACORA
-//        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, usuario);  	
-//	    	
-//        
-//		result.setResult(1);
-//		result.setText("<strong>Agenda Rechazada</strong> ");
-//		
-//		return result;
-//		
-//	}	
-	
-	
+
 	@RequestMapping(value = "/setAsistencia", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjGeneralResultInt setAsistencia(
 			                @RequestParam("id_user") int id_user,
-			              	@RequestParam("id_oper") int id_oper,
+			              	@RequestParam("id_agenda") int id_agenda,
 			              	@RequestParam("accion") int accion
 			){
 
@@ -331,7 +277,7 @@ public class RestAgenda {
 
         ObjGeneralResultInt result = new ObjGeneralResultInt();
         
-        agendar.SetAsistencia(id_user, id_oper, accion);  
+        agendar.SetAsistencia(id_user, id_agenda, accion);  
 		
         
 		result.setResult(1);

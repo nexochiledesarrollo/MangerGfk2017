@@ -16,6 +16,8 @@ public interface AgendaAccess {
     public int createAgenda(ObjAgenda agen);
     public void modificaAgenda(ObjAgenda agen);
     public int aceptarAgenda(int agenda);
+    public int rechazarAgenda(int agenda);
     public ObjAgenda getAgendaAbiertaByidOperacion(int operacion);
+    public ObjAgenda getAgendaDefinitivaByidOperacion(int operacion);
     
 }
