@@ -298,6 +298,85 @@ public class workflowEtapa1Controller {
 		return model;
 	
 	}
+	@RequestMapping(value = { "/ImportaEstudios" }, method = RequestMethod.GET)
+	public ModelAndView  ImportaEstudios(@RequestParam("id") int id,
+									@RequestParam("nombre") String nombre
+									) {
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessPerfil perfils = (AccessPerfil) context.getBean("AccessPerfil");
+		AccessMenu menus = (AccessMenu) context.getBean("AccessMenu");
+		AccessTraza traza = (AccessTraza) context.getBean("AccessTraza");
+		AccessGeneralTools tools = (AccessGeneralTools) context.getBean("AccessGeneralTools");
+		String urlRestServiceDelivery = tools.getValorConfigById(15);
+		
+		int fechaAhora = Integer.parseInt(format1.format(new Date()));
+		String horaAhora = format2.format(new Date());
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName()); 
+	    ObjPerfilLogin perfil = perfils.getPerfilById(user.getId_perfil());
+	    int permisoModulo = 0;
+	    ObjMenuManager menu = menus.getMenuSistema(1, user.getId_cliente(), perfil.getId_perfil());
+	    String fechaNow = format3.format(new Date());
+	    
+	    ObjConfigTools tol = new ObjConfigTools();
+	    
+	    tol.setRefresco_table(Integer.parseInt(tools.getValorConfigById(36)));
+	    tol.setRefersco_dashboard(Integer.parseInt(tools.getValorConfigById(38)));
+	    tol.setTipo_menu(Integer.parseInt(tools.getValorConfigById(37)));
+		
+	    String nombre_aux = "";
+	    
+	    if(nombre != null){
+	    	try {
+				nombre_aux = URLDecoder.decode(nombre, "ISO-8859-1");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	    
+	   
+	    permisoModulo = perfils.getPermisoPerfilModulo(perfil.getId_perfil(), 5);
+	    
+	    
+	    ModelAndView model = new ModelAndView();
+		
+		if(user.getOtp_user() == 1){
+			if(permisoModulo != 0){
+				
+				traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 3, 0, 0, "CONSULTA ESTUDIO UPLOAD CUESTIONARIO", "USUARIO CONSULTA OPERACION "+ nombre_aux,8));
+				
+				
+				model.addObject("login", user);
+			    model.addObject("perfil", perfil);
+			    model.addObject("menu", menu);
+			    model.addObject("unidad_access", "5");
+			    
+			    model.addObject("modulo_access", "5");
+			    
+			    model.addObject("urlRestServiceDelivery", urlRestServiceDelivery);
+			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
+			    model.addObject("id_operacion", String.valueOf(id));
+			    model.addObject("lang",user.getLang_user());
+			    model.addObject("tol",tol);
+				model.setViewName("/modulos/work1/upload-cuestionario/detalle");
+				
+				
+				
+			}else{
+				model.setViewName("error-permiso");
+				
+			}
+		}else{
+	    	
+	    	model.setViewName("login");
+	    }
+		return model;
+	
+	}
 	@RequestMapping(value = { "/Instructivo" }, method = RequestMethod.GET)
 	public ModelAndView  Instructivo() {
 		
