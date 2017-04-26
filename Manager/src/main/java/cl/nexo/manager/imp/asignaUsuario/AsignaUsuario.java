@@ -82,12 +82,8 @@ public class AsignaUsuario implements AccessAsignacionPersonal {
 					  us.setHoras_disponibles(9-rs.getInt("total_horas"));
 					  us.setUsuario(usuario.getUserById(rs.getInt("id_usuario")));
 					  us.setId_operacion(rs.getInt("id_operacion"));;
-					  
-					  try {
-						  us.setFecha(rs.getString("dia_asig"));
-					  } catch (SQLException e) {
-						  logger.info(e);
-					  }
+					  us.setFecha(rs.getString("dia_asig"));
+					
 					  
 					  usuarios.add(us);
 				  }
