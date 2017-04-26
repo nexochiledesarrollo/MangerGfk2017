@@ -1076,10 +1076,7 @@ public class workflowEtapa1Controller {
 	    int permisoModulo = 0;
 	    
 	    String fechaNow = format3.format(new Date());
-	    
-	    
-	    
-	    
+
 	    String nombre_aux = "";
 	    
 	    ObjFiltroAsignUser fil = new ObjFiltroAsignUser();
@@ -1089,25 +1086,16 @@ public class workflowEtapa1Controller {
 	    fil.setSub(sub);
 	    
 	    ArrayList<ObjAsignUser> list = asigs.getListAsignUser(fil);
-	    
-	   
 	    permisoModulo = perfils.getPermisoPerfilModulo(perfil.getId_perfil(), 12);
-	    
-	    
 	    
 	    ModelAndView model = new ModelAndView();
 		
 		if(user.getOtp_user() == 1){
 			if(permisoModulo != 0){
-				
-				//traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 3, 0, 0, "CONSULTA ESTUDIO REVISION ASIGNACION DE USUARIOS", "USUARIO CONSULTA OPERACION "+ nombre_aux,8));
-				
-				
+			
 				model.addObject("login", user);
 			    model.addObject("perfil", perfil);
-			    
 			    model.addObject("unidad_access", "5");
-			    
 			    model.addObject("modulo_access", "12");
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
 			    model.addObject("id_operacion", String.valueOf(id));

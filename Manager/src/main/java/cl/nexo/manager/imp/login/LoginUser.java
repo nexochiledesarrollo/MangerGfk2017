@@ -176,6 +176,7 @@ public class LoginUser implements LoginAccess {
 					  ResultSet rs = ps.executeQuery();
 					  while (rs.next()) {
 						  user.setId_user(rs.getInt("id_user"));
+						  
 						  user.setRun(rs.getString("run_user"));
 						  user.setNombre_user(rs.getString("nombre_user"));
 						  user.setApp_user(rs.getString("app_user"));
@@ -231,6 +232,7 @@ public class LoginUser implements LoginAccess {
 						  user.setId_sdiv(rs.getInt("id_sdiv"));
 						  user.setIf_user(rs.getInt("if_user"));
 						  user.setLang_user(rs.getString("lang_user"));
+						  user.setUser_completo(rs.getString("nombre_user") + " " + rs.getString("app_user"));
 						  
 					  }
 					  

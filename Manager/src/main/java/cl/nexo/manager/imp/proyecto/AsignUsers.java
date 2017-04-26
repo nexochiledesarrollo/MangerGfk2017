@@ -39,10 +39,7 @@ public class AsignUsers implements AccessAsignUsers {
 	
 	@Override
 	public ArrayList<ObjAsignUserDetalle> getDetalleAsignUser(ObjFiltroAsignUser fil){
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
-		AccessProducto prods = (AccessProducto) context.getBean("AccessProducto");
-		AccessCuestionario cuests = (AccessCuestionario) context.getBean("AccessCuestionario");
+
 		
 		ArrayList<ObjAsignUserDetalle> ess = new ArrayList<ObjAsignUserDetalle>();
 		Connection conn = null;
@@ -73,11 +70,7 @@ public class AsignUsers implements AccessAsignUsers {
 				 ess.add(es);
 				  
 			  }
-			  
-			  
-			
-			  
-			  
+			  			  
 			  return ess;
 			  
 		} catch (SQLException e) {
@@ -94,10 +87,7 @@ public class AsignUsers implements AccessAsignUsers {
 	
 	@Override
 	public ArrayList<ObjAsignUser> getListAsignUser(ObjFiltroAsignUser fil){
-		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
-		AccessProducto prods = (AccessProducto) context.getBean("AccessProducto");
-		AccessCuestionario cuests = (AccessCuestionario) context.getBean("AccessCuestionario");
+
 		
 		ArrayList<ObjAsignUser> ess = new ArrayList<ObjAsignUser>();
 		Connection conn = null;

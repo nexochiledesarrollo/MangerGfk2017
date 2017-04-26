@@ -159,33 +159,7 @@ public class RestLoginUser {
 							@RequestParam("postal") String postal
 							){
 		//--------BEGIN debug ----------------------------
-		logger.debug("run: "+run);
-		logger.debug("login: "+login);
-		logger.debug("nombre: "+nombre);
-		logger.debug("app: "+app);
-		logger.debug("mail: "+mail);
-		logger.debug("nacimiento: "+nacimiento);
-		logger.debug("perfil: "+perfil);
-		logger.debug("division: "+division);
-		logger.debug("area: "+area);
-		logger.debug("estado: "+estado);
-		logger.debug("tcontrato: "+tcontrato);
-		logger.debug("tpago: "+tpago);
-		logger.debug("tjornada: "+tjornada);
-		logger.debug("pais: "+pais);
-		logger.debug("region: "+region);
-		logger.debug("ciudad: "+ciudad);
-		logger.debug("anexo: "+anexo);
-		logger.debug("direccion: "+direccion);
-		logger.debug("comuna: "+ comuna);
-		logger.debug("idsam: "+idsam);
-		logger.debug("delivery: "+delivery);
-		logger.debug("subdiv: "+subdiv);
-		logger.debug("ifuser: "+ifuser);
-		logger.debug("lang: "+lang);
-		logger.debug("numero: "+numero);
-		logger.debug("dpto: "+dpto);
-		logger.debug("postal: "+postal);
+	
 		//--------END debug ----------------------------
 		
 		
@@ -299,45 +273,10 @@ public class RestLoginUser {
 											   +"&subdiv="+subdiv
 											   +"&ifuser="+ifuser
 											   ;
-					/*
-					 * Rest Service
-					 * http://localhost:8080/spring-rest-1/data/fetchjson/200
-						{
-						  "id" : 200,
-						  "name" : "Ram",
-						  "address" : {
-						    "village" : "Dhananjaypur",
-						    "district" : "Varanasi",
-						    "state" : "UP"
-						  }
-						}  
-						
-						Client code.
-						public class GetForObjectDemoWithJSON {
-						    public static void main(String args[]) {
-						        RestTemplate restTemplate = new RestTemplate();
-						        Person person = restTemplate.getForObject("http://localhost:8080/spring-rest-1/data/fetchjson/{id}", Person.class, 200);
-						        System.out.println("ID: " + person.getId());
-						        System.out.println("Name: " + person.getName());
-						        System.out.println("Village Name: " + person.getAddress().getVillage());
-						    }
-						} 
-						
-						Output.
-						ID: 200
-						Name: Ram
-						Village Name: Dhananjaypur
-					 * */
-					
+
 					RestTemplate restTemplate = new RestTemplate();
 					ObjGeneralResultInt response = restTemplate.getForObject(urlRestServiceDelivery+serviceSetUserDelivery+param, ObjGeneralResultInt.class);
-					/*
-					 Response data  result:
-					 1- Se crea nuevo usuario
-					 2- Usuario ya existe en el sistema, si usuario no tiene idManager este actualiza campo
-					 3- Usuario existe ya en sistema y no se genera modificacion
-					 4- Se genera un tipo de error
-					 */
+
 					logger.info("Se consume servicio: "+urlRestServiceDelivery+serviceSetUserDelivery+" , el resultado es: "+ response.getResult() + ", detalle: "+response.getText());
 					
 				}else{

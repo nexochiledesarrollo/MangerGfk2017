@@ -51,6 +51,7 @@ public class ObjLoginUser {
     String numero_user;
     String dpto_user;
     String casilla_user;
+    String user_completo;
     
 	public int getId_user() {
 		return id_user;
@@ -351,6 +352,12 @@ public class ObjLoginUser {
 	}
 	public void setCasilla_user(String casilla_user) {
 		this.casilla_user = casilla_user;
+	}
+	public String getUser_completo() {
+		return user_completo;
+	}
+	public void setUser_completo(String user_completo) {
+		this.user_completo = user_completo;
 	}
     
 	

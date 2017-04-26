@@ -261,6 +261,194 @@
             <!-- end row -->
             
             
+             <!-- Begin row -->
+            <div class="row" id="datos_agenda">
+			    <!-- begin col-12 -->
+			    <div class="col-md-12">
+			        <!-- begin panel -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Detalle</h4>
+                        </div>
+                        
+                        <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
+                           <form class="form-horizontal form-bordered">
+
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Desde</label>
+										<div class="col-md-8">
+	                                        <input type="text" id="req_fechas_desde" class="form-control"  value="" readonly="readonly" />
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Desde</label>
+										<div class="col-md-8">
+	                                        <input type="text" id="req_fechas_hasta" class="form-control"  value="" readonly="readonly" />
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Divisi&oacute;n <span style="color: red;">(*)</span> </label>
+										<div class="col-md-8">
+	                                        <select class="form-control" name="txt_08" id="txt_08" onchange="JavaScript: chargeSubDivisionCombo('txt_088','txt_08');">
+				                            	<option value="0">Seleccione</option>
+				                            </select>
+										</div>
+									</div>
+								</div>	
+									
+								<div class="row">	
+									<div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Sub-Divisi&oacute;n <span style="color: red;">(*)</span></label>
+										<div class="col-md-8">
+										<select class="form-control" name="txt_088" id="txt_088" onchange="">
+			                            	<option value="0">Seleccione</option>
+			                            </select>
+			                            </div>
+									</div>
+                           		</div>
+                           		
+
+                           		
+                           		        		
+                           		<div class="row">
+									 <div class="form-group col-md-11">
+										<p class="pull-right">
+		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: handleDataTableAsignacionUsuario();" id="btn_definir">
+		                           	  			<i class="fa fa-search fa-2x pull-left"></i>
+		                           	  			Buscar
+		                           	  		</a>
+		                           	  	</p>
+									</div>									
+                           		</div>
+                           </form>
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end row -->
+            
+            
+            
+            	<!-- Begin row -->
+            <div class="row" id="detalle_agenda">
+			    <!-- begin col-12 -->
+			    <div class="col-md-12">
+			        <!-- begin panel -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Detalle</h4>
+                        </div>
+                        
+                        <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
+                           <form class="form-horizontal form-bordered">
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Desde / Hasta </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_fecha" name="txt_detalle_fecha" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+                           		
+                           		
+                           		<div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">División</label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_ubicacion" name="txt_detalle_ubicacion" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+                           		
+                           	   <div class="row">
+                           		    <div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Sub-División </label>
+										<div class="col-md-8">
+	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_ubicacion" name="txt_detalle_ubicacion" value="" readonly="readonly"/>
+										</div>
+									</div>
+                           		</div>
+
+                           </form>
+                           
+                           <br/>
+                           
+                           <table id="data-table8" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                    	
+                                    	<th width="10"></th>
+								        <th width="300">Personal</th>
+								        <th width="200">Cargo</th>
+								        <th>Dia</th>
+								        <th>Horas Ocupadas</th>
+								        <th>Horas Disponibles</th>
+								      
+                                    
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                    	<th width="10"></th>
+								        <th width="300">Personal</th>
+								        <th width="200">Cargo</th>
+								        <th>Dia</th>
+								        <th>Horas Ocupadas</th>
+								        <th>Horas Disponibles</th>
+								      
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                            <br/><br/>
+                           
+                           
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end row -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 			<!-- Begin row -->
             <div class="row">
 			    <!-- begin col-12 -->
@@ -278,56 +466,11 @@
                         </div>
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
-                           <form class="form-horizontal form-bordered">
-                           		<div class="row">
-									<div class="form-group col-md-3">
-										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Divisi&oacute;n <span style="color: red;">(*)</span> </label>
-										<div class="col-md-8">
-	                                        <select class="form-control" name="txt_08" id="txt_08" onchange="JavaScript: chargeSubDivisionCombo('txt_088','txt_08');">
-				                            	<option value="0">Seleccione</option>
-				                            </select>
-										</div>
-									</div>
-									<div class="form-group col-md-3">
-										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Sub-Divisi&oacute;n <span style="color: red;">(*)</span></label>
-										<div class="col-md-8">
-										<select class="form-control" name="txt_088" id="txt_088" onchange="">
-			                            	<option value="0">Seleccione</option>
-			                            </select>
-			                            </div>
-									</div>
-									<div class="form-group col-md-3">
-										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Desde </label>
-										<div class="col-md-8">
-	                                        <input type="text" id="req_fechas_01" class="form-control"  value="" readonly="readonly" />
-										</div>
-									</div>
-									<div class="form-group col-md-3">
-										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Hasta </label>
-										<div class="col-md-8">
-	                                        <input type="text" id="req_fechas_02" class="form-control"  value="" readonly="readonly" />
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="form-group col-md-3">
-										<p class="pull-left">
-		                           	  		<a href="JavaScript: handleDataTableAsignacionUsuario2();" class="btn btn-info m-r-5" style="margin-top: 5px; text-align: center;" id="btn_showhide">
-		                           	  			<i class="fa fa-search fa-2x pull-left"></i>
-		                           	  			Buscar
-		                           	  		</a>
-		                           	  	</p>
-		                           	  		
-									</div>
-								</div>
-                           </form>
+
+                             <h3 class="m-t-10" style=" color: #f59c1a;">Usuarios Invitados</h3>
                            <br/>
-                           <div id="charge_table9"></div>
-                           <br/><br/>
-                           <h3 class="m-t-10" style=" color: #f59c1a;">Usuarios Asignados</h3>
-                           <br/>
-                           
-                           <table id="data-table8" class="table table-striped table-bordered">
+ 
+                            <table id="data-table9" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                     	<th width="10"></th>

@@ -127,13 +127,118 @@ var iniHideData = function(){
           }
     });
 }
+
 var handleDataTableAsignacionUsuario = function() {
 	$('#data-table8 tfoot th').each( function () {
         var title = $('#data-table thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
     } );
 	
+    var desde = $('#req_fechas_desde').val();
+    var hasta = $('#req_fechas_hasta').val();
+    var div =   $('#txt_08').val();
+    var suvD =  $('#txt_088').val();
+    
+
 	var table = $("#data-table8").DataTable({
+		dom: 'C<"clear">lBfrtip',
+		"language": {
+        	"url": "http://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+        },
+		colVis: {
+            "buttonText": "Ocultar Columnas"
+        },
+        "iDisplayLength": 25,
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+		buttons: [{
+            extend: "copy",
+            buttonText: "Copiar",
+            className: "btn-sm"
+        }, {
+            extend: "csv",
+            className: "btn-sm"
+        }, {
+            extend: "excel",
+            className: "btn-sm"
+        }, {
+            extend: "pdf",
+            className: "btn-sm"
+        }, {
+            extend: "print",
+            className: "btn-sm"
+        }],
+        responsive: false,
+        autoFill: true,
+        colReorder: true,
+        keys: true,
+        rowReorder: false,
+        select: false,
+        serverSide : false,
+        processing : true,
+        "scrollY": "100%",
+        "scrollCollapse": true,
+        "scrollX": true,
+        ajax: {
+            url: '/Manager/RestAsignaUsuario/getUsuariosTotalHoras/' + desde + '/' + hasta + '/' + div + '/' + suvD,
+            error : function(xhr, status, error) {
+        		var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error: <strong>-- List Actividad 15 Workflow --</strong> <br/>  Favor contactar mesa de ayuda! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+error +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+        	}
+        },
+		        columns : [
+		       	{ "data": null },
+		        { "data": "usuario.user_completo" },
+		        { "data": "usuario.str_perfil" },
+		        { "data": "fecha" },
+		        { "data": "horas_ocupadas" },
+		        { "data": "horas_disponibles" }
+
+		      
+		    ],
+	     
+        
+			    "initComplete": function( ) {
+				    	// Apply the filter
+			    	    table.columns().eq( 0 ).each( function ( colIdx ) {
+			    	        $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+			    	            table
+			    	                .column( colIdx )
+			    	                .search( this.value )
+			    	                .draw();
+			    	        } );
+			    	    } );
+				     },
+				    
+				});
+   
+			table.on( 'order.dt search.dt', function () {
+				table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		            cell.innerHTML = i+1;
+		        } );
+		    } ).draw();
+   
+	
+			table.on('dblclick', 'tr', function () {
+		        var data = table.row( this ).data();
+		        
+		        showModalDeleteAgendado(data["id_usuario"],$('#txt_idope_1').val())
+		        //$('#txt_ubicacion').val(data["lugar"]);
+		        //alert( 'You clicked on '+data["id_usuario"]+'\'s row' );
+		    } );
+	
+   
+};
+
+var handleDataTableAsignacionUsuario1 = function() {
+	$('#data-table9 tfoot th').each( function () {
+        var title = $('#data-table thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+    } );
+	
+	var table = $("#data-table9").DataTable({
 		dom: 'C<"clear">lBfrtip',
 		"language": {
         	"url": "http://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
@@ -231,6 +336,10 @@ var handleDataTableAsignacionUsuario = function() {
 	
    
 };
+
+
+
+
 var handleDataTableAsignacionUsuario2 = function() {
 	
    toastr.options = {
@@ -335,18 +444,17 @@ var handleDataTableAsignacionUsuario2 = function() {
 	
 };
 
-var iniDateSpiker = function(){
-	$("#req_fechas_01").datepicker({
+var iniDateSpiker = function(){   
+    $("#req_fechas_desde").datepicker({
         todayHighlight: true,
         format: 'dd-mm-yyyy',
         language:'es'
     });
-    $("#req_fechas_02").datepicker({
+    $("#req_fechas_hasta").datepicker({
         todayHighlight: true,
         format: 'dd-mm-yyyy',
         language:'es'
     });
-
 }
 
 //---------------------------------------
@@ -360,7 +468,8 @@ var Proyecto = function() {
 			chargeDivisionCombo('txt_08');
 			getDetailEstudio();
 			//handleJqueryFileUpload();
-			handleDataTableAsignacionUsuario();
+			//handleDataTableAsignacionUsuario();
+			handleDataTableAsignacionUsuario1();
 			//handleDataTableAsignacionUsuario2();
 			
 		}

@@ -297,11 +297,10 @@ var initSelect2_1 = function(){
 
 function setAgendado(){
 
-     var param = {
-    	    id_user : $('#txt_08').val(),  
-            id_agenda : $('#agenda_select').val(),
-     }
-	
+	     var param = {
+	    	    id_user : $('#txt_08').val(),  
+	            id_agenda : $('#agenda_select').val(),
+	     }
 
 		$.ajax({
 			url: "/Manager/RestAgenda/setAgendado",
