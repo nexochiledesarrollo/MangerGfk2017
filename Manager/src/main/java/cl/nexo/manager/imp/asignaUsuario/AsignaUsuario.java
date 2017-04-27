@@ -54,21 +54,24 @@ public class AsignaUsuario implements AccessAsignacionPersonal {
 
 		Connection conn = null;
 		ArrayList<ObjLoginUserHoras> usuarios = new ArrayList<ObjLoginUserHoras>();
-		
-		String query = "SELECT "
-				+ " id_usuario,"
-				+ " id_operacion,"
-				+ " FORMAT(dia_asig,'dd/MM/yyyy', 'en-us') dia_asig ,"
-				+ " sum(horas_asig) as total_horas  "  
-			    + " FROM man_proyecto_manager_horas_recurso_detalle h,man_login_user u "
-			    + " where u.id_user=h.id_usuario "
-			    + " and "
-			    + " dia_asig >= '" + desde + "' and  dia_asig <= '" + hasta +"'"
-			    + " and u.id_division= " + div
-			    + " and u.id_sdiv= " + sub_d
-			    + " group by id_usuario,id_operacion,dia_asig "
-			    + " order by id_usuario,dia_asig" ; 
-			 
+
+		String query =  " Select  a.id_user, sum(a.total_horas) as total_horas,a.id_division from ( "
+				+ " SELECT  u.id_user, h.id_operacion,sum(h.horas_asig) as total_horas,u.id_division" 
+				+ " FROM man_login_user u"
+				+ " left JOIN man_proyecto_manager_horas_recurso_detalle h  ON h.id_usuario=u.id_user "
+				+ " where "
+				+ " dia_asig >= '" + desde + "' and  dia_asig <= '" + hasta +"'"
+				+ " and u.id_division= " + div
+				+ " and u.id_sdiv= " + sub_d
+				+ " group by u.id_user,h.id_operacion,u.id_division "
+				+ " Union all "
+				+ " SELECT  u.id_user, 0,0 as total_horas,u.id_division " 
+				+ " FROM man_login_user u"
+				+ " where "
+				+ " u.id_division= " + div
+				+ " and u.id_sdiv= " + sub_d
+				+ ") as a  group by a.id_user,a.id_division " ;
+		 
 		 logger.info("sql " + query);
 			  
 			  try {
@@ -79,10 +82,11 @@ public class AsignaUsuario implements AccessAsignacionPersonal {
 				  while (rs.next()) {  
 					  ObjLoginUserHoras us = new ObjLoginUserHoras();
 					  us.setHoras_ocupadas(rs.getInt("total_horas"));
-					  us.setHoras_disponibles(9-rs.getInt("total_horas"));
-					  us.setUsuario(usuario.getUserById(rs.getInt("id_usuario")));
-					  us.setId_operacion(rs.getInt("id_operacion"));;
-					  us.setFecha(rs.getString("dia_asig"));
+					  //us.setHoras_disponibles(9-rs.getInt("total_horas"));
+					  us.setUsuario(usuario.getUserById(rs.getInt("id_user")));
+					  us.setAsigna("<a href='JavaScript: showModalAsigna("+rs.getInt("id_user")+");'><strong>Asignar</strong></a>");
+					  //us.setId_operacion(rs.getInt("id_operacion"));;
+					  //us.setFecha(rs.getString("dia_asig"));
 					
 					  
 					  usuarios.add(us);
@@ -100,20 +104,8 @@ public class AsignaUsuario implements AccessAsignacionPersonal {
 					} catch (SQLException e) {}
 				}
 			}
-			
-			
-		
-	
-		
-		
-		
-		
-		
-		
+
 	}
 
-
-
-	
 	
 }

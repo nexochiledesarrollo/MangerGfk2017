@@ -361,38 +361,7 @@
                         </div>
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
-                           <form class="form-horizontal form-bordered">
-                           		
-                           		<div class="row">
-                           		    <div class="form-group col-md-6">
-										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Desde / Hasta </label>
-										<div class="col-md-8">
-	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_fecha" name="txt_detalle_fecha" value="" readonly="readonly"/>
-										</div>
-									</div>
-                           		</div>
-                           		
-                           		
-                           		<div class="row">
-                           		    <div class="form-group col-md-6">
-										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">División</label>
-										<div class="col-md-8">
-	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_ubicacion" name="txt_detalle_ubicacion" value="" readonly="readonly"/>
-										</div>
-									</div>
-                           		</div>
-                           		
-                           	   <div class="row">
-                           		    <div class="form-group col-md-6">
-										<label class="control-label col-md-4" style="background: #faebcc; font-weight: bold;">Sub-División </label>
-										<div class="col-md-8">
-	                                        <input type="text" class="form-control" style="font-size: 20px; color: orange; " id="txt_detalle_ubicacion" name="txt_detalle_ubicacion" value="" readonly="readonly"/>
-										</div>
-									</div>
-                           		</div>
 
-                           </form>
-                           
                            <br/>
                            
                            <table id="data-table8" class="table table-striped table-bordered">
@@ -402,9 +371,8 @@
                                     	<th width="10"></th>
 								        <th width="300">Personal</th>
 								        <th width="200">Cargo</th>
-								        <th>Dia</th>
-								        <th>Horas Ocupadas</th>
-								        <th>Horas Disponibles</th>
+								        <th>Horas Ocupadas en el Periodo</th>
+								        <th>Asignar a Estudio</th>
 								      
                                     
                                     </tr>
@@ -414,9 +382,8 @@
                                     	<th width="10"></th>
 								        <th width="300">Personal</th>
 								        <th width="200">Cargo</th>
-								        <th>Dia</th>
-								        <th>Horas Ocupadas</th>
-								        <th>Horas Disponibles</th>
+								        <th>Horas Ocupadas en el Periodo</th>
+								        <th>Asignar a Estudio</th>
 								      
                                     </tr>
                                 </tfoot>
@@ -504,6 +471,88 @@
             
           </div>
 		<!-- end #content -->
+		
+		
+		<!-- Begin MODAL USUER----------------------------------------------------------------------------------------------------- -->
+		<div class="modal modal-message fade" id="modal-create">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header" id="header-createuser">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><strong>x</strong></button>
+						<h1 class="modal-title">
+						<span class="fa-stack fa-2x text-warning">
+							<i class="fa fa-circle-o fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x"></i>
+						</span>
+						Asignar Usuario a Estudio</h1>
+					</div>
+					
+										
+					<div class="modal-body">
+					
+						<input type="hidden" class="form-control"  name="txt_00" id="txt_00">
+						<legend class="pull-left width-full">Datos Generales</legend>
+
+						
+						<div class="row">
+						    <!-- begin col-12 -->
+						    <div class="col-md-6">
+								<div class="form-group">
+		                            <label class="">USUARIO</label>
+		                            <input type="text" class="form-control" name="txt_usuario" id="txt_usuario" readonly="readonly" >
+		                        </div>
+		                    </div>
+		                    
+		                </div>
+		                <p></p>
+		                <div class="row">
+						    <!-- begin col-12 -->
+						    <div class="col-md-6">
+								<div class="form-group">
+		                           <label class="">FECHAS</label>
+		                           <select class="form-control" name="txt_fechas" id="txt_088" onchange="">
+			                           <option value="0">Seleccione</option>
+			                       </select>
+		                        </div>
+		                    </div>
+		                </div>
+		                <p></p>
+		                <div class="row">
+						    <!-- begin col-12 -->
+						    <div class="col-md-6">
+								<div class="form-group">
+		                            <label class="">Total Horas Ocupadas</label>
+		                            <input type="text" class="form-control" name="txt_05" id="txt_05" readonly="readonly">
+		                        </div>
+		                    </div>
+		                    <div class="col-md-6">
+								<div class="form-group">
+		                            
+		                            <label class="">Horas a Asignar</label>
+		                            <input type="text" class="form-control" name="txt_horas_asigna" id="txt_horas_asigna">
+		                        	 
+		                        </div>
+		                    </div>
+		                </div>
+		               
+		              
+		                
+		               
+					</div>
+					<div class="modal-footer">
+						<a href="javascript:;" class="btn btn-lg btn-white" data-dismiss="modal">Cerrar</a>
+						<a href="JavaScript: createApoderado();" class="btn btn-lg btn-success" id="button-createuser">Asignar Usuario</a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
 		
         
 		

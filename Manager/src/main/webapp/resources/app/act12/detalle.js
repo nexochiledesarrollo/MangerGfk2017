@@ -129,15 +129,33 @@ var iniHideData = function(){
 }
 
 var handleDataTableAsignacionUsuario = function() {
-	$('#data-table8 tfoot th').each( function () {
-        var title = $('#data-table thead th').eq( $(this).index() ).text();
+	
+   $("#data-table8").dataTable().fnDestroy(); 
+
+   $('#data-table8 tfoot th').each( function () {
+        var title = $('#data-table8 thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
     } );
 	
-    var desde = $('#req_fechas_desde').val();
-    var hasta = $('#req_fechas_hasta').val();
-    var div =   $('#txt_08').val();
-    var suvD =  $('#txt_088').val();
+		
+ 
+
+    var desde="01-01-1900";
+    var hasta="01-01-1900";
+    var div="0";
+    var suvD="0"; 
+    
+    if($('#req_fechas_desde').val()!=''){
+    	 desde = $('#req_fechas_desde').val();
+    }
+    
+     if($('#req_fechas_hasta').val()!=''){
+    	 hasta = $('#req_fechas_hasta').val();
+    }
+    
+   
+    div =   $('#txt_08').val();
+    suvD =  $('#txt_088').val();
     
 
 	var table = $("#data-table8").DataTable({
@@ -192,11 +210,8 @@ var handleDataTableAsignacionUsuario = function() {
 		       	{ "data": null },
 		        { "data": "usuario.user_completo" },
 		        { "data": "usuario.str_perfil" },
-		        { "data": "fecha" },
 		        { "data": "horas_ocupadas" },
-		        { "data": "horas_disponibles" }
-
-		      
+		        { "data": "asigna" }
 		    ],
 	     
         
@@ -221,13 +236,7 @@ var handleDataTableAsignacionUsuario = function() {
 		    } ).draw();
    
 	
-			table.on('dblclick', 'tr', function () {
-		        var data = table.row( this ).data();
-		        
-		        showModalDeleteAgendado(data["id_usuario"],$('#txt_idope_1').val())
-		        //$('#txt_ubicacion').val(data["lugar"]);
-		        //alert( 'You clicked on '+data["id_usuario"]+'\'s row' );
-		    } );
+		
 	
    
 };
@@ -457,6 +466,14 @@ var iniDateSpiker = function(){
     });
 }
 
+
+
+
+var showModalAsigna = function(id) {
+	$("#modal-create").modal("show");
+	
+};
+
 //---------------------------------------
 var Proyecto = function() {
 	"use strict";
@@ -468,7 +485,7 @@ var Proyecto = function() {
 			chargeDivisionCombo('txt_08');
 			getDetailEstudio();
 			//handleJqueryFileUpload();
-			//handleDataTableAsignacionUsuario();
+			handleDataTableAsignacionUsuario();
 			handleDataTableAsignacionUsuario1();
 			//handleDataTableAsignacionUsuario2();
 			

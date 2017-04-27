@@ -161,10 +161,10 @@ var iniHideData = function(){
           }
     });
 }
-var handleDataTableListaAgendados = function() {
-	$('#data-table8 tfoot th').each( function () {
-        var title = $('#data-table thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+	var handleDataTableListaAgendados = function() {
+		$('#data-table8 tfoot th').each( function () {
+			var title = $('#data-table thead th').eq( $(this).index() ).text();
+			$(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
     } );
 	
     var agen = 0;

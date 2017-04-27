@@ -7,6 +7,7 @@ public class ObjLoginUserHoras {
 	int horas_ocupadas;
 	int id_operacion;
 	int horas_disponibles;
+	String Asigna;
 	
 	public ObjLoginUser getUsuario() {
 		return usuario;
@@ -38,6 +39,12 @@ public class ObjLoginUserHoras {
 	}
 	public void setFecha(String fecha) {
 		Fecha = fecha;
+	}
+	public String getAsigna() {
+		return Asigna;
+	}
+	public void setAsigna(String asigna) {
+		Asigna = asigna;
 	}
 	
 	
