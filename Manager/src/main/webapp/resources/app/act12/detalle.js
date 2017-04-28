@@ -136,9 +136,6 @@ var handleDataTableAsignacionUsuario = function() {
         var title = $('#data-table8 thead th').eq( $(this).index() ).text();
         $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
     } );
-	
-		
- 
 
     var desde="01-01-1900";
     var hasta="01-01-1900";
@@ -156,6 +153,13 @@ var handleDataTableAsignacionUsuario = function() {
    
     div =   $('#txt_08').val();
     suvD =  $('#txt_088').val();
+    
+    $("#detalle_usuarios").show();
+	$("#detalle_usuarios_estudio").show();
+
+
+
+
     
 
 	var table = $("#data-table8").DataTable({
@@ -234,11 +238,7 @@ var handleDataTableAsignacionUsuario = function() {
 		            cell.innerHTML = i+1;
 		        } );
 		    } ).draw();
-   
-	
-		
-	
-   
+
 };
 
 var handleDataTableAsignacionUsuario1 = function() {
@@ -285,27 +285,14 @@ var handleDataTableAsignacionUsuario1 = function() {
         "scrollY": "100%",
         "scrollCollapse": true,
         "scrollX": true,
-        //ajax : "/Manager/RestProyecto/getListProyectos", 
-	    /*columns : [
-	               	{ "data": null},
-	               	{ "data": "codigo_proyectom" },
-	                { "data": "cod_operacion" },
-	                { "data": "cod_area" },
-	                { "data": "cod_sam" },
-	                { "data": "nombre_proyectop" },
-	                { "data": "nombre_operacion" },
-	               	{ "data": "str_estado_medicion" },
-	                { "data": "priori_operacion" },
-	                { "data": "fcrea_operacion" },
-	                { "data": "factivacion_operacion" },
-	                { "data": "nombre_area" },
-	                { "data": "str_user_coordinador_manager" },
-	                { "data": "str_user_director_estudio_manager" },
-	                { "data": "str_user_jefe_estudio_manager" },
-	                { "data": "nombre_cliente" },
-	                { "data": "muestra_manager" },
-	                { "data": "str_tipo_entrevista" }
-	            ],*/
+        ajax : "/Manager/RestAsignaUsuario/getAsignadosEstudio/" + $('#txt_idope_1').val(), 
+	    columns : [
+	               		{ "data": null },
+				        { "data": "usuario.user_completo" },
+				        { "data": "usuario.str_perfil" },
+				        { "data": "horas_ocupadas" }
+				        
+	            ],
 	     "initComplete": function( ) {
 	    	// Apply the filter
     	    table.columns().eq( 0 ).each( function ( colIdx ) {
@@ -317,18 +304,7 @@ var handleDataTableAsignacionUsuario1 = function() {
     	        } );
     	    } );
 	     },
-	     "createdRow": function ( row, data, index ) {
-//	         if(data["otp"] == "ACTIVADO"){
-//	        	  $('td', row).eq(9).addClass('highgreen');
-//	         }else{
-//	        	  $('td', row).eq(9).addClass('highred');
-//	         }
-//	         if(data["estado"] == "ACTIVO"){
-//	        	  $('td', row).eq(10).addClass('highgreen');
-//	         }else{
-//	        	  $('td', row).eq(10).addClass('highred');
-//	         }
-	     }
+	   
 	});
    
 	table.on( 'order.dt search.dt', function () {
@@ -340,13 +316,102 @@ var handleDataTableAsignacionUsuario1 = function() {
 	
 	table.on('dblclick', 'tr', function () {
         var data = table.row( this ).data();
-        alert( 'You clicked on '+data["id_operacion"]+'\'s row' );
+       
+        $("#txt_usuario_modal_detalle").val(data.usuario["user_completo"]);
+        $("#txt_cargo_modal_detalle").val(data.usuario["str_perfil"]);
+        $("#hiden_usuario2").val(data.usuario["id_user"]);
+        handleDataTableAsignacionUsuarioModal(data.usuario["id_user"]);
+        $("#modal-detalle").modal("show");
     } );
 	
    
 };
 
+var handleDataTableAsignacionUsuarioModal = function(user) {
+	$("#data-table10").dataTable().fnDestroy(); 
 
+	$('#data-table10 tfoot th').each( function () {
+        var title = $('#data-table thead th').eq( $(this).index() ).text();
+        $(this).html( '<input type="text" placeholder="Buscar '+title+'" />' );
+    } );
+	
+	var table = $("#data-table10").DataTable({
+		dom: 'C<"clear">lBfrtip',
+		"language": {
+        	"url": "http://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+        },
+		colVis: {
+            "buttonText": "Ocultar Columnas"
+        },
+        "iDisplayLength": 25,
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todo"]],
+		buttons: [{
+            extend: "copy",
+            buttonText: "Copiar",
+            className: "btn-sm"
+        }, {
+            extend: "csv",
+            className: "btn-sm"
+        }, {
+            extend: "excel",
+            className: "btn-sm"
+        }, {
+            extend: "pdf",
+            className: "btn-sm"
+        }, {
+            extend: "print",
+            className: "btn-sm"
+        }],
+        responsive: false,
+        autoFill: true,
+        colReorder: true,
+        keys: true,
+        rowReorder: false,
+        select: false,
+        serverSide : false,
+        processing : true,
+        "scrollY": "100%",
+        "scrollCollapse": true,
+        "scrollX": true,
+        ajax : "/Manager/RestAsignaUsuario/getAsignadosEstudioDias/" + $('#txt_idope_1').val() + "/" + user, 
+	    columns : [
+	               		{ "data": null },
+				        
+				        { "data": "horas_ocupadas" },
+				        { "data": "fecha" }
+				        
+	            ],
+	     "initComplete": function( ) {
+	    	// Apply the filter
+    	    table.columns().eq( 0 ).each( function ( colIdx ) {
+    	        $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+    	            table
+    	                .column( colIdx )
+    	                .search( this.value )
+    	                .draw();
+    	        } );
+    	    } );
+	     },
+	   
+	});
+   
+	table.on( 'order.dt search.dt', function () {
+		table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
+   
+	
+	table.on('dblclick', 'tr', function () {
+        var data = table.row( this ).data();
+       
+        
+
+
+    } );
+	
+   
+};
 
 
 var handleDataTableAsignacionUsuario2 = function() {
@@ -466,13 +531,196 @@ var iniDateSpiker = function(){
     });
 }
 
-
-
-
-var showModalAsigna = function(id) {
-	$("#modal-create").modal("show");
+function chargeComboRangoFechas(combo1){
 	
+	var param ={
+		desde : $("#req_fechas_desde").val(),
+		hasta : $("#req_fechas_hasta").val()
+	}
+	
+	$.ajax({
+		url: "/Manager/RestAsignaUsuario/cargaComboRangoFechas",
+		type: "GET",
+		dataType: "json",
+		data: param,
+		beforeSend: function(){
+			//cargando los datos
+		},
+		success: function(data){
+			var combo = $('#'+combo1);
+			combo.empty();
+			// iteramos a través del arreglo de ciudades
+			combo.append("<option value='0'>Seleccione</option>");
+            $.each(data, function(index, val) {
+            	combo.append("<option value='"+val.id+"'>" + val.text + "</option>");
+            });
+        },
+		error: function(xhr, ajaxOptions, thrownError){
+			//alert('Se ha generado un error - function chargeDivisionCombo , Tools - Combos,  favor contactar al adminsitrador!');
+			$("#modalg-charge").modal("hide");
+			var data = {
+					status: xhr.status,
+					text: '<center>Se ha generado un error - function chargeComboRangoFechas ,  favor contactar al adminsitrador! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+			}
+			errorAjaxRequest(data);
+		}
+	});
+	
+}
+
+
+function showModalAsigna(id,horas) {
+	
+	 $("#modal-create").modal("show");
+	 $('#hiden_usuario').val(id);
+	 chargeComboRangoFechas("txt_fechas");
+
 };
+
+
+
+function chargeHorasOcupadas(){
+	
+		var param ={
+			dia : $("#txt_fechas").val(),
+			user : $("#hiden_usuario").val(),
+		}
+		
+		$.ajax({
+			url: "/Manager/RestAsignaUsuario/buscaHorasDipsUserDia",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			beforeSend: function(){
+				//cargando los datos
+			},
+			success: function(data){
+                 				
+			        $('#txt_h_ocupadas').val(data);
+			        chargeHorasOcupadasEstudio();
+
+
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+				//alert('Se ha generado un error - function chargeDivisionCombo , Tools - Combos,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error - function chargeHorasOcupadas ,  favor contactar al adminsitrador! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+
+}
+
+
+function chargeHorasOcupadasEstudio(){
+	
+		var param ={
+			dia : $("#txt_fechas").val(),
+			user : $("#hiden_usuario").val(),
+		    estudio : $("#txt_idope_1").val(),
+		}
+		
+		$.ajax({
+			url: "/Manager/RestAsignaUsuario/buscaHorasDipsUserDiaEstudio",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			beforeSend: function(){
+				//cargando los datos
+			},
+			success: function(data){
+                 				
+			        $('#txt_h_ocupadas_estudio').val(data);
+			
+			        
+			        if(data==0){
+
+			        	$('#hiden_accion').val(2);
+			        }else{
+			        
+			        	$('#hiden_accion').val(1);
+			        }
+			        	
+
+
+
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+				//alert('Se ha generado un error - function chargeDivisionCombo , Tools - Combos,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error - function chargeHorasOcupadasEstudio ,  favor contactar al adminsitrador! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+
+}
+
+
+function setHorasEstudio(){
+	
+		var param ={
+			horas : $("#txt_h_asignar").val(),
+			dia : $("#txt_fechas").val(),
+			estudio : $("#txt_idope_1").val(),
+			user : $("#hiden_usuario").val(),
+		    accion : $("#hiden_accion").val()
+		}
+		
+		$.ajax({
+			url: "/Manager/RestAsignaUsuario/AsignaHorasUserEstudio",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			beforeSend: function(){
+				//cargando los datos
+			},
+			success: function(){
+				$('#data-table8').DataTable().ajax.reload();
+
+			},
+			error: function(xhr, ajaxOptions, thrownError){}
+		});
+
+}
+
+function limpiaModal() {
+	
+	$('#txt_fechas').val("");
+	$('#txt_h_ocupadas').val("");
+	$('#txt_h_asignar').val("");
+	$('#txt_h_ocupadas_estudio').val("");
+
+};
+
+
+
+
+function createAsignacion() {
+
+	setHorasEstudio()
+	limpiaModal()
+	$("#modal-create").modal("hide");
+	handleDataTableAsignacionUsuario()
+	$('#data-table9').DataTable().ajax.reload();
+
+};
+
+
+
+
+function  showModalAsignaModal(){
+	$("#modal-detalle").modal("hide");
+	showModalAsigna($("#hiden_usuario2").val(),0);
+}
+
+
+
 
 //---------------------------------------
 var Proyecto = function() {
@@ -481,13 +729,15 @@ var Proyecto = function() {
 		init : function() {
 			iniHideData();
 			iniDateSpiker();
-			//initDatePicker();
-			chargeDivisionCombo('txt_08');
+		    chargeDivisionCombo('txt_08');
 			getDetailEstudio();
-			//handleJqueryFileUpload();
-			handleDataTableAsignacionUsuario();
+            handleDataTableAsignacionUsuario();
 			handleDataTableAsignacionUsuario1();
-			//handleDataTableAsignacionUsuario2();
+			$("#detalle_usuarios").hide();
+			$("#detalle_usuarios_estudio").hide();
+
+
+
 			
 		}
 	}

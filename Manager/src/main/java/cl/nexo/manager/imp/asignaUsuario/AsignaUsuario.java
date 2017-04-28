@@ -19,6 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import cl.nexo.manager.access.apoderado.ApoderadoAccess;
 import cl.nexo.manager.access.asignacionPersonal.AccessAsignacionPersonal;
@@ -35,6 +36,7 @@ import cl.nexo.manager.obj.login.ObjLoginUser;
 import cl.nexo.manager.obj.login.ObjLoginUserHoras;
 import cl.nexo.manager.obj.tools.ObjComboSelect2ValueInt;
 import cl.nexo.manager.obj.tools.ObjComboSelectValueInt;
+import cl.nexo.manager.obj.tools.ObjComboSelectValueString;
 
 
 public class AsignaUsuario implements AccessAsignacionPersonal {
@@ -82,13 +84,8 @@ public class AsignaUsuario implements AccessAsignacionPersonal {
 				  while (rs.next()) {  
 					  ObjLoginUserHoras us = new ObjLoginUserHoras();
 					  us.setHoras_ocupadas(rs.getInt("total_horas"));
-					  //us.setHoras_disponibles(9-rs.getInt("total_horas"));
 					  us.setUsuario(usuario.getUserById(rs.getInt("id_user")));
-					  us.setAsigna("<a href='JavaScript: showModalAsigna("+rs.getInt("id_user")+");'><strong>Asignar</strong></a>");
-					  //us.setId_operacion(rs.getInt("id_operacion"));;
-					  //us.setFecha(rs.getString("dia_asig"));
-					
-					  
+					  us.setAsigna("<a href='JavaScript: showModalAsigna("+rs.getInt("id_user")+ "," + rs.getInt("total_horas")+ " );'><strong>Asignar</strong></a>");
 					  usuarios.add(us);
 				  }
 				  
@@ -106,6 +103,268 @@ public class AsignaUsuario implements AccessAsignacionPersonal {
 			}
 
 	}
+	
+	
+	
+	@Override
+	public ArrayList<ObjLoginUserHoras> getAsignadosEstudio(int estudio) {
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess usuario = (LoginAccess) context.getBean("LoginAccess");
+
+		Connection conn = null;
+		ArrayList<ObjLoginUserHoras> usuarios = new ArrayList<ObjLoginUserHoras>();
+
+		String query =  " select id_usuario,sum(horas_asig) as total "
+				+ "       from man_proyecto_manager_horas_recurso_detalle  "
+				+ "       where id_operacion= " +  estudio + " group by id_usuario" ;
+		 
+		 logger.info("sql " + query);
+			  
+			  try {
+				  conn = dataSource.getConnection();
+				  PreparedStatement ps = conn.prepareStatement(query);
+				  logger.info(query);
+				  ResultSet rs = ps.executeQuery();
+				  while (rs.next()) {  
+					  ObjLoginUserHoras us = new ObjLoginUserHoras();
+					  us.setUsuario(usuario.getUserById(rs.getInt("id_usuario")));
+					  us.setHoras_ocupadas(rs.getInt("total"));
+					  usuarios.add(us);
+				  }
+				  logger.info("LISTA " + usuarios);
+				  return usuarios;
+				  
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+				
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+
+	}
+
+	
+	
+	@Override
+	public ArrayList<ObjLoginUserHoras> getAsignadosEstudioDias(int estudio,int user) {
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess usuario = (LoginAccess) context.getBean("LoginAccess");
+
+		Connection conn = null;
+		ArrayList<ObjLoginUserHoras> usuarios = new ArrayList<ObjLoginUserHoras>();
+
+		String query =  " select id_usuario,horas_asig,dia_asig  "
+				+ "       from man_proyecto_manager_horas_recurso_detalle  "
+				+ "       where id_operacion= " +  estudio +  " and id_usuario=" + user   ;
+		 
+		 logger.info("sql " + query);
+			  
+			  try {
+				  conn = dataSource.getConnection();
+				  PreparedStatement ps = conn.prepareStatement(query);
+				  logger.info(query);
+				  ResultSet rs = ps.executeQuery();
+				  while (rs.next()) {  
+					  ObjLoginUserHoras us = new ObjLoginUserHoras();
+					  us.setUsuario(usuario.getUserById(rs.getInt("id_usuario")));
+					  us.setHoras_ocupadas(rs.getInt("horas_asig"));
+					  us.setFecha(rs.getString("dia_asig"));
+					  usuarios.add(us);
+				  }
+				  logger.info("LISTA " + usuarios);
+				  return usuarios;
+				  
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+				
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+
+	}
+	
+	
+	@Override
+	public int buscaHorasDipsUserDia(String dia,int user ) {
+
+		Connection conn = null;
+		int horas = 0;
+
+		String query =  " SELECT id_usuario,sum(horas_asig) total_horas,dia_asig "
+						+ " FROM man_proyecto_manager_horas_recurso_detalle h "
+						+ " WHERE id_usuario= " + user 
+						+ " and dia_asig='" + dia + "'  "
+						+ " group by id_usuario,dia_asig ";
+				
+		 
+		 logger.info("sql " + query);
+			  
+			  try {
+				  conn = dataSource.getConnection();
+				  PreparedStatement ps = conn.prepareStatement(query);
+				  logger.debug(query);
+				  ResultSet rs = ps.executeQuery();
+				  while (rs.next()) {  
+					 horas = rs.getInt("total_horas");
+				  }
+				  
+				  return horas;
+				  
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+				
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+
+	}
+	
+	@Override
+	public int buscaHorasDipsUserDiaEstudio(String dia,int user,int estudio ) {
+
+		Connection conn = null;
+		int horas = 0;
+
+		String query =  " SELECT id_usuario,horas_asig,dia_asig "
+						+ " FROM man_proyecto_manager_horas_recurso_detalle h "
+						+ " WHERE id_usuario= " + user 
+						+ " and dia_asig='" + dia + "' and id_operacion= " + estudio;
+					
+				
+		 
+		 logger.info("sql " + query);
+			  
+			  try {
+				  conn = dataSource.getConnection();
+				  PreparedStatement ps = conn.prepareStatement(query);
+				  logger.debug(query);
+				  ResultSet rs = ps.executeQuery();
+				  while (rs.next()) {  
+					 horas = rs.getInt("horas_asig");
+				  }
+				  
+				  return horas;
+				  
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+				
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException e) {}
+				}
+			}
+
+	}
+	
+	
+	
+	
+	@Override
+	public ArrayList<ObjComboSelectValueString> getListRangoFechas(String desde,String hasta){
+		Connection conn = null;
+		ArrayList<ObjComboSelectValueString> combos = new ArrayList<ObjComboSelectValueString>();
+		
+		String query =  " EXEC [rango_fechas] '" + desde + "','"  + hasta +"'" ;
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.info(query);
+			ResultSet rs = ps.executeQuery();
+			  while(rs.next()) {
+				  ObjComboSelectValueString combo = new ObjComboSelectValueString();
+				  combo.setId(rs.getString("FECHA"));
+				  combo.setText(rs.getString("FECHA"));
+				  logger.info(rs.getString("FECHA"));
+				  combos.add(combo);
+			  }
+			  return combos;
+			  
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+	}
+	
+	
+	
+	@Override
+	public void asignaHorasUserEstudio(int horas, String dia, int estudio,int user,int accion) {
+		
+		Connection conn = null;
+		
+		String query =" UPDATE man_proyecto_manager_horas_recurso_detalle  "
+					  
+					  +"   SET horas_asig = " + horas + " "
+					  +"   WHERE id_usuario = " + user + " and "
+					  +"   id_operacion= " + estudio + " and "
+					  +"   dia_asig = '" + dia +"'"; 
+					  
+		
+		if (accion==2){
+			
+			query =" INSERT INTO man_proyecto_manager_horas_recurso_detalle "
+					+ "      (id_operacion,id_usuario,horas_asig,dia_asig) VALUES (  "
+					  
+						  +"   " + estudio + ", "
+						  +"   " + user + ", "
+						  +"   " + horas + ", "
+						  +"   '" + dia + "')"; 
+		
+		}
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.info(query);
+			ps.executeUpdate();
+			
+    	} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+	
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	
 }

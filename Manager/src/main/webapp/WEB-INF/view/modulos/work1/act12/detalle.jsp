@@ -262,7 +262,7 @@
             
             
              <!-- Begin row -->
-            <div class="row" id="datos_agenda">
+            <div class="row" id="busca_usuario">
 			    <!-- begin col-12 -->
 			    <div class="col-md-12">
 			        <!-- begin panel -->
@@ -274,7 +274,7 @@
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                             </div>
-                            <h4 class="panel-title">Detalle</h4>
+                            <h4 class="panel-title">Busca Usuarios</h4>
                         </div>
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
@@ -345,7 +345,7 @@
             
             
             	<!-- Begin row -->
-            <div class="row" id="detalle_agenda">
+            <div class="row" id="detalle_usuarios">
 			    <!-- begin col-12 -->
 			    <div class="col-md-12">
 			        <!-- begin panel -->
@@ -402,22 +402,11 @@
             </div>
             <!-- end row -->
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             
             
 			<!-- Begin row -->
-            <div class="row">
+            <div class="row"  id="detalle_usuarios_estudio">
 			    <!-- begin col-12 -->
 			    <div class="col-md-12">
 			        <!-- begin panel -->
@@ -475,6 +464,8 @@
 		
 		<!-- Begin MODAL USUER----------------------------------------------------------------------------------------------------- -->
 		<div class="modal modal-message fade" id="modal-create">
+		<input type="hidden" id="hiden_usuario" name="hiden_usuario" value="" />
+		<input type="hidden" id="hiden_accion" name="hiden_accion" value="" />
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header" id="header-createuser">
@@ -491,6 +482,7 @@
 					<div class="modal-body">
 					
 						<input type="hidden" class="form-control"  name="txt_00" id="txt_00">
+						
 						<legend class="pull-left width-full">Datos Generales</legend>
 
 						
@@ -510,7 +502,7 @@
 						    <div class="col-md-6">
 								<div class="form-group">
 		                           <label class="">FECHAS</label>
-		                           <select class="form-control" name="txt_fechas" id="txt_088" onchange="">
+		                           <select class="form-control" name="txt_fechas" id="txt_fechas" onchange="JavaScript: chargeHorasOcupadas()">
 			                           <option value="0">Seleccione</option>
 			                       </select>
 		                        </div>
@@ -521,15 +513,26 @@
 						    <!-- begin col-12 -->
 						    <div class="col-md-6">
 								<div class="form-group">
-		                            <label class="">Total Horas Ocupadas</label>
-		                            <input type="text" class="form-control" name="txt_05" id="txt_05" readonly="readonly">
+		                            <label class="">Total Horas Ocupadas en Dia</label>
+		                            <input type="text" class="form-control" name="txt_h_ocupadas" id="txt_h_ocupadas" readonly="readonly">
+		                        </div>
+		                    </div>
+		                    
+		                </div>
+		                <p></p>
+		                <div class="row">
+						    <!-- begin col-12 -->
+						    <div class="col-md-6">
+								<div class="form-group">
+		                            <label class="">Horas Ocupadas en Estudio</label>
+		                            <input type="text" class="form-control" name="txt_h_ocupadas_estudio" id="txt_h_ocupadas_estudio" readonly="readonly">
 		                        </div>
 		                    </div>
 		                    <div class="col-md-6">
 								<div class="form-group">
 		                            
 		                            <label class="">Horas a Asignar</label>
-		                            <input type="text" class="form-control" name="txt_horas_asigna" id="txt_horas_asigna">
+		                            <input type="text" class="form-control" name="txt_h_asignar" id="txt_h_asignar">
 		                        	 
 		                        </div>
 		                    </div>
@@ -541,7 +544,8 @@
 					</div>
 					<div class="modal-footer">
 						<a href="javascript:;" class="btn btn-lg btn-white" data-dismiss="modal">Cerrar</a>
-						<a href="JavaScript: createApoderado();" class="btn btn-lg btn-success" id="button-createuser">Asignar Usuario</a>
+						<a href="JavaScript: createAsignacion();" class="btn btn-lg btn-success" id="asignaCrear">Asignar Usuario</a>
+
 						
 					</div>
 				</div>
@@ -551,6 +555,108 @@
 		
 		
 		
+		
+		
+		
+		<!-- Begin MODAL USUER----------------------------------------------------------------------------------------------------- -->
+		<div class="modal modal-message fade" id="modal-detalle">
+		<input type="hidden" id="hiden_usuario2" name="hiden_usuario2" value="" />
+		<input type="hidden" id="hiden_accion" name="hiden_accion" value="" />
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header" id="header-createuser">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><strong>x</strong></button>
+						<h1 class="modal-title">
+						<span class="fa-stack fa-2x text-warning">
+							<i class="fa fa-circle-o fa-stack-2x"></i>
+							<i class="fa fa-plus fa-stack-1x"></i>
+						</span>
+						Detalle de Dias Asignados</h1>
+					</div>
+					
+										
+					<div class="modal-body">
+					
+						<input type="hidden" class="form-control"  name="txt_00" id="txt_00">
+						
+					
+
+						
+						<div class="row">
+						    <!-- begin col-12 -->
+						    <div class="col-md-6">
+								<div class="form-group">
+		                            <label class="">USUARIO</label>
+		                            <input type="text" class="form-control" name="txt_usuario_modal_detalle" id="txt_usuario_modal_detalle" readonly="readonly" >
+		                        </div>
+		                        <div class="form-group">
+		                            <label class="">CARGO</label>
+		                            <input type="text" class="form-control" name="txt_cargo_modal_detalle" id="txt_cargo_modal_detalle" readonly="readonly" >
+		                        </div>
+		                    </div>
+		                    
+		                </div>
+		                <p></p>
+		                
+		                
+		                		<!-- Begin row -->
+            <div class="row">
+			    <!-- begin col-12 -->
+			    <div class="col-md-12">
+			        <!-- begin panel -->
+                   
+                       
+                        
+                        <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
+
+                            
+                           <br/>
+ 
+                            <table id="data-table10" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                    	<th width="10"></th>
+                                    	
+                                        <th width="200">Horas Asignadas</th>
+                                        <th width="200">Dia</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                    	<th width="10"></th>
+                                    	
+                                        <th width="200">Horas Asignadas</th>
+                                        <th width="200">Dia</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                            <br/><br/>
+                           
+                        </div>
+                 
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end row -->
+		                
+		                
+		               
+		              
+		                
+		               
+					</div>
+					<div class="modal-footer">
+						<a href="javascript:;" class="btn btn-lg btn-white" data-dismiss="modal">Cerrar</a>
+						<a href="JavaScript: showModalAsignaModal();" class="btn btn-lg btn-success" id="asignaCrear">Asignar Horas</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		
 		

@@ -37,8 +37,12 @@ import org.springframework.web.client.RestTemplate;
 
 
 
+
+
+
 import cl.nexo.manager.access.apoderado.ApoderadoAccess;
 import cl.nexo.manager.access.asignacionPersonal.AccessAsignacionPersonal;
+import cl.nexo.manager.access.division.AccessDivision;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.password.AccessPassword;
@@ -54,6 +58,7 @@ import cl.nexo.manager.obj.login.ObjLoginUser;
 import cl.nexo.manager.obj.login.ObjLoginUserHoras;
 import cl.nexo.manager.obj.tools.ObjComboSelect2ValueInt;
 import cl.nexo.manager.obj.tools.ObjComboSelectValueInt;
+import cl.nexo.manager.obj.tools.ObjComboSelectValueString;
 import cl.nexo.manager.obj.tools.ObjGeneralResultInt;
 
 
@@ -65,7 +70,7 @@ public class RestAsignaUsuario {
 	private static final Logger logger = Logger.getLogger(RestAsignaUsuario.class);
 	
 	@RequestMapping(value = "/getUsuariosTotalHoras/{desde}/{hasta}/{div}/{subD}", method = RequestMethod.GET,headers="Accept=application/json")
-	public ObjDataAsignacionUser getListUserByCliente(@PathVariable("desde") String desde,
+	public ObjDataAsignacionUser getUsuariosTotalHoras(@PathVariable("desde") String desde,
 			                                          @PathVariable("hasta") String hasta,
 			                                          @PathVariable("div") int div,
 			                                          @PathVariable("subD") int subD){
@@ -87,12 +92,128 @@ public class RestAsignaUsuario {
 	
 	
 	
+	@RequestMapping(value = "/cargaComboRangoFechas", method = RequestMethod.GET,headers="Accept=application/json")
+	public ArrayList<ObjComboSelectValueString> cargaComboRangoFechas(
+			@RequestParam("desde") String desde,
+			@RequestParam("hasta") String hasta
+	){
+		
+	
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		AccessAsignacionPersonal asigna = (AccessAsignacionPersonal) context.getBean("AccessAsignacionPersonal");
+		
+		
+		  ArrayList<ObjComboSelectValueString> combo =  new ArrayList<ObjComboSelectValueString>();
+	        
+		  combo = asigna.getListRangoFechas(desde, hasta);
+		  
+		
+		return combo;
+      
+        
+	}
+	
+	
+	@RequestMapping(value = "/buscaHorasDipsUserDia", method = RequestMethod.GET,headers="Accept=application/json")
+	public int buscaHorasDipsUserDia(@RequestParam("dia") String dia,
+									 @RequestParam("user") int user){
+		
+	
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		AccessAsignacionPersonal asigna = (AccessAsignacionPersonal) context.getBean("AccessAsignacionPersonal");
+	
+	        
+		int horasDia = asigna.buscaHorasDipsUserDia(dia,user);
+		   
+		
+	    return horasDia;
+      
+        
+	}
+	
+	
+	@RequestMapping(value = "/buscaHorasDipsUserDiaEstudio", method = RequestMethod.GET,headers="Accept=application/json")
+	public int buscaHorasDipsUserDiaEstudio(@RequestParam("dia") String dia,
+									 @RequestParam("user") int user,
+									 @RequestParam("estudio") int estudio){
+		
+	
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		AccessAsignacionPersonal asigna = (AccessAsignacionPersonal) context.getBean("AccessAsignacionPersonal");
+	
+	        
+		int horasDia = asigna.buscaHorasDipsUserDiaEstudio(dia,user,estudio);
+		   
+		
+	    return horasDia;
+      
+        
+	}
 	
 	
 	
 	
 	
 	
+	@RequestMapping(value = "/AsignaHorasUserEstudio", method = RequestMethod.GET,headers="Accept=application/json")
+	public void AsignaHorasUserEstudio(@RequestParam("horas") int horas,
+									   @RequestParam("dia") String dia,
+									   @RequestParam("estudio") int estudio,
+									   @RequestParam("user") int user,
+									   @RequestParam("accion") int accion
+			){
+		
+
+		
+	
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		AccessAsignacionPersonal asigna = (AccessAsignacionPersonal) context.getBean("AccessAsignacionPersonal");
+	
+	    asigna.asignaHorasUserEstudio(horas, dia, estudio, user, accion);
+
+	}
+
 	
 	
+	@RequestMapping(value = "/getAsignadosEstudio/{estudio}", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataAsignacionUser getAsignadosEstudio(@PathVariable("estudio") int estudio){
+		
+	
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		AccessAsignacionPersonal asigna = (AccessAsignacionPersonal) context.getBean("AccessAsignacionPersonal");
+		
+		ObjDataAsignacionUser result = new ObjDataAsignacionUser();
+	
+	        
+		   ArrayList<ObjLoginUserHoras> list = asigna.getAsignadosEstudio(estudio);
+		   logger.info("LISTA DE USURIOS "  + list);
+		   result.setData(list);
+		
+		return result;
+      
+        
+	}
+	
+	@RequestMapping(value = "/getAsignadosEstudioDias/{estudio}/{usuario}", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataAsignacionUser getAsignadosEstudioDias(@PathVariable("estudio") int estudio,
+			                                             @PathVariable("usuario") int usuario){
+		
+	
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		AccessAsignacionPersonal asigna = (AccessAsignacionPersonal) context.getBean("AccessAsignacionPersonal");
+		
+		ObjDataAsignacionUser result = new ObjDataAsignacionUser();
+	
+	        
+		   ArrayList<ObjLoginUserHoras> list = asigna.getAsignadosEstudioDias(estudio,usuario);
+		   
+		   result.setData(list);
+		
+		return result;
+      
+        
+	}
+	
+	
+
 }
