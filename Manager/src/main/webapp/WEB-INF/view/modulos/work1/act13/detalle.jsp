@@ -410,7 +410,7 @@
 										</div>
 									</div>
 									
-									<div class="form-group col-md-11">
+									<div class="form-group col-md-5">
 										<p class="pull-right">
 		                           	  		<a class="btn btn-info m-r-5" style="margin-top: 0px; text-align: center;" onclick="JavaScript: setAgendado();" id="btn_showhide">
 		                           	  			<i class="fa fa-plus fa-2x pull-left"></i>

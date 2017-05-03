@@ -52,7 +52,7 @@ var handleDataTableProyecto = function() {
         "scrollCollapse": true,
         "scrollX": true,
         ajax: {
-            url: "/Manager/RestWorkflow5/getListWorkflow?id=0&lang="+$('#aux_01').val(),
+            url: "/Manager/RestWorkflow5/getListWorkflowInstructivo?id=0&lang="+$('#aux_01').val(),
             error : function(xhr, status, error) {
         		var data = {
 						status: xhr.status,
@@ -64,9 +64,9 @@ var handleDataTableProyecto = function() {
 	    columns : [
 	               	{ "data": null},
 	               	{ "data": "id_cotizacion" },
-	                { "data": "codigo_proyectom" },
+	                { "data": "nombre_etapa" },
 	                { "data": "nombre_operacion" },
-	                { "data": "str_estado_medicion" },
+	                { "data": "str_cola_operacion" },
 	                { "data": "num_entrevistas_op" },
 	                { "data": "str_industria_medicion" },
 	               	{ "data": "fcreacion_proyectom" },

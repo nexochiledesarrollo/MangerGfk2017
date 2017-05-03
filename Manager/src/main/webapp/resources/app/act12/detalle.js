@@ -150,17 +150,18 @@ var handleDataTableAsignacionUsuario = function() {
     	 hasta = $('#req_fechas_hasta').val();
     }
     
+     if(($('#req_fechas_hasta').val()!='') && ($('#req_fechas_desde').val()!='')){
+    	 $("#asignaCrearModal").show();
+    }
+
+   
    
     div =   $('#txt_08').val();
     suvD =  $('#txt_088').val();
     
     $("#detalle_usuarios").show();
 	$("#detalle_usuarios_estudio").show();
-
-
-
-
-    
+	
 
 	var table = $("#data-table8").DataTable({
 		dom: 'C<"clear">lBfrtip',
@@ -209,7 +210,7 @@ var handleDataTableAsignacionUsuario = function() {
 				}
 				errorAjaxRequest(data);
         	}
-        },
+            },
 		        columns : [
 		       	{ "data": null },
 		        { "data": "usuario.user_completo" },
@@ -217,9 +218,10 @@ var handleDataTableAsignacionUsuario = function() {
 		        { "data": "horas_ocupadas" },
 		        { "data": "asigna" }
 		    ],
-	     
-        
+
 			    "initComplete": function( ) {
+	
+			          
 				    	// Apply the filter
 			    	    table.columns().eq( 0 ).each( function ( colIdx ) {
 			    	        $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
@@ -376,7 +378,6 @@ var handleDataTableAsignacionUsuarioModal = function(user) {
         ajax : "/Manager/RestAsignaUsuario/getAsignadosEstudioDias/" + $('#txt_idope_1').val() + "/" + user, 
 	    columns : [
 	               		{ "data": null },
-				        
 				        { "data": "horas_ocupadas" },
 				        { "data": "fecha" }
 				        
@@ -571,9 +572,50 @@ function chargeComboRangoFechas(combo1){
 
 function showModalAsigna(id,horas) {
 	
-	 $("#modal-create").modal("show");
-	 $('#hiden_usuario').val(id);
-	 chargeComboRangoFechas("txt_fechas");
+
+
+
+		var param ={
+			dia : $("#txt_fechas").val(),
+			user : $("#hiden_usuario").val(),
+		}
+		
+		$.ajax({
+			url: "/Manager/RestLoginUser/getDetailUserById/" + id,
+			type: "GET",
+			dataType: "json",
+			data: param,
+			beforeSend: function(){
+				//cargando los datos
+			},
+			success: function(data){
+                 				
+			         $("#modal-create").modal("show");
+			         $('#hiden_usuario').val(id);
+			         $('#txt_usuario').val(data.user_completo);
+			         chargeComboRangoFechas("txt_fechas")
+
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+				//alert('Se ha generado un error - function chargeDivisionCombo , Tools - Combos,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error - function chargeHorasOcupadas ,  favor contactar al adminsitrador! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+
+
+
+
+
+
+
+    ;
+	 
+	 
 
 };
 
@@ -721,6 +763,46 @@ function  showModalAsignaModal(){
 
 
 
+function aceptarAsignacion (){
+
+	     var param = {
+	    	 id_oper : $('#txt_idope_1').val(),
+	       
+	     }
+	
+
+		$.ajax({
+			url: "/Manager/RestAsignaUsuario/aceptarAsignacion",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			
+			success: function(data){
+				
+				$("#modalg-charge").modal("hide");
+				$("#modalg-success-text-asignacion" ).empty();
+				$('#modalg-success-text-asignacion').html('<center>'+ data.text +'</center><br>');
+				$("#modalg-success_asignacion").modal("show");
+
+			
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		       // alert(xhr.status);
+		       // alert(thrownError);
+		       //alert('Se ha generado un error -- setUserLogin Modulo Usuario -- ,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error: <strong>--  aceptar Asignacion de Personal  --</strong> <br/>  Favor contactar mesa de ayuda! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+		
+		
+
+}
+
 
 //---------------------------------------
 var Proyecto = function() {
@@ -734,7 +816,9 @@ var Proyecto = function() {
             handleDataTableAsignacionUsuario();
 			handleDataTableAsignacionUsuario1();
 			$("#detalle_usuarios").hide();
-			$("#detalle_usuarios_estudio").hide();
+			//$("#detalle_usuarios_estudio").hide();
+			$("#asignaCrearModal").hide();
+			
 
 
 

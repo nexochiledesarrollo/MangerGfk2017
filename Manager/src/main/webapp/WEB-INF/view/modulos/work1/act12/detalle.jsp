@@ -161,15 +161,15 @@
                            	  			Mostrar/Ocultar
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: updateEstudio();" id="btn_activae">
+                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: aceptarAsignacion();" id="btn_activae">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
                            	  			Aprobar
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: deleteEstudio();" id="btn_deletee">
+                           	  		<!--  <a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: deleteEstudio();" id="btn_deletee">
                            	  			<i class="fa fa-times fa-2x pull-left"></i>
                            	  			Rechazar
-                           	  		</a>
+                           	  		</a>  -->
                            	  		</p>
                            	  		
                            	  	</div>
@@ -423,7 +423,7 @@
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
 
-                             <h3 class="m-t-10" style=" color: #f59c1a;">Usuarios Invitados</h3>
+                             <h3 class="m-t-10" style=" color: #f59c1a;">Usuarios Asignados</h3>
                            <br/>
  
                             <table id="data-table9" class="table table-striped table-bordered">
@@ -643,20 +643,43 @@
             </div>
             <!-- end row -->
 		                
-		                
-		               
-		              
-		                
-		               
+
 					</div>
 					<div class="modal-footer">
 						<a href="javascript:;" class="btn btn-lg btn-white" data-dismiss="modal">Cerrar</a>
-						<a href="JavaScript: showModalAsignaModal();" class="btn btn-lg btn-success" id="asignaCrear">Asignar Horas</a>
+						<a href="JavaScript: showModalAsignaModal();" class="btn btn-lg btn-success" id="asignaCrearModal">Asignar Horas</a>
 
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		
+			<!-- Incluir modal generico -->
+    <%@ include file="../../../general-modal.jsp" %>
+    
+    <!-- #modal-success -->
+	<div class="modal fade"  id="modalg-success_asignacion" >
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					<h1 class="modal-title">
+					<span class="fa-stack fa-2x text-success">
+						<i class="fa fa-circle-o fa-stack-2x"></i>
+						<i class="fa fa-check fa-stack-1x "></i>
+					</span>
+					Solicitud Generada!</h1>
+				</div>
+				<div class="modal-body" id="modalg-success-text-asignacion"></div>
+				
+				<div class="modal-footer">
+					 <a href="JavaScript: $(location).attr('href','/Manager/workflowEtapa1/AsignacionUsuario');;" class="btn btn-lg btn-success">Cerrar</a> 
+				</div>
+			</div>
+		</div>
+	</div>
+		
 		
 		
 		

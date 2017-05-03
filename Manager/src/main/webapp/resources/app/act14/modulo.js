@@ -66,9 +66,9 @@ var handleDataTableProyecto = function() {
 	    columns : [
 	               	{ "data": null},
 	               	{ "data": "id_cotizacion" },
-	                { "data": "codigo_proyectom" },
+	                { "data": "nombre_etapa" },
 	                { "data": "nombre_operacion" },
-	                { "data": "str_estado_medicion" },
+	                { "data": "str_cola_operacion" },
 	                { "data": "num_entrevistas_op" },
 	                { "data": "str_industria_medicion" },
 	               	{ "data": "fcreacion_proyectom" },

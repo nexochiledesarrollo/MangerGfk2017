@@ -20,6 +20,7 @@ import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.reunion.AccessReunion;
+import cl.nexo.manager.constantes.Constantes;
 import cl.nexo.manager.obj.login.ObjLoginUser;
 import cl.nexo.manager.obj.reunion.ObjReunionKickOff;
 import cl.nexo.manager.obj.tools.ObjGeneralResultInt;
@@ -83,15 +84,14 @@ public class RestReunion {
 	    
 
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        int nuevo_estado=11;
-        int actividad = 21;  // debe corresponder al id de la tarea de Reunion
-        int id_workFlow;
+        int nuevo_estado=Constantes.Estado_Aceptado;
+        int actividad = Constantes.Actividad_KickOff;  // debe corresponder al id de la tarea de Reunion
         String observacion="REUNION ACEPTADA";
         int usuario=user.getId_user();
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         
-        int nueva_cola_estudio=22; // Cola Pendiente KickOff    	
+        int nueva_cola_estudio=Constantes.Cola_Pdte_implementacion; // Cola Pendiente Implementacion  	
     	est.updateColaEstudio(nueva_cola_estudio, id_operacion);
         
     	
@@ -138,15 +138,15 @@ public class RestReunion {
 	    AgendaAccess ag = (AgendaAccess) context.getBean("AgendaAccess");
 
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        int nuevo_estado=13;
-        int actividad = 21;  // debe corresponder al id de la tarea de Reunion
+        int nuevo_estado=Constantes.Estado_Rechazado;
+        int actividad = Constantes.Actividad_KickOff;  // debe corresponder al id de la tarea de Reunion
         int id_workFlow;
         String observacion="REUNION RECHAZADA";
         int usuario=user.getId_user();
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         
-        int nueva_cola_estudio=18; // Cola Pendiente KickOff    	
+        int nueva_cola_estudio=Constantes.Cola_Pdte_kickOff; // Cola Pendiente KickOff    	
     	est.updateColaEstudio(nueva_cola_estudio, id_operacion);
     	ag.rechazarAgenda(id_agenda);
     	

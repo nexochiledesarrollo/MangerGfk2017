@@ -9,4 +9,9 @@ public interface ManejoWorkflowAccess {
 	 
 	 public void genericWorkActividad(int operacion, int actividad, String observacion,
 				int nuevo_estado,int id_user);
+	 
+	public int buscarStatusActividadEstudio(int operacion, int actividad);
+	
+	 
+	 
 }

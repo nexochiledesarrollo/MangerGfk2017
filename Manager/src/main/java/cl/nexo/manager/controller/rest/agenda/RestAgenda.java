@@ -1,6 +1,7 @@
 package cl.nexo.manager.controller.rest.agenda;
 
 import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.tarea.AccessTarea;
+import cl.nexo.manager.constantes.Constantes;
 import cl.nexo.manager.obj.agenda.ObjAgenda;
 import cl.nexo.manager.obj.agenda.ObjDataAgenda;
 import cl.nexo.manager.obj.agenda.ObjPersonaAgenda;
@@ -217,8 +220,8 @@ public class RestAgenda {
         agen.aceptarAgenda(id_agenda);
           
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        int nuevo_estado=15;
-        int actividad = 19;  // debe corresponder al id de la tarea de agendado
+        int nuevo_estado=Constantes.Estado_Agenda_enviada;
+        int actividad = Constantes.Actividad_Agenda_KickOff ;  // debe corresponder al id de la tarea de agendado
         int id_workFlow;
         String observacion="AGENDADO CON EXITO";
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,7 +249,7 @@ public class RestAgenda {
 	    	tareas.setTarea(tarea);
 	    	
 	    	
-	    	int nueva_cola_estudio=20; // Cola Pendiente KickOff    	
+	    	int nueva_cola_estudio=Constantes.Cola_Pdte_kickOff; // Cola Pendiente KickOff    	
 	    	est.updateColaEstudio(nueva_cola_estudio, id_oper);
         
 		result.setResult(1);

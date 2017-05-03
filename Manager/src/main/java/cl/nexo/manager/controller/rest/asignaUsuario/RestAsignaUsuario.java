@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import cl.nexo.manager.constantes.Constantes;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -40,15 +41,21 @@ import org.springframework.web.client.RestTemplate;
 
 
 
+
+
 import cl.nexo.manager.access.apoderado.ApoderadoAccess;
 import cl.nexo.manager.access.asignacionPersonal.AccessAsignacionPersonal;
 import cl.nexo.manager.access.division.AccessDivision;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.login.LoginAccess;
+import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.password.AccessPassword;
+import cl.nexo.manager.access.proyecto.AccessEstudio;
+import cl.nexo.manager.access.reunion.AccessReunion;
 import cl.nexo.manager.access.server.mail.AccessServerMail;
 import cl.nexo.manager.access.server.mail.plantillas.AccessPlantillasLogin;
 import cl.nexo.manager.access.tipo.contrato.AccessTipoContrato;
+import cl.nexo.manager.constantes.Constantes;
 import cl.nexo.manager.obj.apoderado.ObjDataApoderado;
 import cl.nexo.manager.obj.apoderado.ObjListApoderado;
 import cl.nexo.manager.obj.login.ObjDataAsignacionUser;
@@ -56,6 +63,7 @@ import cl.nexo.manager.obj.login.ObjDataLogin;
 import cl.nexo.manager.obj.login.ObjListManUser;
 import cl.nexo.manager.obj.login.ObjLoginUser;
 import cl.nexo.manager.obj.login.ObjLoginUserHoras;
+import cl.nexo.manager.obj.reunion.ObjReunionKickOff;
 import cl.nexo.manager.obj.tools.ObjComboSelect2ValueInt;
 import cl.nexo.manager.obj.tools.ObjComboSelectValueInt;
 import cl.nexo.manager.obj.tools.ObjComboSelectValueString;
@@ -213,6 +221,70 @@ public class RestAsignaUsuario {
       
         
 	}
+	
+	
+	@RequestMapping(value = "/aceptarAsignacion", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjGeneralResultInt aceptarReunion(
+			@RequestParam("id_oper") int id_operacion
+			){
+		//--------BEGIN debug ----------------------------
+		
+		//--------END debug ----------------------------
+
+		
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+	    SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    ObjGeneralResultInt result = new ObjGeneralResultInt();
+	    
+	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
+	    
+	    
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	    int nuevo_estado=Constantes.Estado_Asignacion_perso_aceptada;
+        int actividad = Constantes.Actividad_Asig_personal;  // debe corresponder al id de la actividad Asignacion de Personal
+        String observacion="ASIGNACION DE PERSONAL ACEPTADA";
+        int usuario=user.getId_user();
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        
+        int nueva_cola_estudio=0; 
+    	
+	    //REGISTRO DE WORKFLOW Y BITACORA
+	      agendar.genericWorkActividad(id_operacion, actividad, observacion, nuevo_estado, usuario);  
+	      
+	      
+	   int status_import_doc = agendar.buscarStatusActividadEstudio(id_operacion, Constantes.Actividad_Subir_cuestionario);
+	   
+	   if (status_import_doc==Constantes.Estado_ImportDoc_Aceptado){
+		   nueva_cola_estudio=Constantes.Cola_Pdte_agenda_kickOff; /// Pendiente Agenda KickOff
+	   }else{
+		   nueva_cola_estudio=Constantes.Cola_En_proceso_desarrollo_org; /// En Proceso Desarrollo Materiales y  Organizacion
+
+	   }
+
+	     logger.info("NUEVO ESTADO ----- " + nueva_cola_estudio); 
+	     logger.info("IMPORTACION DE DOC ----- " + status_import_doc); 
+	      
+
+	   // Cola en proceso Desarrollo Materiales y Organizacion 	
+   	   est.updateColaEstudio(nueva_cola_estudio, id_operacion);
+	   
+	   
+	   
+		result.setResult(1);
+		result.setText("<strong>Personal Asignado con Exito</strong> ");
+		
+		return result;
+		
+	}	
+	
+	
+	
 	
 	
 
