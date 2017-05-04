@@ -20,4 +20,6 @@ public interface AccessFileUploadM5 {
 
 	public int updateStateVfile(int op, int tipo, int state);
 
+	public ArrayList<ObjUploadFile> getlistFileUploadGeneric(int tipo, int id);
+
 }

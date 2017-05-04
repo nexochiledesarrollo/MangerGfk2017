@@ -299,9 +299,7 @@ public class workflowEtapa1Controller {
 	
 	}
 	@RequestMapping(value = { "/ImportaEstudios" }, method = RequestMethod.GET)
-	public ModelAndView  ImportaEstudios(@RequestParam("id") int id,
-									@RequestParam("nombre") String nombre
-									) {
+	public ModelAndView  ImportaEstudios() {
 		
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
@@ -330,14 +328,7 @@ public class workflowEtapa1Controller {
 		
 	    String nombre_aux = "";
 	    
-	    if(nombre != null){
-	    	try {
-				nombre_aux = URLDecoder.decode(nombre, "ISO-8859-1");
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    }
+	    
 	    
 	   
 	    permisoModulo = perfils.getPermisoPerfilModulo(perfil.getId_perfil(), 5);
@@ -348,7 +339,7 @@ public class workflowEtapa1Controller {
 		if(user.getOtp_user() == 1){
 			if(permisoModulo != 0){
 				
-				traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 3, 0, 0, "CONSULTA ESTUDIO UPLOAD CUESTIONARIO", "USUARIO CONSULTA OPERACION "+ nombre_aux,8));
+				//traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 3, 0, 0, "CONSULTA ESTUDIO UPLOAD CUESTIONARIO", "USUARIO CONSULTA OPERACION "+ nombre_aux,8));
 				
 				
 				model.addObject("login", user);
@@ -356,14 +347,14 @@ public class workflowEtapa1Controller {
 			    model.addObject("menu", menu);
 			    model.addObject("unidad_access", "5");
 			    
-			    model.addObject("modulo_access", "5");
+			    model.addObject("modulo_access", "19");
 			    
 			    model.addObject("urlRestServiceDelivery", urlRestServiceDelivery);
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
-			    model.addObject("id_operacion", String.valueOf(id));
+			    
 			    model.addObject("lang",user.getLang_user());
 			    model.addObject("tol",tol);
-				model.setViewName("/modulos/work1/upload-cuestionario/detalle");
+				model.setViewName("/modulos/work1/act19/detalle");
 				
 				
 				
