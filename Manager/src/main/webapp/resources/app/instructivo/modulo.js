@@ -115,10 +115,7 @@ var handleDataTableProyecto = function() {
         var nombre = encodeURIComponent(data["nombre_operacion"]);
         
         window.open("/Manager/workflowEtapa1/detalleInstructivo?id="+data["id_operacion"]+"&nombre="+nombre+"&id_tipo="+data["id_tipo_entrevista"], "_self");
-        
-        
-	
-	
+
 	
 	} );
 	

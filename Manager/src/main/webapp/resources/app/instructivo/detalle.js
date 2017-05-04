@@ -709,7 +709,9 @@ var detailInstructivoCati = function(id){
 		},
 		success: function(data){
 			//debugArray(data);
+		    alert(data)
 			result = data; 
+			
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 		       // alert(xhr.status);
@@ -1024,8 +1026,7 @@ var getDetailInstructivoCati = function(){
 			//***********************************
 			//var detalle = data.detalle;
 			//**********************************
-		
-			
+
           $('#txt_inf_trab_01_cati').val(data.nombre_guion);
           $('#txt_inf_trab_02_cati').val(data.nombre_servidor);
           $('#txt_inf_trab_03_cati').val(data.tasa),
@@ -1142,7 +1143,7 @@ var getDetailInstructivoTodos = function(){
 			//***********************************
 			//var detalle = data.detalle;
 			//**********************************
-
+          
             // Informacion del Trabajo 
 			$('#txt_inf_trab_01').bootstrapSwitch('state',data.rep_ola),
 			$('#txt_inf_trab_02').bootstrapSwitch('state',data.carta),
@@ -1271,6 +1272,10 @@ var getDetailInstructivo = function(){
     }
 
 }
+
+
+
+
 
 
 

@@ -13,6 +13,7 @@ public interface InstructivoAccess {
     public ObjInstructivo getDetailInstructivoById(int id);
     public int updateInstructivoCapi(ObjInstructivo inst);
     public int updateInstructivo(ObjInstructivo inst);
+    public boolean getExistInstructivoByEstudio(int id);
 	
 
 	

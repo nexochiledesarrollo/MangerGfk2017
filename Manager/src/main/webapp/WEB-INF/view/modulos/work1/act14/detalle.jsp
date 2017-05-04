@@ -532,7 +532,7 @@
                            	  	
                            	  	<div class="form-group col-md-12">
                            	  		<p class="pull-left">
-                           	  		<a href="#info_op" class="btn btn-info m-r-5" style="margin-top: 5px; text-align: center;" id="btn_showhide">
+                           	  		<a onclick="JavaScript: verInstructivo('');" class="btn btn-info m-r-5" style="margin-top: 5px; text-align: center;" id="btn_showhide">
                            	  			<i class="fa fa-search fa-2x pull-left"></i>
                            	  			Ver Instructivo
                            	  		</a>

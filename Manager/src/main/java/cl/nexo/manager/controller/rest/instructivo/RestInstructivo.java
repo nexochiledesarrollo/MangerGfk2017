@@ -126,9 +126,6 @@ public class RestInstructivo {
 							@RequestParam("donde_tienda") boolean donde_tienda,
 							@RequestParam("donde_otro") String donde_otro
 
-	
-
-			
 			){
 		//--------BEGIN debug ----------------------------
 		
@@ -224,12 +221,18 @@ public class RestInstructivo {
         inst.setDonde_otro(donde_otro);
 
         
-	    instructivo.crearInstructivo(inst);   
-		
+        Boolean existe = instructivo.getExistInstructivoByEstudio(id_oper);
         
-		result.setResult(1);
-		result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
-		
+        if (!existe) {   
+	      instructivo.crearInstructivo(inst);
+		  result.setResult(1);
+		  result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
+        }else{
+        	instructivo.updateInstructivo(inst); 
+        	result.setResult(1);
+    		result.setText("Instructivo <strong>2</strong> a sido <strong>MODIFICADO</strong> en el sistema! ");
+	    }
+
 		return result;
 		
 	}	
@@ -247,47 +250,33 @@ public class RestInstructivo {
 							@RequestParam("incidencia") int incidencia,
 							@RequestParam("rep_ola") boolean rep_ola,
 							@RequestParam("carta") boolean carta,
-							
-							
 							@RequestParam("vista_1") String vista_1,	
 							@RequestParam("vista_2") String vista_2,
-							
-							
 							@RequestParam("B2B") boolean B2B,
 							@RequestParam("B2C") boolean B2C,
 							@RequestParam("Porc_B2B") String Porc_B2B,	
 							@RequestParam("Porc_B2C") String Porc_B2C,
 							@RequestParam("met_mixto") String met_mixto,	
 							@RequestParam("coment") String coment,
-							
-							
 							@RequestParam("grupo_1") String grupo_1,	
 							@RequestParam("grupo_2") String grupo_2,
-							
 							@RequestParam("estructura") String estructura,	
 							@RequestParam("glosario") String glosario,
-
-							@RequestParam("muestra_ent") boolean muestra_ent,	
+                            @RequestParam("muestra_ent") boolean muestra_ent,	
 							@RequestParam("especif") String especif,
 							@RequestParam("rdd") boolean rdd,
 							@RequestParam("muestra_cliente") boolean muestra_cliente,	
 							@RequestParam("base_datos") boolean base_datos,
 							@RequestParam("otro") boolean otro,
 							@RequestParam("especif_otro") String especif_otro,
-							
 							@RequestParam("nombre_contact") boolean nombre_contact,
 							@RequestParam("porc_nombre") String porc_nombre,
-							
 							@RequestParam("permit_recom") boolean permit_recom,
 							@RequestParam("especif_recom") String especif_recom,
-							
 							@RequestParam("n_recom") String n_recom,
 							@RequestParam("coment_adic") String coment_adic,
-							
 							@RequestParam("cuota14") boolean cuota14,
 							@RequestParam("cuota15") int cuota15,
-							
-							
 							@RequestParam("t_campo_desde") String t_campo_desde,	
 							@RequestParam("t_campo_hasta") String t_campo_hasta,
 							@RequestParam("p_temporal") String p_temporal,	
@@ -295,12 +284,9 @@ public class RestInstructivo {
 							@RequestParam("desc_obj") String desc_obj,	
 							@RequestParam("dia_mes") String dia_mes,
 							@RequestParam("planificacion") String planificacion,
-							
 							@RequestParam("inst_sup1") String inst_sup1,	
 							@RequestParam("inst_sup2") String inst_sup2,
-							
 							@RequestParam("txt_remun_01") String remun_01,
-							
 							@RequestParam("incent_dinero") boolean incent_dinero,
 							@RequestParam("incent_voucher") boolean incent_voucher,
 							@RequestParam("incent_regalo") boolean incent_regalo,
@@ -405,13 +391,21 @@ public class RestInstructivo {
         inst.setComent_incent(coment_incent);
         
         
-       
-	    instructivo.crearInstructivoCapi(inst);   
-		
         
-		result.setResult(1);
-		result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
-		
+        
+        Boolean existe = instructivo.getExistInstructivoByEstudio(id_oper);
+        
+        if (!existe) {   
+        	instructivo.crearInstructivoCapi(inst);   
+		    result.setResult(1);
+		    result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
+        }else{
+        	instructivo.updateInstructivoCapi(inst); 
+        	result.setResult(1);
+    		result.setText("Instructivo <strong>2</strong> a sido <strong>MODIFICADO</strong> en el sistema! ");
+	    }
+        
+
 		return result;
 		
 	}	
@@ -425,14 +419,11 @@ public class RestInstructivo {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
 		
-		 InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
-		
-		
+		InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
+
 		ObjInstructivo inst = new ObjInstructivo();
 		inst = instructivo.getDetailInstructivoCatiById(id);
-		
-		//logger.info("NOMBRE  " + apd.getNombres());
-		
+
 			
 		return inst;
 		

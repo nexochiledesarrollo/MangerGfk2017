@@ -164,12 +164,7 @@
                            	  	<div class="form-group col-md-6" id="form_btn_ok">
                            	  		<p class="pull-right">
                            	  		
-                           	  		
-                           	  		 <a href="#" class=" btn btn-warning m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: updateInstructivo();" id="btn_modificar">
-                           	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
-                           	  			Modificar
-                           	  		</a>
-                           	  		
+                           
                            	  
                            	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: createInstructivo();" id="btn_activae">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
@@ -191,11 +186,7 @@
                            	  		<p class="pull-right">
                            	  		
                            	        
-                           	        <a href="#" class=" btn btn-warning m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: updateInstructivoCati();" id="btn_modificar">
-                           	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
-                           	  			Modificar
-                           	  		</a>
-                           	  
+                           	    
                            	  
                            	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: createInstructivoCati();" id="btn_activae">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>

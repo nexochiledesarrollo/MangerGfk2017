@@ -472,27 +472,19 @@ public class workflowEtapa1Controller {
 			if(permisoModulo != 0){
 				
 				traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 3, 0, 0, "CONSULTA ESTUDIO CREACION INSTRUCTIVO", "USUARIO CONSULTA OPERACION "+ nombre_aux,8));
-				
-				
 				model.addObject("login", user);
 			    model.addObject("perfil", perfil);
 			    model.addObject("menu", menu);
 			    model.addObject("unidad_access", "5");
-			    
 			    model.addObject("modulo_access", "7");
-			    
 			    model.addObject("urlRestServiceDelivery", urlRestServiceDelivery);
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
 			    model.addObject("id_operacion", String.valueOf(id));
 			    model.addObject("lang",user.getLang_user());
 			    model.addObject("tol",tol);
 				model.setViewName("/modulos/work1/instructivo/detalle");
-				
-				
-				
 			}else{
-				model.setViewName("error-permiso");
-				
+				model.setViewName("error-permiso");		
 			}
 		}else{
 	    	

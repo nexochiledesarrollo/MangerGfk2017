@@ -817,20 +817,53 @@ public class Instructivo implements InstructivoAccess {
 	
 	
 	
+	@Override
+	public boolean getExistInstructivoByEstudio(int estudio) {
+		boolean result = false;
+		Connection conn = null;
+		
+		String query = " SELECT id_instructivo "
+				  +"	 FROM man_instructivo "
+				  +"	 WHERE  "
+				  +"     id_operacion= " + estudio ;
+				  
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.info(" --------- ******--------- " + query);
+			int inst=0;
+			ResultSet rs = ps.executeQuery();	
+			logger.info("Ejecuto Bien");
+			
+			if(rs.next()) {
+				inst = rs.getInt("id_instructivo");
+			}
+			logger.info("Ejecuto Bien2");
+			if (inst == 0){
+				result = false;
+			}else{
+				result = true;
+			}
+			logger.info("Ejecuto Bien3 " + result);
+			return result;
+			
+		} catch (Exception e) {
+			logger.info("Error --------" +  e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		return result;
+		
+		
+		
+	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 	
 }
