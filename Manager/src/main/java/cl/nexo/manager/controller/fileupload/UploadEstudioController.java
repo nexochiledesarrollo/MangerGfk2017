@@ -180,6 +180,7 @@ public class UploadEstudioController {
 					
             		uTools.existDirectorio(urlBaseFisica+"/cargasSAM/"+fechaNow1+"/", 1);
             		
+            		
             		uTools.uploadFile(newFile, mpf);
 					
 					
