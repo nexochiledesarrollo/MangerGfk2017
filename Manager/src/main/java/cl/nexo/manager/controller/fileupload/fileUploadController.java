@@ -76,6 +76,9 @@ public class fileUploadController {
         return "image/index";
     }
 	
+	
+	
+	
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
     public @ResponseBody Map list() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
