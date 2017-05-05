@@ -127,6 +127,94 @@ public class FileUploadM5 implements AccessFileUploadM5 {
 		
     }
 	@Override
+    public ArrayList<ObjUploadFile> getlistFileUploadGeneric(int tipo, int id) {
+		ArrayList<ObjUploadFile> list = new ArrayList<ObjUploadFile>();
+		
+		Connection conn = null;
+		
+		
+		String query=" SELECT f.id_file "
+					  +"    ,f.name_file "
+					  +"    ,f.thumbnail_file "
+					  +"    ,f.newfile_file "
+					  +"    ,f.tipo_file "
+					  +"    ,f.fcreacion_file "
+					  +"    ,f.fmod_file "
+					  +"    ,f.thumbnailurl_file "
+					  +"    ,f.deleteurl_file "
+					  +"    ,f.deletetype_file "
+					  +"    ,f.size_file "
+					  +"    ,f.tipoarch_file "
+					  + "   ,f.exten_file "
+					  + "   ,f.uploader_file "
+					  + "   ,f.id_modulo "
+					  + "   ,f.carga_file " 
+					  + "   ,f.tipo_documental "
+					  + "   , t.nombre_tipodoc  "
+					  + "   ,f.id_proyecto "
+					  + "   ,f.id_operacion"
+					  + "   ,f.url_file "
+					  +"    ,u.login_user "
+					  +"    ,f.vm_file "
+					  +" FROM man_file_upload f "
+					  +" INNER JOIN man_login_user u ON u.id_user = f.uploader_file "
+					  +" INNER JOIN man_tipo_documental t ON t.id_tipodoc = f.tipo_documental"
+					  +" WHERE f.tipo_documental = " +tipo+" ";
+					  
+					  if(id != 0){
+						query = query  +" AND f.id_operacion = " +id+" ";
+					  }
+					  query = query  +" order by f.id_file DESC ";
+		
+		 logger.debug("QUERY LIST ESTUDIOS: " + query); 
+		
+		 try {
+			  conn = dataSource.getConnection();
+			  PreparedStatement ps = conn.prepareStatement(query);
+			  ResultSet rs = ps.executeQuery();
+			  while (rs.next()) {
+				  ObjUploadFile row = new ObjUploadFile();
+				  row.setId(rs.getLong("id_file"));
+				  row.setName(rs.getString("name_file"));
+				  row.setThumbnailFilename(rs.getString("thumbnail_file"));
+				  row.setNewFilename(rs.getString("newfile_file"));
+				  row.setContentType(rs.getString("tipo_file"));
+				  row.setDateCreated(rs.getDate("fcreacion_file"));
+				  row.setLastUpdated(rs.getDate("fmod_file"));
+				  row.setThumbnailUrl(rs.getString("thumbnailurl_file"));
+				  row.setDeleteUrl(rs.getString("deleteurl_file"));
+				  row.setDeleteType(rs.getString("deletetype_file"));
+				  row.setSize(rs.getLong("size_file"));
+				  row.setTipoarch_file(rs.getInt("tipoarch_file"));
+				  row.setExten_file(rs.getString("exten_file"));
+				  row.setUploader_file(rs.getInt("uploader_file"));
+				  row.setId_modulo(rs.getInt("id_modulo"));
+				  row.setCarga_file(rs.getInt("carga_file"));
+				  row.setTipo_documental(rs.getInt("tipo_documental"));
+				  row.setId_proyecto(rs.getLong("id_proyecto"));
+				  row.setId_operacion(rs.getLong("id_operacion"));
+				  row.setUrl_file(rs.getString("url_file"));
+				  row.setStr_user(rs.getString("login_user"));
+				  row.setVm_file(rs.getInt("vm_file"));
+				  list.add(row);
+			  }
+			  
+			  return list;
+			  
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		
+    }
+	@Override
     public ObjUploadFile getMaxFileUpload(String newfile_file) {
 		ObjUploadFile row = new ObjUploadFile();
 		

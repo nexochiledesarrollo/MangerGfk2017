@@ -3,6 +3,7 @@ package cl.nexo.manager.controller.fileupload;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -51,19 +54,29 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 
+
+
+
+
+
+
+
 import cl.nexo.manager.access.fileupload.AccessFileUpload;
+import cl.nexo.manager.access.fileupload.AccessFileUploadM5;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.general.tools.AccessUploadFile;
 import cl.nexo.manager.access.login.LoginAccess;
+import cl.nexo.manager.access.traza.AccessTraza;
 import cl.nexo.manager.obj.login.ObjLoginUser;
+import cl.nexo.manager.obj.traza.ObjTrazaManager;
 import cl.nexo.manager.obj.upload.ObjUploadFile;
 
 
 @Controller
-@RequestMapping("/FileUploadUser")
-public class fileUploadController {
+@RequestMapping("/FileUploadEstudio")
+public class UploadEstudioController {
 	
-	private static final Logger logger = Logger.getLogger(fileUploadController.class);
+	private static final Logger logger = Logger.getLogger(UploadEstudioController.class);
 	
 	DateFormat format1 = new SimpleDateFormat("yyyyMMdd");
 	DateFormat format2 = new SimpleDateFormat("HH:mm:ss");
@@ -72,24 +85,23 @@ public class fileUploadController {
 	
 	@RequestMapping
     public String index(){
-        logger.info("FileUploadUser home");
+        logger.info("UploadEstudio home");
         return "image/index";
     }
-	
-	
-	
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
     public @ResponseBody Map list() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		AccessFileUpload filess = (AccessFileUpload) context.getBean("AccessFileUpload");
+		AccessFileUploadM5 filess = (AccessFileUploadM5) context.getBean("AccessFileUploadM5");
 		
 		AccessGeneralTools tools = (AccessGeneralTools) context.getBean("AccessGeneralTools");
 		String urlBaseFisica = tools.getValorConfigById(13);
 		String urlBaseMapping = tools.getValorConfigById(28);
 		
-		logger.info("Upload GET called LIST ---------------------- ");
-        ArrayList<ObjUploadFile> list = filess.getlistFileUpload();
+		logger.info("Upload GET Estudios called LIST ---------------------- ");
+        //logger.debug("ID OPERACION: "+id);
+        
+		ArrayList<ObjUploadFile> list = filess.getlistFileUploadGeneric(3 ,0);
         for(ObjUploadFile fi : list) {
         	
         	fi.setUrl(urlBaseMapping+fi.getUrl_file()+fi.getNewFilename());
@@ -104,23 +116,33 @@ public class fileUploadController {
 	}
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public @ResponseBody Map list(MultipartHttpServletRequest request, HttpServletResponse response) throws ParseException {
+    public @ResponseBody Map list(MultipartHttpServletRequest request, 
+    							  HttpServletResponse response
+    							  ) throws ParseException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
-		AccessFileUpload filess = (AccessFileUpload) context.getBean("AccessFileUpload");
+		AccessFileUploadM5 filess = (AccessFileUploadM5) context.getBean("AccessFileUploadM5");
 		AccessGeneralTools tools = (AccessGeneralTools) context.getBean("AccessGeneralTools");
 		AccessUploadFile uTools = (AccessUploadFile) context.getBean("AccessUploadFile");
+		AccessTraza traza = (AccessTraza) context.getBean("AccessTraza");
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 	    Authentication authentication = securityContext.getAuthentication();
 	    LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
 		
 	    ObjLoginUser sesion = logins.getUserByLogin(authentication.getName());
 	    
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    
 	    String urlBaseFisica = tools.getValorConfigById(13);
 		String urlBaseMapping = tools.getValorConfigById(28);
 		
 		String fechaNow = format3.format(new Date());
 		
-		logger.info("Upload POST called SET ---------------------- ");
+		String fechaNow1 = format1.format(new Date());
+		
+		logger.info("Upload POST ESTUDIO called SET ---------------------- ");
+		    
+		
+		
 		Iterator<String> itr = request.getFileNames();
         MultipartFile mpf;
         List<ObjUploadFile> list = new LinkedList<>();
@@ -132,28 +154,34 @@ public class fileUploadController {
         	String newFilenameBase = UUID.randomUUID().toString();
             String originalFileExtension = mpf.getOriginalFilename().substring(mpf.getOriginalFilename().lastIndexOf("."));
             String newFilename = newFilenameBase + originalFileExtension;
-            String storageDirectory = urlBaseFisica+"/temp/user";
+            String storageDirectory = urlBaseFisica+"/cargasSAM/"+fechaNow1+"/";
             String contentType = mpf.getContentType();
+            
+            
             
             /*******************************************************************/
             /***  CONFIGURACION DE UPLOAD **************************************/
             String thmberFile = "excell-6.png";
         	String thumUrl = "/temp/icons/office/excel/";
-        	String fileUrl = "/temp/user/file/";
-            String deleteUrl = "/Manager/FileUploadUser/delete/";
+        	String fileUrl = "/estudios/cargasSAM/"+fechaNow1+"/";
+            String deleteUrl = "/Manager/FileUploadEstudio/delete/";
             String deleteType = "DELETE";
             int tipoArchivo = 2; 
-            int idModulo = 1;
+            int idModulo = 5;
             int cargaFile = 0;
-            int tipoDocumental = 0;
+            int tipoDocumental = 3;
             int idProyecto = 0;
             int idOpercion = 0;
         	/******************************************************************/
             
-            File newFile = new File(storageDirectory + "/file/" + newFilename);
+            File newFile = new File(storageDirectory  + newFilename);
             
             	try {
-					uTools.uploadFile(newFile, mpf);
+					
+            		uTools.existDirectorio(urlBaseFisica+"/cargasSAM/"+fechaNow1+"/", 1);
+            		
+            		
+            		uTools.uploadFile(newFile, mpf);
 					
 					
             		mpf.transferTo(newFile);
@@ -186,6 +214,17 @@ public class fileUploadController {
 	            	fil.setId_proyecto(new Long(idProyecto));
 	            	fil.setId_operacion(new Long(idOpercion));
 	            	fil.setUrl_file(fileUrl);
+	            	fil.setId_operacion(new Long(0));
+	            	fil.setVs_file(0);
+	            	fil.setEstado_file(1);
+	            	fil.setEstadov_file(1);
+	            	
+	            	//int lastVersion = filess.getLastVersionPUpload(idOp2, 2);
+	            	//int aux_version = lastVersion + 1;
+	            	//fil.setVm_file(aux_version);
+	            	
+	            	//filess.updateStateVfile(0, 2, 2);
+	            	
 	            	filess.createFile(fil);
 	            	
 	            	fil = filess.getMaxFileUpload(newFilename);
@@ -212,6 +251,9 @@ public class fileUploadController {
         logger.info("END POST called SET ---------------------- ");
 		Map<String, Object> files = new HashMap<>();
 	    files.put("files", list);
+	    
+	    traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, 0, 4, 0, 5, "ESTUDIOS SAM UPLOAD ", "USUARIO UPLOAD CUESTIONARIO ID: "+ 0,11));
+	    
         return files;
 	}
 	
@@ -221,19 +263,21 @@ public class fileUploadController {
 		 AccessFileUpload filess = (AccessFileUpload) context.getBean("AccessFileUpload");
 		 AccessGeneralTools tools = (AccessGeneralTools) context.getBean("AccessGeneralTools");
 		 
-		 logger.info("BEGIN Delete DELETE called SET ---------------------- ");
+		 logger.info("BEGIN Delete DELETE CUESTIOANRIO Called SET ---------------------- ");
 		 
 		 String urlBaseFisica = tools.getValorConfigById(13);
 		 String urlBaseMapping = tools.getValorConfigById(28);
 		 
-		 String storageDirectory = urlBaseFisica+"/temp/user";
+		 ObjUploadFile obFile = filess.getFileUpload(id);
+		 
+		 String storageDirectory = urlBaseFisica+obFile.getUrl_file();
 		 
 		 ObjUploadFile file = filess.getFileUpload(id);
-		 File fil = new File(storageDirectory + "/user/file/" + file.getNewFilename());
+		 File fil = new File(storageDirectory + file.getNewFilename());
 		 filess.deleteFile(file.getId());
 		 fil.delete();
 		 
-		 logger.info(" END Delete DELETE called SET ---------------------- ");
+		 logger.info(" END Delete DELETE CUESTIOANRIO Called SET ---------------------- ");
 		 
 		 List<Map<String, Object>> results = new ArrayList<>();
          Map<String, Object> success = new HashMap<>();
