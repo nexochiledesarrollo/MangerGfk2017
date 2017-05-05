@@ -113,6 +113,8 @@
 		<input type="hidden" id="combo_3" name="combo_3" value="" />
 		<input type="hidden" class="form-control" id="lang_01" value="<%= langOption %>" />
 		<input type="hidden" class="form-control" id="pace_01" value="<%= lang1.getProperty("tipoentrevista") %>" />
+		
+		
 			
 		<!-- END Config General -->
 		
