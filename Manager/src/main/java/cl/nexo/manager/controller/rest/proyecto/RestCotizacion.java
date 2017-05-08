@@ -24,6 +24,7 @@ import cl.nexo.manager.access.login.LoginAccess;
 import cl.nexo.manager.access.producto.AccessProducto;
 import cl.nexo.manager.access.proyecto.AccessCotizacion;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
+import cl.nexo.manager.access.reunion.AccessReunion;
 import cl.nexo.manager.access.traza.AccessTraza;
 import cl.nexo.manager.obj.agenda.ObjAgenda;
 import cl.nexo.manager.obj.login.ObjLoginUser;
@@ -38,6 +39,8 @@ import cl.nexo.manager.obj.proyecto.ObjEstudioFiltros;
 import cl.nexo.manager.obj.proyecto.ObjEstudioProducto;
 import cl.nexo.manager.obj.proyecto.ObjEstudioTabulacion;
 import cl.nexo.manager.obj.proyecto.ObjResultCreaCotOp;
+import cl.nexo.manager.obj.reunion.ObjAprob;
+import cl.nexo.manager.obj.reunion.ObjBitacoraAprob;
 import cl.nexo.manager.obj.tools.ObjComboSelect2ValueInt;
 import cl.nexo.manager.obj.tools.ObjGeneralResultInt;
 import cl.nexo.manager.obj.traza.ObjTrazaManager;
@@ -168,48 +171,7 @@ public class RestCotizacion {
 		 SecurityContext securityContext = SecurityContextHolder.getContext();
 		 Authentication authentication = securityContext.getAuthentication();
 		
-		 logger.debug("**********REQUEST PARAM CREATE COTIZACION********************************************* "); 
-			logger.debug("id: "+ id);
-			logger.debug("canal_venta: "+ canal_venta);
-			logger.debug("id_cliente: "+ id_cliente);
-			logger.debug("sector_medicion: "+ sector_medicion);
-			logger.debug("industria_medicion: "+ industria_medicion);
-			logger.debug("id_tipo_entrevista: "+ id_tipo_entrevista);
-			logger.debug("nombre_operacion: "+ nombre_operacion);
-			logger.debug("id_geografia: "+ id_geografia);
-			logger.debug("cant_paises: "+ cant_paises);
-			logger.debug("id_clie_facturar: "+ id_clie_facturar);
-			logger.debug("producto: "+ producto);
-			logger.debug("tipo_estudio: "+ tipo_estudio);
-			logger.debug("booking_legal_entity: "+ booking_legal_entity);
-			logger.debug("centro_costo_op: "+ centro_costo_op);
-			logger.debug("por_ejec_estudio: "+ por_ejec_estudio);
-			logger.debug("digital_op: "+ digital_op);
-			logger.debug("moneda_op: "+ moneda_op);
-			logger.debug("date_prob_in_est_op: "+ date_prob_in_est_op);
-			logger.debug("date_prob_entre_est_op: "+ date_prob_entre_est_op);
-			logger.debug("ddate_pres_of_equipo_op: "+ ddate_pres_of_equipo_op);
-			logger.debug("ddate_pres_gps_op: "+ ddate_pres_gps_op);
-			logger.debug("ddate_pres_clie_op: "+ ddate_pres_clie_op);
-			logger.debug("res_us1_op: "+ res_us1_op);
-			logger.debug("res_us2_op: "+ res_us2_op);
-			logger.debug("res_us3_op: "+ res_us3_op);
-			logger.debug("obj_obs_op: "+ obj_obs_op);
-			logger.debug("desc_op: "+ desc_op);
-			logger.debug("set_up_1: "+ set_up_1);
-			logger.debug("set_up_2: "+ set_up_2);
-			logger.debug("set_up_3: "+ set_up_3);
-			logger.debug("set_up_4: "+ set_up_4);
-			logger.debug("set_up_5: "+ set_up_5);
-			logger.debug("set_up_6: "+ set_up_6);
-			logger.debug("set_up_7: "+ set_up_7);
-			logger.debug("set_up_8: "+ set_up_8);
-			logger.debug("set_up_9: "+ set_up_9);
-			logger.debug("set_up_10: "+ set_up_10);
-			logger.debug("set_up_11: "+ set_up_11);
-		  logger.debug("**********END REQUEST PARAM CREATE COTIZACION********************************************* ");
-		 
-		 
+		
 		 
 		 
 		 ObjLoginUser user = logins.getUserByLogin(authentication.getName()); 
@@ -437,26 +399,7 @@ public class RestCotizacion {
 		 SecurityContext securityContext = SecurityContextHolder.getContext();
 		 Authentication authentication = securityContext.getAuthentication();
 		
-		 logger.debug("**********REQUEST PARAM CREATE COTIZACION SET UP 2********************************************* "); 
-			logger.debug("id: "+ id);
-			logger.debug("dig: "+ dig);
-			logger.debug("ver_capture: "+ ver_capture);
-			logger.debug("tab: "+ tab);
-			logger.debug("datos_entrega: "+ datos_entrega);
-			logger.debug("formato_entrega: "+ formato_entrega);
-			logger.debug("tabla_pre: "+ tabla_pre);
-			logger.debug("analisis: "+ analisis);
-			logger.debug("diseno_muestra: "+ diseno_muestra);
-			logger.debug("entrega: "+ entrega);
-			logger.debug("entre_1: "+ entre_1);
-			logger.debug("entre_2: "+ entre_2);
-			logger.debug("entre_3: "+ entre_3);
-			logger.debug("entre_4: "+ entre_4);
-			logger.debug("entre_5: "+ entre_5);
-			logger.debug("entre_6: "+ entre_6);
-			logger.debug("estado_setup: "+ estado_setup);
-		  logger.debug("**********END REQUEST PARAM CREATE COTIZACION********************************************* ");
-		 
+	
 		 
 		 
 		 
@@ -813,7 +756,9 @@ public class RestCotizacion {
 		 logger.info("AGENDA aun no") ;
 		 
 		 ObjAgenda agen = agenda.getAgendaAbiertaByidOperacion(result.getId_operacion());
+		 logger.info("AGENDA aun no1") ;
 		 ObjAgenda agen_defin = agenda.getAgendaDefinitivaByidOperacion(result.getId_operacion());
+		 logger.info("AGENDA aun no2") ;
 
 		 result.setAgenda_carga(agen);
 		 result.setAgenda_aceptada(agen_defin);
@@ -823,6 +768,105 @@ public class RestCotizacion {
 		 return result;
 		 
 	}
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/getFullDetalleOperacionBitacora", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjEstudio getFullDetalleOperacionBitacora(@RequestParam("id") int id,
+											          @RequestParam("tipo") int tipo
+											         )
+	{
+		ObjEstudio result =  new ObjEstudio();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		 
+		 AccessCotizacion cots = (AccessCotizacion) context.getBean("AccessCotizacion");
+		 LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		 AccessPerfil perfils = (AccessPerfil) context.getBean("AccessPerfil");
+		 AccessGeneralTools generals = (AccessGeneralTools) context.getBean("AccessGeneralTools");
+		 AccessEstudio ests = (AccessEstudio) context.getBean("AccessEstudio");
+		 AccessTraza trazas = (AccessTraza) context.getBean("AccessTraza");
+		 SecurityContext securityContext = SecurityContextHolder.getContext();
+		 Authentication authentication = securityContext.getAuthentication();
+		 AccessEstudio estudio = (AccessEstudio) context.getBean("AccessEstudio");
+		 AgendaAccess agenda = (AgendaAccess) context.getBean("AgendaAccess");
+		 AccessReunion reun = (AccessReunion) context.getBean("AccessReunion");
+		 
+		 logger.debug("**********REQUEST PARAM getFullDetalleOperacion********************************************* "); 
+			logger.debug("id: "+ id);
+			logger.debug("tipo: "+ tipo);
+			
+		logger.debug("**********END REQUEST PARAM getFullDetalleOperacion********************************************* ");
+		 
+		 String str_tipo = "";
+		 if(tipo == 1){
+			 str_tipo = "Cotización";
+		 }else if(tipo == 2){
+			 str_tipo = "Estudio";
+		 }
+		 
+		 
+		 
+		 ObjLoginUser user = logins.getUserByLogin(authentication.getName()); 
+		 ObjPerfilLogin perfil = perfils.getPerfilById(user.getId_perfil());
+		 
+		 int permisoModulo = perfils.getPermisoPerfilModulo(perfil.getId_perfil(), 16);
+		 String fechaNow = format3.format(new Date());
+		 
+		 if(permisoModulo == 1 || permisoModulo == 2 || permisoModulo == 3){
+			 
+			 result = estudio.getFullEstudioReunionByUid(id);
+			 
+
+			 
+			 logger.info("Se busca Información de "+str_tipo+": "+ id + " -- Por usuario id: "+user.getId_user() );
+			 
+			 trazas.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 16, 0, 0, "SEARCH "+str_tipo+" ", "Se despliega Información de Operación ",0));
+			 
+			 result.setText("Se Encuentra "+str_tipo+" Id Operacion: <strong>"+ id +"</strong> ");
+		 
+			 
+		 }else{
+			 result.setId_cotizacion(0);
+			 result.setCodigo_cotizacion("0-0"); 
+			 logger.info("Sin Permiso de Buscar "+str_tipo+" para usuario user: "+ user.getId_user() + " -- Fecha: "+ fechaNow);
+			 trazas.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, 0, 16, 0, 0, "SEARCH "+str_tipo+" ", "Se Bloquea acceso a Busqueda ya que no tiene privilegios de acceso! ",0));
+			 
+			 result.setText("Permiso de Acceso");
+		 }
+		 
+
+		 
+		 ObjAgenda agen = agenda.getAgendaAbiertaByidOperacion(result.getId_operacion());
+		
+		 ObjAgenda agen_defin = agenda.getAgendaDefinitivaByidOperacion(result.getId_operacion());
+		 
+       
+		 boolean existe =reun.getExistAprobaciones(result.getId_operacion());
+		 
+		 
+		 
+		 
+		 if (!existe){
+			 
+			 reun.createAprobacion(result.getId_operacion());
+		}
+		 
+		 ObjAprob aprobacionesEstudio = reun.getAprobByid(result.getId_operacion());
+		 
+
+		 result.setAgenda_carga(agen);
+		 result.setAgenda_aceptada(agen_defin);
+		 result.setAprobaciones(aprobacionesEstudio);
+		 
+		 
+		 return result;
+		 
+	}
+	
+	
+	
 	@RequestMapping(value = "/getDetalleOperacion", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjEstudio getDetalleOperacion(@RequestParam("id") int id,
 										  @RequestParam("tipo") int tipo

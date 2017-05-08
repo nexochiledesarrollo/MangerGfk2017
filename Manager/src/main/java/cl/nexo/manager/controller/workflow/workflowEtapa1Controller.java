@@ -532,7 +532,8 @@ public class workflowEtapa1Controller {
 	@RequestMapping(value = { "/DetalleRevisionFondos" }, method = RequestMethod.GET)
 	public ModelAndView  DetalleRevisionFondos(@RequestParam("id") int id,
 									@RequestParam("nombre") String nombre,
-									@RequestParam("tipo") int tipo
+									@RequestParam("tipo") int tipo,
+									@RequestParam("valor") int valor
 									) {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
@@ -590,6 +591,7 @@ public class workflowEtapa1Controller {
 			    
 			    model.addObject("modulo_access", "8");
 			    model.addObject("tipo", String.valueOf(tipo));
+			    model.addObject("valor", String.valueOf(valor));
 			    model.addObject("urlRestServiceDelivery", urlRestServiceDelivery);
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
 			    model.addObject("id_operacion", String.valueOf(id));

@@ -320,12 +320,7 @@ var createInstructivoCati = function(){
 				$('#modalg-success-text').html('<center>'+ data.text +'</center><br>');
 				$("#modalg-success").modal("show");
 				
-				
-				setTimeout(irPrincipal(),5000);
-
-				//eraseForm();
-				
-				//$('#data-table').DataTable().ajax.reload();
+		
 			
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -1298,6 +1293,12 @@ var Proyecto = function() {
 			$('#realiza_cita_cati').hide();
 			showTipoEncuesta();
 			getDetailInstructivo();
+			
+			
+			//$("input").attr('disabled','disabled');
+			//$("textarea").attr('disabled','disabled');
+			//$("radio").bootstrapSwitch('disable');
+		
 	
 		}
 	}

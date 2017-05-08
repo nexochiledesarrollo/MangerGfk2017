@@ -52,7 +52,7 @@ var handleDataTableProyecto = function() {
         "scrollCollapse": true,
         "scrollX": true,
         ajax: {
-            url: "/Manager/RestWorkflow15/getListWorkflow15?id=0&lang="+$('#aux_01').val(),
+            url: "/Manager/RestWorkflow15/getListWorkflowRevInstalaciones?id=0&lang="+$('#aux_01').val(),
             error : function(xhr, status, error) {
         		var data = {
 						status: xhr.status,
@@ -64,9 +64,9 @@ var handleDataTableProyecto = function() {
 	    columns : [
 	               	{ "data": null},
 	               	{ "data": "id_cotizacion" },
-	                { "data": "codigo_proyectom" },
+	                { "data": "nombre_etapa" },
 	                { "data": "nombre_operacion" },
-	                { "data": "str_estado_medicion" },
+	                { "data": "str_cola_operacion" },
 	                { "data": "num_entrevistas_op" },
 	                { "data": "str_industria_medicion" },
 	               	{ "data": "fcreacion_proyectom" },
@@ -113,7 +113,7 @@ var handleDataTableProyecto = function() {
         //alert( 'You clicked on '+data["id_operacion"]+'\'s row' );
         var nombre = encodeURIComponent(data["nombre_operacion"]);
         
-        window.open("/Manager/workflowEtapa1/DetalleRevisionInstalaciones?id="+data["id_operacion"]+"&nombre="+nombre+"&tipo=2", "_self");
+         window.open("/Manager/workflowEtapa1/DetalleRevisionFondos?id="+data["id_operacion"]+"&nombre="+nombre+"&tipo=2&valor=3", "_self");
         
     } );
 	

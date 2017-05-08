@@ -22,6 +22,7 @@
  ObjWidjetAccessAdmin widAdmin = (ObjWidjetAccessAdmin) request.getAttribute("WidjetAccessAdmin");
  int id_operacion = Integer.parseInt((String) request.getAttribute("id_operacion"));
  int tipo = Integer.parseInt((String) request.getAttribute("tipo"));
+ int valor = Integer.parseInt((String) request.getAttribute("valor"));
  String urlRestServiceDelivery = (String) request.getAttribute("urlRestServiceDelivery");
  ObjConfigTools tol = (ObjConfigTools) request.getAttribute("tol");
  
@@ -105,8 +106,9 @@
 		
 		<!-- end #sidebar -->
 		<!-- Configuracion Interna  -->
-		<input type="hidden" id="txt_idope_1" name="txt_idope_1" value="<%=  id_operacion %>" />
-		<input type="hidden" id="txt_tipo_2" name="txt_tipo_2" value="<%=  tipo %>" />
+		<input type="hidden" id="txt_idope_1" name="txt_idope_1" value="<%=id_operacion %>" />
+		<input type="hidden" id="txt_tipo_2" name="txt_tipo_2" value="<%=tipo%>" />
+		<input type="hidden" id="txt_entrada" name="txt_entrada" value="<%=valor%>" />
 		<input type="hidden" id="conf_01"  name="conf_01" value="<%= perfil.getEs_admin() %>" />
 		<input type="hidden" id="conf_02"  name="conf_02" value="<%= urlRestServiceDelivery %>" />
 		<input type="hidden" id="conf_03"  name="conf_03" value="<%= permiso_access %>" />
@@ -129,7 +131,7 @@
 			</ol>
 			<!-- end breadcrumb -->
 			<!-- begin page-header -->
-			<h1 class="page-header"><%= lang1.getProperty("header") %> <small><%= lang1.getProperty("nuevoSmallHeader") %></small></h1>
+			<h1 class="page-header">Aprobaciones</h1>
 			<!-- end page-header -->
 			
 			<!-- begin row -->
@@ -161,15 +163,11 @@
                            	  			Mostrar/Ocultar
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: updateEstudio();" id="btn_activae">
+                           	  	    <a  class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: aceptaAprobacion();" id="btn_activae">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
-                           	  			Aprobar
+                           	  			Ok
                            	  		</a>
-                           	  		
-                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: deleteEstudio();" id="btn_deletee">
-                           	  			<i class="fa fa-times fa-2x pull-left"></i>
-                           	  			Rechazar
-                           	  		</a>
+                                     
                            	  		</p>
                            	  		
                            	  	</div>
@@ -261,8 +259,91 @@
             <!-- end row -->
             
             
-			<!-- Begin row -->
-            <div class="row">
+            
+            
+            <!-- begin row  -->
+			<div class="row" id='met_rec_data_cati'>
+			    <!-- begin col-12 -->
+			    <div class="col-md-12">
+			        <!-- begin panel -->
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title"> Aprobacion de Operaciones</h4>
+                        </div>
+                        <div class="panel-body">
+                        	<form class="form-horizontal form-bordered">
+                           	  
+                           	  	
+                           	  
+                           	  
+                      
+							
+							  <div class="row" id="bs_campo">
+									<div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Trabajo de Campo</label>
+										<div class="col-md-2">
+	                                         <input  type="checkbox" onchange="JavaScript: updateCampo();" id="txt_aprob_campo" name="txt_aprob_campo" data-off-text="No" data-on-text="Si" data-switch-value="false" class="BSswitch" >
+	                                    </div>
+									</div>	
+							  </div>		
+									
+									
+									
+                              <div class="row" id="bs_scripting">
+									<div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Scripting</label>
+										<div class="col-md-2">
+	                                         <input  type="checkbox" onchange="JavaScript: updateScripting();" id="txt_aprob_scripting" name="txt_aprob_scripting" data-off-text="No" data-on-text="Si" data-switch-value="false" class="BSswitch">
+	                                    </div>
+									</div>
+							 </div>
+							 
+							 
+							 <div class="row" id="bs_calidad">
+									<div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Calidad</label>
+										<div class="col-md-2">
+	                                         <input  type="checkbox" onchange="JavaScript: updateCalidad();" id="txt_aprob_calidad" name="txt_aprob_calidad" data-off-text="No" data-on-text="Si" data-switch-value="false" class="BSswitch">
+	                                    </div>
+									</div>
+							 </div>
+							 
+							 
+							 <div class="row" id="bs_tabulacion">
+									<div class="form-group col-md-6">
+										<label class="control-label col-md-4" style="background: #f0f3f4; font-weight: bold;">Tabulacion</label>
+										<div class="col-md-2">
+	                                         <input  type="checkbox" onchange="JavaScript: updateTabulacion();" id="txt_aprob_tabulacion" name="txt_aprob_tabulacion" data-off-text="No" data-on-text="Si" data-switch-value="false" class="BSswitch">
+	                                    </div>
+									</div>
+							 </div>
+							 
+							 <br>
+							 
+							</form> 
+							
+						</div>	
+							
+                            
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            
+            <!-- end  -->
+            
+
+            
+			
+			 <!-- Begin row -->
+            <div class="row" id="plazos">
 			    <!-- begin col-12 -->
 			    <div class="col-md-12">
 			        <!-- begin panel -->
@@ -274,44 +355,101 @@
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                                 <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                             </div>
-                            <h4 class="panel-title">Costos Reales del Proyecto</h4>
+                            <h4 class="panel-title">Fechas Propuestas</h4>
                         </div>
                         
                         <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
-                           <h3 class="m-t-10" style=" color: #f59c1a;">Detalle de Costos</h3>
-                           <br/>
+                          
+                           <form class="form-horizontal form-bordered">
+	                           		<div class="panel-body panel-form" id="panel_03">
                            
-                           <h2>Detalle</h2>
-                           <br/>
-                           <table id="data-table2" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                    	<th width="10"></th>
-                                    	<th width="300">Detalle</th>
-                                        <th width="300">Categoria</th>
-                                    	<th width="200">Presupuestado</th>
-                                        <th width="100">Cantidad</th>
-                                        <th width="200">Costo Unitario</th>
-                                        <th width="200">Total</th>
-                                        
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                    	<th width="10"></th>
-                                    	<th width="250"> Detalle</th>
-                                    	<th width="250">Categoria</th>
-                                    	<th width="200">Presupuestado</th>
-                                        <th width="100">Cantidad</th>
-                                        <th width="200">Costo Unitario</th>
-                                        <th width="200">Total</th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    
-                                </tbody>
-                            </table>
-                            <br/><br/>
+			                           <div class="row">
+			                           	  	<div class="form-group col-md-6">
+			                           	  		<h3 id="h2_1" style=" color: #f59c1a;">Compromiso de Inicio de Etapas</h3>
+			                           	  		<table class="table table-bordered">
+					                                <thead>
+					                                    <tr>
+					                                        <th>Detalle</th>
+					                                        <th>Valor</th>
+					                                    </tr>
+					                                </thead>
+					                                <tbody>
+					                                    <tr>
+					                                        <td><label class="control-label col-lg-12" style="font-weight: bold;">Fecha Inicio Campo </label></td>
+					                                        <td>
+					                                        	<div class="col-md-12">
+							                                       <input type="text" id="req_fechas_01" class="form-control"  value="" readonly="readonly" />
+																</div>
+					                                        
+					                                        </td>
+					                                    </tr>
+					                                    <tr>
+					                                        <td><label class="control-label col-lg-12" style="font-weight: bold;">Fecha Inicio BBDD </label></td>
+					                                        <td>
+					                                        	<div class="col-md-12">
+							                                       <input type="text" id="req_fechas_02" class="form-control"  value="" readonly="readonly" />
+																</div>
+					                                        
+					                                        </td>
+					                                    </tr>
+					                                    <tr>
+					                                        <td><label class="control-label col-lg-12" style="font-weight: bold;">Fecha Entrega </label></td>
+					                                        <td>
+					                                        	<div class="col-md-12">
+							                                       <input type="text" id="req_fechas_03" class="form-control"  value="" readonly="readonly" />
+																</div>
+					                                        
+					                                        </td>
+					                                    </tr>
+					                                   
+					                                    
+					                                </tbody>
+					                            </table>
+			                           	  	</div>
+			                           	    <div class="form-group col-md-6">
+			                           	  		<h3 id="h2_1" style="margin-left: 20px; color: #f59c1a;">Compromiso de Fin de Etapas</h3>
+			                           	  		<table class="table table-bordered">
+					                                <thead>
+					                                    <tr>
+					                                        <th>Detalle</th>
+					                                        <th>Valor</th>
+					                                    </tr>
+					                                </thead>
+					                                <tbody>
+					                                    <tr>
+					                                        <td><label class="control-label col-lg-12" style="font-weight: bold;">Fecha Fin Campo </label></td>
+					                                        <td>
+					                                        	<div class="col-md-12">
+							                                       <input type="text" id="req_fechas_04" class="form-control"  value="" readonly="readonly" />
+																</div>
+					                                        
+					                                        </td>
+					                                    </tr>
+					                                    <tr>
+					                                        <td><label class="control-label col-lg-12" style="font-weight: bold;">Fecha Fin BBDD </label></td>
+					                                        <td>
+					                                        	<div class="col-md-12">
+							                                       <input type="text" id="req_fechas_05" class="form-control"  value="" readonly="readonly" />
+																</div>
+					                                        
+					                                        </td>
+					                                    </tr>
+					                                    
+					                                    
+					                                </tbody>
+					                            </table>
+					                           
+					                            
+			                           	  	</div>
+			                           	  	
+			                           	  
+			                           	  
+			                           	  </div>
+			                           
+			                           
+			                        </div>
+									
+	                           </form>
                            
                            
                         </div>
@@ -323,15 +461,136 @@
             <!-- end row -->
             
             
-          </div>
+            <!-- Begin row -->
+            <div class="row" id="asistencia">
+			    <!-- begin col-12 -->
+			    <div class="col-md-12">
+			        <!-- begin panel -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h4 class="panel-title">Bitacora</h4>
+                        </div>
+                        
+                        <div id="panel_08" class="panel-body panel-form" style="margin-top: 10px; margin-left: 10px;">
+                          
+                     
+                          
+                          
+                           <br/>
+ 
+                            <table id="data-table8" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                    	<th width="10"></th>
+                                    	<th width="300">Login</th>
+                                        <th width="200">Fecha/Hora</th>
+                                        <th width="400">Observacion</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                    	<th width="10"></th>
+                                    	<th width="300">Login</th>
+                                        <th width="200">Fecha/Hora</th>
+                                        <th width="400">Observacion</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                            <br/><br/>
+                            
+                            <div class="row">
+									 <div class="form-group col-md-2">
+										<p class="pull-right">
+		                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: handleCreateBitacora();" id="btn_activae">
+		                           	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
+		                           	  			Agregar
+                           	  				</a>
+		                           	  	</p>
+									</div>									
+                           		</div>
+                            
+                            
+                            
+                            
+                        </div>
+                    </div>
+                    <!-- end panel -->
+                </div>
+                <!-- end col-12 -->
+            </div>
+            <!-- end row -->
+
+			
+     </div>
 		<!-- end #content -->
+		
+		
+		
+		<!-- Begin MODAL USUER----------------------------------------------------------------------------------------------------- -->
+		<div class="modal modal-message fade" id="modal-create">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					
+					
+					<div class="modal-header" id="header-updateuser">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><strong>x</strong></button>
+						<h1 class="modal-title">
+						<span class="fa-stack fa-2x text-warning">
+							<i class="fa fa-circle-o fa-stack-2x"></i>
+							<i class="fa fa-user fa-stack-1x"></i>
+						</span>
+						Bitacora</h1>
+					</div>
+					
+					<div class="modal-body">
+					
+						<input type="hidden" class="form-control"  name="txt_00" id="txt_00">
+						
+						<div class="row">
+						    <!-- begin col-12 -->
+						    <div class="col-md-6">
+								<div class="form-group">
+		                            <label class="">Observacion <span style="color: red;">(*)</span></label>
+		                           <textarea class="form-control"  id="txt_observacion" placeholder=""  rows="5"></textarea>
+		                        </div>
+		                    </div>
+
+		                </div>
+		                <p></p>
+
+					</div>
+					<div class="modal-footer">
+						<a href="javascript:;" class="btn btn-lg btn-white" data-dismiss="modal">Cerrar</a>
+						<a href="JavaScript: createBitacora();" class="btn btn-lg btn-success" id="button-createuser">Guardar</a>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
 		
         
 		
 		<!-- begin scroll to top btn -->
 		<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
 		<!-- end scroll to top btn -->
-	</div>
+
 	<!-- end page container -->
 	<!-- Incluir modal generico -->
     <%@ include file="../../../general-modal.jsp" %>

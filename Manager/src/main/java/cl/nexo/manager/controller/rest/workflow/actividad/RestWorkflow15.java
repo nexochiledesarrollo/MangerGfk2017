@@ -142,6 +142,106 @@ public class RestWorkflow15 {
 	
 	
 	
+	@RequestMapping(value = "/getListWorkflowRevFondos", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowRevFondos(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow15 lists = (AccessWorkflow15) context.getBean("AccessWorkflow15");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		
+		 
+		 list = lists.getListEstudioByUserRevFondos(user.getId_user(), lang);
+		 
+		 est.setData(list);
+		 
+		 return est;
+		 
+	}
+	
+	
+	@RequestMapping(value = "/getListWorkflowRevProducto", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowRevProducto(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow15 lists = (AccessWorkflow15) context.getBean("AccessWorkflow15");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		
+		 
+		 list = lists.getListEstudioByUserRevFondos(user.getId_user(), lang);
+		 
+		 est.setData(list);
+		 
+		 return est;
+		 
+	}
+	
+	
+	@RequestMapping(value = "/getListWorkflowRevInstalaciones", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowRevInstalaciones(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow15 lists = (AccessWorkflow15) context.getBean("AccessWorkflow15");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		
+		 
+		 list = lists.getListEstudioByUserRevFondos(user.getId_user(), lang);
+		 
+		 est.setData(list);
+		 
+		 return est;
+		 
+	}
+	
+	
+	@RequestMapping(value = "/getListWorkflowRevDispositivo", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowRevDispositivo(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow15 lists = (AccessWorkflow15) context.getBean("AccessWorkflow15");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		
+		 
+		 list = lists.getListEstudioByUserRevFondos(user.getId_user(), lang);
+		 
+		 est.setData(list);
+		 
+		 return est;
+		 
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	@RequestMapping(value = "/updateActiveWorkflow15", method = RequestMethod.GET,headers="Accept=application/json")

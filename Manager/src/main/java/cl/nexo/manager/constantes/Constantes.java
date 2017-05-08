@@ -17,7 +17,7 @@ public class Constantes {
 	public static final int Cola_En_proceso_desarrollo_org = 12;
 	public static final int Cola_Rechazo_cotizacion = 13;
 	public static final int Cola_Rechazo_Aprobacion = 14;
-	public static final int Cola_Pte_aprobacion = 16;
+	//public static final int Cola_Pte_aprobacion = 16;
 	public static final int Actividad_Aprobacion = 17;
 	public static final int Cola_Pdte_agenda_kickOff = 21;
 	public static final int Actividad_Agenda_KickOff = 23;
@@ -25,6 +25,7 @@ public class Constantes {
 	public static final int Actividad_KickOff = 27;
 	public static final int Cola_Pdte_implementacion = 28;
 	public static final int Actividad_Carga_Instructivo = 30;
+	public static final int Cola_Pdte_Aprobacion = 31;
 	
 	/// Constantes Tabla man_flujo
 	public static final int Estado_Aceptado = 11;
