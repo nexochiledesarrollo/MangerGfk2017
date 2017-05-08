@@ -19,17 +19,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.apoderado.ApoderadoAccess;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.instructivo.InstructivoAccess;
 import cl.nexo.manager.access.login.LoginAccess;
+import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.password.AccessPassword;
+import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.server.mail.AccessServerMail;
 import cl.nexo.manager.access.server.mail.plantillas.AccessPlantillasLogin;
+import cl.nexo.manager.access.tarea.AccessTarea;
+import cl.nexo.manager.constantes.Constantes;
 import cl.nexo.manager.obj.apoderado.ObjDataApoderado;
 import cl.nexo.manager.obj.apoderado.ObjListApoderado;
 import cl.nexo.manager.obj.instructivo.ObjInstructivo;
 import cl.nexo.manager.obj.login.ObjLoginUser;
+import cl.nexo.manager.obj.tarea.ObjTarea;
 import cl.nexo.manager.obj.tools.ObjGeneralResultInt;
 
 
@@ -45,6 +51,48 @@ public class RestInstructivo {
 	DateFormat format4 = new SimpleDateFormat("yyyyMMddHHmmss");
 	
 
+	
+	
+	
+	@RequestMapping(value = "/aceptarInstructivo", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjGeneralResultInt aceptarInstructivo(@RequestParam("id_oper") int id_oper
+											
+			){
+
+
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+	    SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    
+	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+	 
+	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
+  
+        ObjGeneralResultInt result = new ObjGeneralResultInt();
+
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        int nuevo_estado=Constantes.Estado_Instructivo_Aceptado;
+        int actividad = Constantes.Actividad_Instructivo ;  // debe corresponder al id de la tarea de agendado
+        int id_workFlow;
+        String observacion="INSTRUCTIVO ACEPTADO";
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        //REGISTRO DE WORKFLOW Y BITACORA
+        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+
+
+	    	//int nueva_cola_estudio=Constantes.Cola_Pdte_kickOff; // Cola Pendiente KickOff    	
+	    	//est.updateColaEstudio(nueva_cola_estudio, id_oper);
+        
+		result.setResult(1);
+		result.setText("<strong>Instructivo Aceptado</strong> ");
+		
+		return result;
+		
+	}	
+	
 	
 	
 	
@@ -142,6 +190,7 @@ public class RestInstructivo {
 		
         ObjInstructivo inst = new ObjInstructivo();  
         InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
+        ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
         
         
         SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
@@ -225,6 +274,21 @@ public class RestInstructivo {
         
         if (!existe) {   
 	      instructivo.crearInstructivo(inst);
+	      
+	        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        int nuevo_estado=Constantes.Estado_Instructivo_Cargado;
+	        int actividad = Constantes.Actividad_Carga_Instructivo ;  // debe corresponder al id de la tarea de agendado
+	        int id_workFlow;
+	        String observacion="INTRUCTIVO CARGADO";
+	        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        
+	        //REGISTRO DE WORKFLOW Y BITACORA
+	        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+	      
+	      
+	      
+	      
+	      
 		  result.setResult(1);
 		  result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
         }else{
@@ -313,6 +377,8 @@ public class RestInstructivo {
 		
         ObjInstructivo inst = new ObjInstructivo();  
         InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
+        ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+        AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
         
         
         SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
@@ -397,6 +463,37 @@ public class RestInstructivo {
         
         if (!existe) {   
         	instructivo.crearInstructivoCapi(inst);   
+        	
+        	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        int nuevo_estado=Constantes.Estado_Instructivo_Cargado;
+	        int actividad = Constantes.Actividad_Carga_Instructivo ;  // debe corresponder al id de la tarea de agendado
+	        int id_workFlow;
+	        String observacion="INTRUCTIVO CARGADO";
+	        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        
+	        //REGISTRO DE WORKFLOW Y BITACORA
+	        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+	        
+	       int nueva_cola_estudio=0; 
+	       int status_import_doc = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Subir_cuestionario);
+	 	   int status_asigna = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Asig_personal);
+	 	   
+	 	   if ((status_import_doc==Constantes.Estado_ImportDoc_Aceptado) && (status_asigna==Constantes.Estado_Asignacion_perso_aceptada) ){
+	 		   nueva_cola_estudio=Constantes.Cola_Pdte_agenda_kickOff; /// Pendiente Agenda KickOff
+	 	   }else{
+	 		   nueva_cola_estudio=Constantes.Cola_En_proceso_desarrollo_org; /// En Proceso Desarrollo Materiales y  Organizacion
+
+	 	   }
+
+		   // Cola en proceso Desarrollo Materiales y Organizacion 	
+	   	   est.updateColaEstudio(nueva_cola_estudio, id_oper);
+	 	   
+	 	   
+	 	   
+	 	   
+	 	   
+	 	   
+	 	   
 		    result.setResult(1);
 		    result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
         }else{

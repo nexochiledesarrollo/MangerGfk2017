@@ -21,11 +21,13 @@ import cl.nexo.manager.access.combo.box.AccessComboBox;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.login.AccessPerfil;
 import cl.nexo.manager.access.login.LoginAccess;
+import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.producto.AccessProducto;
 import cl.nexo.manager.access.proyecto.AccessCotizacion;
 import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.reunion.AccessReunion;
 import cl.nexo.manager.access.traza.AccessTraza;
+import cl.nexo.manager.constantes.Constantes;
 import cl.nexo.manager.obj.agenda.ObjAgenda;
 import cl.nexo.manager.obj.login.ObjLoginUser;
 import cl.nexo.manager.obj.login.ObjPerfilLogin;
@@ -69,6 +71,70 @@ public class RestCotizacion {
 		 return combo;
 		 
 	}
+	
+	
+	@RequestMapping(value = "/aceptarDocumentos", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjGeneralResultInt aceptarDocumentos(@RequestParam("id_oper") int id_oper
+											
+			){
+
+
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+	    SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    
+	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+	 
+	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
+  
+        ObjGeneralResultInt result = new ObjGeneralResultInt();
+
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        int nuevo_estado=Constantes.Estado_ImportDoc_Aceptado;
+        int actividad = Constantes.Actividad_Subir_cuestionario ;  // debe corresponder al id de la tarea de agendado
+        int id_workFlow;
+        String observacion="DOCUMENTOS CARGADOS";
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        //REGISTRO DE WORKFLOW Y BITACORA
+        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+
+
+           int nueva_cola_estudio=0; 
+	       int status_instructivo = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Carga_Instructivo);
+	 	   int status_asigna = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Asig_personal);
+	 	   
+	 	   if ((status_instructivo==Constantes.Estado_Instructivo_Aceptado) && (status_asigna==Constantes.Estado_Asignacion_perso_aceptada) ){
+	 		   nueva_cola_estudio=Constantes.Cola_Pdte_agenda_kickOff; /// Pendiente Agenda KickOff
+	 	   }else{
+	 		   nueva_cola_estudio=Constantes.Cola_En_proceso_desarrollo_org; /// En Proceso Desarrollo Materiales y  Organizacion
+           }
+
+		   // Cola en proceso Desarrollo Materiales y Organizacion 	
+	   	   est.updateColaEstudio(nueva_cola_estudio, id_oper);	
+        
+        
+        
+        
+        
+        
+        
+		result.setResult(1);
+		result.setText("<strong>Instructivo Aceptado</strong> ");
+		
+		return result;
+		
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "/getListCotiza", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjDataListEstudio getListCotiza(@RequestParam("filtro") int filtro,
 											   @RequestParam("id") String id,

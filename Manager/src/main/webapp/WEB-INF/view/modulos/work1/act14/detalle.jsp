@@ -167,10 +167,13 @@
                            	  			Realizada
                            	  		</a>
                            	  		
+                           	  		<!--
                            	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: rechazarReunion();" id="btn_deletee">
                            	  			<i class="fa fa-times fa-2x pull-left"></i>
                            	  			Rechazar
                            	  		</a>
+                           	  		-->
+                           	  		
                            	  		</p>
                            	  		
                            	  	</div>
@@ -542,10 +545,14 @@
                            	  			Aprobar
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: rechazaInstructivo();" id="btn_deletee">
-                           	  			<i class="fa fa-times fa-2x pull-left"></i>
-                           	  			Rechazar
-                           	  		</a>
+                           	  		<!--   
+                           	  		
+	                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: rechazaInstructivo();" id="btn_deletee">
+	                           	  			<i class="fa fa-times fa-2x pull-left"></i>
+	                           	  			Rechazar
+	                           	  		</a>
+                           	  		
+                           	  		-->
                            	  		</p>
                            	  		
                            	  	</div>

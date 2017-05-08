@@ -26,6 +26,7 @@ public class Constantes {
 	public static final int Cola_Pdte_implementacion = 28;
 	public static final int Actividad_Carga_Instructivo = 30;
 	public static final int Cola_Pdte_Aprobacion = 31;
+	public static final int Actividad_Instructivo = 32;
 	
 	/// Constantes Tabla man_flujo
 	public static final int Estado_Aceptado = 11;
@@ -36,7 +37,7 @@ public class Constantes {
 	public static final int Estado_Asignacion_perso_aceptada = 17;
 	public static final int Estado_ImportDoc_Aceptado = 18;
 	public static final int Estado_Instructivo_Aceptado = 19;
-	
+	public static final int Estado_Instructivo_Cargado = 20;
 	
 	
 	

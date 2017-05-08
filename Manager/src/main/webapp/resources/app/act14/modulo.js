@@ -115,7 +115,7 @@ var handleDataTableProyecto = function() {
         //alert( 'You clicked on '+data["id_operacion"]+'\'s row' );
         var nombre = encodeURIComponent(data["nombre_operacion"]);
         
-        window.open("/Manager/workflowEtapa1/DetalleKickOff?id="+data["id_operacion"]+"&nombre="+nombre+"&tipo=2", "_self");
+        window.open("/Manager/workflowEtapa1/DetalleKickOff?id="+data["id_operacion"]+"&nombre="+nombre+"&tipo=" + data["id_tipo_entrevista"], "_self");
         
     } );
 	

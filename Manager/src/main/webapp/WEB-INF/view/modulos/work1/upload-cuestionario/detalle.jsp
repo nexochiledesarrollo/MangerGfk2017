@@ -158,15 +158,12 @@
                            	  			Mostrar/Ocultar
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: updateEstudio();" id="btn_activae">
+                           	  		<a  class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: aceptarDocumentos();" id="btn_activae">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
                            	  			OK
                            	  		</a>
                            	  		
-                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: deleteEstudio();" id="btn_deletee">
-                           	  			<i class="fa fa-times fa-2x pull-left"></i>
-                           	  			Cancelar
-                           	  		</a>
+                           	  		
                            	  		</p>
                            	  		
                            	  	</div>

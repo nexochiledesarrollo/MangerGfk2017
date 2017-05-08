@@ -259,16 +259,16 @@ public class RestAsignaUsuario {
 	      
 	      
 	   int status_import_doc = agendar.buscarStatusActividadEstudio(id_operacion, Constantes.Actividad_Subir_cuestionario);
+	   int status_instructivo = agendar.buscarStatusActividadEstudio(id_operacion, Constantes.Actividad_Carga_Instructivo);
 	   
-	   if (status_import_doc==Constantes.Estado_ImportDoc_Aceptado){
+	   if ((status_import_doc==Constantes.Estado_ImportDoc_Aceptado) && (status_instructivo==Constantes.Estado_Instructivo_Cargado) ){
 		   nueva_cola_estudio=Constantes.Cola_Pdte_agenda_kickOff; /// Pendiente Agenda KickOff
 	   }else{
 		   nueva_cola_estudio=Constantes.Cola_En_proceso_desarrollo_org; /// En Proceso Desarrollo Materiales y  Organizacion
 
 	   }
 
-	     logger.info("NUEVO ESTADO ----- " + nueva_cola_estudio); 
-	     logger.info("IMPORTACION DE DOC ----- " + status_import_doc); 
+	 
 	      
 
 	   // Cola en proceso Desarrollo Materiales y Organizacion 	

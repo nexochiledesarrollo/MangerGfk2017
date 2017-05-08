@@ -93,5 +93,31 @@ public class RestWorkflow5 {
 	
 	
 	
+	@RequestMapping(value = "/getListWorkflowUpload", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowUpload(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow5 lists = (AccessWorkflow5) context.getBean("AccessWorkflow5");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		list = lists.getListEstudioByUserUpload(user.getId_user(), lang);
+		est.setData(list);
+		return est;
+		 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
