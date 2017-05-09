@@ -166,6 +166,63 @@ var iniHideData = function(){
           }
     });
 }
+
+
+
+
+
+
+function aceptarDocumentos (){
+
+	     var param = {
+	    	 id_oper : $('#txt_idope_1').val(),
+	       
+	     }
+
+		$.ajax({
+			url: "/Manager/RestCotizacion/aceptarDocumentos",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			
+			success: function(data){
+				
+				$("#modalg-charge").modal("hide");
+				$("#modalg-success-text-asignacion" ).empty();
+				$('#modalg-success-text-asignacion').html('<center>'+ data.text +'</center><br>');
+				$("#modalg-success_asignacion").modal("show");
+				window.location.href = "/Manager/workflowEtapa1/UploadCuestionario";
+
+			
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		       // alert(xhr.status);
+		       // alert(thrownError);
+		       //alert('Se ha generado un error -- setUserLogin Modulo Usuario -- ,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error: <strong>--  aceptar Asignacion de Personal  --</strong> <br/>  Favor contactar mesa de ayuda! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+		
+		
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 //---------------------------------------
 var Proyecto = function() {
 	"use strict";

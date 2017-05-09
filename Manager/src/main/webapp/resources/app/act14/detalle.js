@@ -560,7 +560,9 @@ function rechazarReunion(){
 
 
 
-
+function verInstructivo(nombre){
+	window.open("/Manager/workflowEtapa1/detalleInstructivo?id="+$('#txt_idope_1').val()+"&nombre="+nombre+"&id_tipo="+$('#txt_tipo_2').val() + "&entrada=2", " '_blank'");
+}
 
 
 

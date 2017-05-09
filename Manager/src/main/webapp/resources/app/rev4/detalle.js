@@ -13,6 +13,11 @@ var showModalUploadUser = function(id) {
 	
 };
 //Data Table
+
+/// Actualizado
+
+
+
 var getDetailEstudio = function(){
 	var param = {
 			id : $('#txt_idope_1').val(),

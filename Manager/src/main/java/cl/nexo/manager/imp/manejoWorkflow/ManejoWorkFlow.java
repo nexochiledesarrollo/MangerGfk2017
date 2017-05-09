@@ -223,6 +223,43 @@ public class ManejoWorkFlow implements ManejoWorkflowAccess {
 	
 	
 	
+	@Override
+	public int buscarStatusActividadEstudio(int operacion, int actividad) {
+
+		Connection conn = null;
+	
+		String query = "SELECT "  
+			     +" * "
+                 +" FROM man_workflow_estudio tb where id_operacion ="+ operacion + " and id_actividad= " + actividad;
+		
+		logger.info("SQL " + query);
+		
+		  try {
+			  conn = dataSource.getConnection();
+			  PreparedStatement ps = conn.prepareStatement(query);
+			  ResultSet rs = ps.executeQuery();
+			 
+			  int id_work = 0;
+				  while (rs.next()) {  
+					  id_work=rs.getInt("id_estado");  
+				  } 
+			  return id_work;
+			  
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}       
+
+	}
+	
+	
+	
 	
 
 	

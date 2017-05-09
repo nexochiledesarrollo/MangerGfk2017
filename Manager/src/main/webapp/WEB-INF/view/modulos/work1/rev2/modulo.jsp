@@ -105,7 +105,7 @@
 			</ol>
 			<!-- end breadcrumb -->
 			<!-- begin page-header -->
-			<h1 class="page-header"><%= lang1.getProperty("header") %> <small><%= lang1.getProperty("nuevoSmallHeader") %></small></h1>
+			<h1 class="page-header">Aprobacion Scripting<small><%= lang1.getProperty("nuevoSmallHeader") %></small></h1>
 			<!-- end page-header -->
 			
 			<!-- begin row -->

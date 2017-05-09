@@ -415,7 +415,8 @@ public class workflowEtapa1Controller {
 	}
 	@RequestMapping(value = { "/detalleInstructivo" }, method = RequestMethod.GET)
 	public ModelAndView  detalleInstructivo(@RequestParam("id") int id,
-									@RequestParam("nombre") String nombre
+									@RequestParam("nombre") String nombre,
+									@RequestParam("entrada") int entrada
 									) {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
@@ -463,27 +464,20 @@ public class workflowEtapa1Controller {
 			if(permisoModulo != 0){
 				
 				traza.setTraza(new ObjTrazaManager(0, fechaNow, user.getId_user(), 0, id, 3, 0, 0, "CONSULTA ESTUDIO CREACION INSTRUCTIVO", "USUARIO CONSULTA OPERACION "+ nombre_aux,8));
-				
-				
 				model.addObject("login", user);
 			    model.addObject("perfil", perfil);
 			    model.addObject("menu", menu);
 			    model.addObject("unidad_access", "5");
-			    
 			    model.addObject("modulo_access", "7");
-			    
 			    model.addObject("urlRestServiceDelivery", urlRestServiceDelivery);
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
 			    model.addObject("id_operacion", String.valueOf(id));
 			    model.addObject("lang",user.getLang_user());
+			    model.addObject("entrada",String.valueOf(entrada));
 			    model.addObject("tol",tol);
 				model.setViewName("/modulos/work1/instructivo/detalle");
-				
-				
-				
 			}else{
-				model.setViewName("error-permiso");
-				
+				model.setViewName("error-permiso");		
 			}
 		}else{
 	    	
@@ -540,7 +534,8 @@ public class workflowEtapa1Controller {
 	@RequestMapping(value = { "/DetalleRevisionFondos" }, method = RequestMethod.GET)
 	public ModelAndView  DetalleRevisionFondos(@RequestParam("id") int id,
 									@RequestParam("nombre") String nombre,
-									@RequestParam("tipo") int tipo
+									@RequestParam("tipo") int tipo,
+									@RequestParam("valor") int valor
 									) {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
@@ -598,6 +593,7 @@ public class workflowEtapa1Controller {
 			    
 			    model.addObject("modulo_access", "8");
 			    model.addObject("tipo", String.valueOf(tipo));
+			    model.addObject("valor", String.valueOf(valor));
 			    model.addObject("urlRestServiceDelivery", urlRestServiceDelivery);
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
 			    model.addObject("id_operacion", String.valueOf(id));

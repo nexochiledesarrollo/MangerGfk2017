@@ -320,12 +320,7 @@ var createInstructivoCati = function(){
 				$('#modalg-success-text').html('<center>'+ data.text +'</center><br>');
 				$("#modalg-success").modal("show");
 				
-				
-				setTimeout(irPrincipal(),5000);
-
-				//eraseForm();
-				
-				//$('#data-table').DataTable().ajax.reload();
+		
 			
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -709,7 +704,9 @@ var detailInstructivoCati = function(id){
 		},
 		success: function(data){
 			//debugArray(data);
+		    alert(data)
 			result = data; 
+			
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 		       // alert(xhr.status);
@@ -936,6 +933,30 @@ if($('#tipo_entrevista').val() == '2'){
 		$('#form_btn_ok').show();
 
 	};
+	
+
+	if($('#txt_entrada').val() == '2'){
+		$('#form_btn_ok_cati').hide();
+		$('#form_btn_ok').hide();
+		$('#form_btn_aprobar').show();
+		$("input").prop('disabled', true);
+		$("textarea").prop('disabled', true);
+		$("select").prop('disabled', true);
+		$('.BSswitch').bootstrapSwitch('disabled',true);
+			
+		
+			
+		
+
+		
+	}else{
+		$('#form_btn_aprobar').hide();
+	
+	};
+	
+	
+
+
 }
 
 
@@ -1024,8 +1045,7 @@ var getDetailInstructivoCati = function(){
 			//***********************************
 			//var detalle = data.detalle;
 			//**********************************
-		
-			
+
           $('#txt_inf_trab_01_cati').val(data.nombre_guion);
           $('#txt_inf_trab_02_cati').val(data.nombre_servidor);
           $('#txt_inf_trab_03_cati').val(data.tasa),
@@ -1142,7 +1162,7 @@ var getDetailInstructivoTodos = function(){
 			//***********************************
 			//var detalle = data.detalle;
 			//**********************************
-
+          
             // Informacion del Trabajo 
 			$('#txt_inf_trab_01').bootstrapSwitch('state',data.rep_ola),
 			$('#txt_inf_trab_02').bootstrapSwitch('state',data.carta),
@@ -1273,6 +1293,60 @@ var getDetailInstructivo = function(){
 }
 
 
+function aprobarInstructivo (){
+
+	     var param = {
+	    	 id_oper : $('#txt_idope_1').val(),
+	       
+	     }
+
+		$.ajax({
+			url: "/Manager/RestInstructivo/aceptarInstructivo",
+			type: "GET",
+			dataType: "json",
+			data: param,
+			
+			success: function(data){
+				
+				$("#modalg-charge").modal("hide");
+				$("#modalg-success-text-asignacion" ).empty();
+				$('#modalg-success-text-asignacion').html('<center>'+ data.text +'</center><br>');
+				$("#modalg-success_asignacion").modal("show");
+				
+			
+			
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		       // alert(xhr.status);
+		       // alert(thrownError);
+		       //alert('Se ha generado un error -- setUserLogin Modulo Usuario -- ,  favor contactar al adminsitrador!');
+				$("#modalg-charge").modal("hide");
+				var data = {
+						status: xhr.status,
+						text: '<center>Se ha generado un error: <strong>--  aceptar Asignacion de Personal  --</strong> <br/>  Favor contactar mesa de ayuda! </center><br> STATUS: '+xhr.status + '<br/> ERROR: '+thrownError +'<br/>Detail: '+xhr.responseText
+				}
+				errorAjaxRequest(data);
+			}
+		});
+		
+		
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //---------------------------------------
 var Proyecto = function() {
@@ -1291,8 +1365,12 @@ var Proyecto = function() {
 			$('#form_btn_ok_cati').hide();
 			$('#recomend_cati').hide();
 			$('#realiza_cita_cati').hide();
-			showTipoEncuesta();
+			
 			getDetailInstructivo();
+			//$('#form_btn_aprobar').hide();
+			showTipoEncuesta();
+		
+		
 	
 		}
 	}

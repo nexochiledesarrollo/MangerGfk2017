@@ -61,4 +61,63 @@ public class RestWorkflow5 {
 	}
 	
 	
+	@RequestMapping(value = "/getListWorkflowInstructivo", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowInstructivo(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow5 lists = (AccessWorkflow5) context.getBean("AccessWorkflow5");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		logger.debug("**********REQUEST PARAM FILTRO GET LIST ASIGN********************************************* "); 
+		 	logger.debug("id: "+ id);
+		 	logger.debug("lang: "+ lang);
+		 	logger.debug("user: "+ user.getId_user());
+		 	logger.debug("url: http://localhost:8080/Manager/RestWorkflow15/getListWorkflow15?id="+id+"&lang="+lang+ " ");
+		 logger.debug("**********END REQUEST PARAM FILTRO GET LIST ASIGN********************************************* ");
+		
+		 
+		 list = lists.getListEstudioByUserInstructivo(user.getId_user(), lang);
+		 
+		 est.setData(list);
+		 
+		 return est;
+		 
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/getListWorkflowUpload", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjDataListEstudio getListWorkflowUpload(@RequestParam("id") int id,
+											    @RequestParam("lang") String lang)
+	{
+		ObjDataListEstudio est = new ObjDataListEstudio();
+		ArrayList<ObjEstudio> list =  new ArrayList<ObjEstudio>();
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		Authentication authentication = securityContext.getAuthentication();
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		AccessWorkflow5 lists = (AccessWorkflow5) context.getBean("AccessWorkflow5");
+		
+		ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+		list = lists.getListEstudioByUserUpload(user.getId_user(), lang);
+		est.setData(list);
+		return est;
+		 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

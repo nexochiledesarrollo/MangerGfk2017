@@ -3,6 +3,8 @@ package cl.nexo.manager.obj.proyecto;
 import java.util.ArrayList;
 
 import cl.nexo.manager.obj.agenda.ObjAgenda;
+import cl.nexo.manager.obj.reunion.ObjAprob;
+import cl.nexo.manager.obj.reunion.ObjBitacoraAprob;
 import cl.nexo.manager.obj.reunion.ObjReunionKickOff;
 
 public class ObjEstudio {
@@ -118,7 +120,9 @@ public class ObjEstudio {
 	boolean existReunionEstudio; 
 	
 	ObjAgenda agenda_carga;
-    ObjAgenda agenda_aceptada;	
+    ObjAgenda agenda_aceptada;
+    
+    ObjAprob aprobaciones;
 	
 	
 	//Result --------------------------------------
@@ -676,6 +680,12 @@ public class ObjEstudio {
 	}
 	public void setAgenda_aceptada(ObjAgenda agenda_aceptada) {
 		this.agenda_aceptada = agenda_aceptada;
+	}
+	public ObjAprob getAprobaciones() {
+		return aprobaciones;
+	}
+	public void setAprobaciones(ObjAprob aprobaciones) {
+		this.aprobaciones = aprobaciones;
 	}
 	
 	

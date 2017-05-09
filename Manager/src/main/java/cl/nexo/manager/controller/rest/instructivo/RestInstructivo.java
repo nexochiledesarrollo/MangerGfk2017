@@ -19,17 +19,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.nexo.manager.access.agenda.AgendaAccess;
 import cl.nexo.manager.access.apoderado.ApoderadoAccess;
 import cl.nexo.manager.access.general.tools.AccessGeneralTools;
 import cl.nexo.manager.access.instructivo.InstructivoAccess;
 import cl.nexo.manager.access.login.LoginAccess;
+import cl.nexo.manager.access.manejoworkflow.ManejoWorkflowAccess;
 import cl.nexo.manager.access.password.AccessPassword;
+import cl.nexo.manager.access.proyecto.AccessEstudio;
 import cl.nexo.manager.access.server.mail.AccessServerMail;
 import cl.nexo.manager.access.server.mail.plantillas.AccessPlantillasLogin;
+import cl.nexo.manager.access.tarea.AccessTarea;
+import cl.nexo.manager.constantes.Constantes;
 import cl.nexo.manager.obj.apoderado.ObjDataApoderado;
 import cl.nexo.manager.obj.apoderado.ObjListApoderado;
 import cl.nexo.manager.obj.instructivo.ObjInstructivo;
 import cl.nexo.manager.obj.login.ObjLoginUser;
+import cl.nexo.manager.obj.tarea.ObjTarea;
 import cl.nexo.manager.obj.tools.ObjGeneralResultInt;
 
 
@@ -48,6 +54,77 @@ public class RestInstructivo {
 	
 	
 	
+	@RequestMapping(value = "/aceptarInstructivo", method = RequestMethod.GET,headers="Accept=application/json")
+	public ObjGeneralResultInt aceptarInstructivo(@RequestParam("id_oper") int id_oper
+											
+			){
+
+
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+	    SecurityContext securityContext = SecurityContextHolder.getContext();
+	    Authentication authentication = securityContext.getAuthentication();
+	    ObjLoginUser user = logins.getUserByLogin(authentication.getName());
+	    
+	    ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+	 
+	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
+  
+        ObjGeneralResultInt result = new ObjGeneralResultInt();
+        
+        
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
+//        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateInString = "7-Jun-13";
+//
+//        try {
+//
+//            Date date = formatter.parse(dateInString);
+//            String date2;
+//            logger.info(" /////////// 1 " + date);
+//            
+//            System.out.println(date);
+//            
+//            logger.info(" /////////// 2 " + formatter.format(date));
+//            System.out.println(formatter.format(date));
+//            
+//            date2 = formatter1.format(date);
+//            
+//            logger.info(" /////////// 3 " + date2);
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        
+        
+        
+        
+        
+
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        int nuevo_estado=Constantes.Estado_Instructivo_Aceptado;
+        int actividad = Constantes.Actividad_Instructivo ;  // debe corresponder al id de la tarea de agendado
+        int id_workFlow;
+        String observacion="INSTRUCTIVO ACEPTADO";
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        //REGISTRO DE WORKFLOW Y BITACORA
+        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+
+
+	    	//int nueva_cola_estudio=Constantes.Cola_Pdte_kickOff; // Cola Pendiente KickOff    	
+	    	//est.updateColaEstudio(nueva_cola_estudio, id_oper);
+        
+		result.setResult(1);
+		result.setText("<strong>Instructivo Aceptado</strong> ");
+		
+		return result;
+		
+	}	
+	
+	
+	
+	
 	@RequestMapping(value = "/crearInstructivo", method = RequestMethod.GET,headers="Accept=application/json")
 	public ObjGeneralResultInt crearInstructivo(
 			                @RequestParam("id_oper") int id_oper,
@@ -56,32 +133,24 @@ public class RestInstructivo {
 							@RequestParam("loi") int loi,
 							@RequestParam("incidencia") int incidencia,
 							@RequestParam("tasa") int tasa,	
-							
 							@RequestParam("vista_1") String vista_1,	
 							@RequestParam("vista_2") String vista_2,
-							
 							@RequestParam("grupo_1") String grupo_1,	
 							@RequestParam("grupo_2") String grupo_2,
-							
 							@RequestParam("estructura") String estructura,	
 							@RequestParam("glosario") String glosario,
-							
 							@RequestParam("quest_papi1") String quest_papi1,	
 							@RequestParam("quest_papi2") String quest_papi2,
-							
 							@RequestParam("quest_capi1") String quest_capi1,	
 							@RequestParam("quest_capi2") String quest_capi2,
 							@RequestParam("quest_capi3") String quest_capi3,
-
-							@RequestParam("cuota1") String cuota1,	
+                            @RequestParam("cuota1") String cuota1,	
 							@RequestParam("cuota2") boolean cuota2,
 							@RequestParam("cuota3") String cuota3,
 							@RequestParam("cuota4") String cuota4,	
 							@RequestParam("cuota5") String cuota5,
 							@RequestParam("cuota6") boolean cuota6,
-							
 							@RequestParam("cuota7") int cuota7,
-							
 							@RequestParam("t_campo_desde") String t_campo_desde,	
 							@RequestParam("t_campo_hasta") String t_campo_hasta,
 							@RequestParam("p_temporal") String p_temporal,	
@@ -89,7 +158,6 @@ public class RestInstructivo {
 							@RequestParam("desc_obj") String desc_obj,	
 							@RequestParam("dia_mes") String dia_mes,
 							@RequestParam("planificacion") String planificacion,
-							
 							@RequestParam("txt_plazo_papi_01") String plazo_papi_01,	
 							@RequestParam("txt_plazo_papi_02") String plazo_papi_02,
 							@RequestParam("txt_plazo_papi_03") String plazo_papi_03,	
@@ -126,9 +194,6 @@ public class RestInstructivo {
 							@RequestParam("donde_tienda") boolean donde_tienda,
 							@RequestParam("donde_otro") String donde_otro
 
-	
-
-			
 			){
 		//--------BEGIN debug ----------------------------
 		
@@ -145,6 +210,7 @@ public class RestInstructivo {
 		
         ObjInstructivo inst = new ObjInstructivo();  
         InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
+        ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
         
         
         SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
@@ -224,12 +290,33 @@ public class RestInstructivo {
         inst.setDonde_otro(donde_otro);
 
         
-	    instructivo.crearInstructivo(inst);   
-		
+        Boolean existe = instructivo.getExistInstructivoByEstudio(id_oper);
         
-		result.setResult(1);
-		result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
-		
+        if (!existe) {   
+	      instructivo.crearInstructivo(inst);
+	      
+	        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        int nuevo_estado=Constantes.Estado_Instructivo_Cargado;
+	        int actividad = Constantes.Actividad_Carga_Instructivo ;  // debe corresponder al id de la tarea de agendado
+	        int id_workFlow;
+	        String observacion="INTRUCTIVO CARGADO";
+	        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        
+	        //REGISTRO DE WORKFLOW Y BITACORA
+	        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+	      
+	      
+	      
+	      
+	      
+		  result.setResult(1);
+		  result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
+        }else{
+        	instructivo.updateInstructivo(inst); 
+        	result.setResult(1);
+    		result.setText("Instructivo <strong>2</strong> a sido <strong>MODIFICADO</strong> en el sistema! ");
+	    }
+
 		return result;
 		
 	}	
@@ -247,47 +334,33 @@ public class RestInstructivo {
 							@RequestParam("incidencia") int incidencia,
 							@RequestParam("rep_ola") boolean rep_ola,
 							@RequestParam("carta") boolean carta,
-							
-							
 							@RequestParam("vista_1") String vista_1,	
 							@RequestParam("vista_2") String vista_2,
-							
-							
 							@RequestParam("B2B") boolean B2B,
 							@RequestParam("B2C") boolean B2C,
 							@RequestParam("Porc_B2B") String Porc_B2B,	
 							@RequestParam("Porc_B2C") String Porc_B2C,
 							@RequestParam("met_mixto") String met_mixto,	
 							@RequestParam("coment") String coment,
-							
-							
 							@RequestParam("grupo_1") String grupo_1,	
 							@RequestParam("grupo_2") String grupo_2,
-							
 							@RequestParam("estructura") String estructura,	
 							@RequestParam("glosario") String glosario,
-
-							@RequestParam("muestra_ent") boolean muestra_ent,	
+                            @RequestParam("muestra_ent") boolean muestra_ent,	
 							@RequestParam("especif") String especif,
 							@RequestParam("rdd") boolean rdd,
 							@RequestParam("muestra_cliente") boolean muestra_cliente,	
 							@RequestParam("base_datos") boolean base_datos,
 							@RequestParam("otro") boolean otro,
 							@RequestParam("especif_otro") String especif_otro,
-							
 							@RequestParam("nombre_contact") boolean nombre_contact,
 							@RequestParam("porc_nombre") String porc_nombre,
-							
 							@RequestParam("permit_recom") boolean permit_recom,
 							@RequestParam("especif_recom") String especif_recom,
-							
 							@RequestParam("n_recom") String n_recom,
 							@RequestParam("coment_adic") String coment_adic,
-							
 							@RequestParam("cuota14") boolean cuota14,
 							@RequestParam("cuota15") int cuota15,
-							
-							
 							@RequestParam("t_campo_desde") String t_campo_desde,	
 							@RequestParam("t_campo_hasta") String t_campo_hasta,
 							@RequestParam("p_temporal") String p_temporal,	
@@ -295,12 +368,9 @@ public class RestInstructivo {
 							@RequestParam("desc_obj") String desc_obj,	
 							@RequestParam("dia_mes") String dia_mes,
 							@RequestParam("planificacion") String planificacion,
-							
 							@RequestParam("inst_sup1") String inst_sup1,	
 							@RequestParam("inst_sup2") String inst_sup2,
-							
 							@RequestParam("txt_remun_01") String remun_01,
-							
 							@RequestParam("incent_dinero") boolean incent_dinero,
 							@RequestParam("incent_voucher") boolean incent_voucher,
 							@RequestParam("incent_regalo") boolean incent_regalo,
@@ -327,6 +397,8 @@ public class RestInstructivo {
 		
         ObjInstructivo inst = new ObjInstructivo();  
         InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
+        ManejoWorkflowAccess agendar = (ManejoWorkflowAccess) context.getBean("ManejoWorkflowAccess");
+        AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
         
         
         SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD");
@@ -405,13 +477,52 @@ public class RestInstructivo {
         inst.setComent_incent(coment_incent);
         
         
-       
-	    instructivo.crearInstructivoCapi(inst);   
-		
         
-		result.setResult(1);
-		result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
-		
+        
+        Boolean existe = instructivo.getExistInstructivoByEstudio(id_oper);
+        
+        if (!existe) {   
+        	instructivo.crearInstructivoCapi(inst);   
+        	
+        	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        int nuevo_estado=Constantes.Estado_Instructivo_Cargado;
+	        int actividad = Constantes.Actividad_Carga_Instructivo ;  // debe corresponder al id de la tarea de agendado
+	        int id_workFlow;
+	        String observacion="INTRUCTIVO CARGADO";
+	        //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	        
+	        //REGISTRO DE WORKFLOW Y BITACORA
+	        agendar.genericWorkActividad(id_oper, actividad, observacion, nuevo_estado, user.getId_user()); 
+	        
+	       int nueva_cola_estudio=0; 
+	       int status_import_doc = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Subir_cuestionario);
+	 	   int status_asigna = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Asig_personal);
+	 	   
+	 	   if ((status_import_doc==Constantes.Estado_ImportDoc_Aceptado) && (status_asigna==Constantes.Estado_Asignacion_perso_aceptada) ){
+	 		   nueva_cola_estudio=Constantes.Cola_Pdte_agenda_kickOff; /// Pendiente Agenda KickOff
+	 	   }else{
+	 		   nueva_cola_estudio=Constantes.Cola_En_proceso_desarrollo_org; /// En Proceso Desarrollo Materiales y  Organizacion
+
+	 	   }
+
+		   // Cola en proceso Desarrollo Materiales y Organizacion 	
+	   	   est.updateColaEstudio(nueva_cola_estudio, id_oper);
+	 	   
+	 	   
+	 	   
+	 	   
+	 	   
+	 	   
+	 	   
+		    result.setResult(1);
+		    result.setText("Instructivo <strong>2</strong> a sido <strong>CREADO</strong> en el sistema! ");
+        }else{
+        	instructivo.updateInstructivoCapi(inst); 
+        	result.setResult(1);
+    		result.setText("Instructivo <strong>2</strong> a sido <strong>MODIFICADO</strong> en el sistema! ");
+	    }
+        
+
 		return result;
 		
 	}	
@@ -425,14 +536,11 @@ public class RestInstructivo {
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
 		
-		 InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
-		
-		
+		InstructivoAccess instructivo = (InstructivoAccess) context.getBean("InstructivoAccess");
+
 		ObjInstructivo inst = new ObjInstructivo();
 		inst = instructivo.getDetailInstructivoCatiById(id);
-		
-		//logger.info("NOMBRE  " + apd.getNombres());
-		
+
 			
 		return inst;
 		
