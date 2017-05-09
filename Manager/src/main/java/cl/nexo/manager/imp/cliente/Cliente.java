@@ -189,4 +189,75 @@ public class Cliente implements AccessCliente {
 		
 		
 	}
+	
+	
+	@Override
+	public int getIdClienteByName(String id){
+		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
+		LoginAccess logins = (LoginAccess) context.getBean("LoginAccess");
+		
+		int cliente = 0;
+		Connection conn = null;
+		
+		String query = " SELECT id_cliente "
+					  +"    ,id_cliente_sam "
+					  +"    ,id_cliente_manager "
+					  +"    ,id_crm "
+					  +"    ,id_sap "
+					  +"    ,id_global_client "
+					  +"    ,scope_id_client "
+					  +"    ,id_industria "
+					  +"    ,duns_client "
+					  +"    ,id_group_client "
+					  +"    ,nombre_cliente "
+					  +"    ,tipo_cuenta "
+					  +"    ,rut_cliente "
+					  +"    ,statussam_cliente "
+					  +"    ,rfcsam_cliente "
+					  +"    ,direccion_cliente "
+					  +"    ,id_comuna "
+					  +"    ,id_region "
+					  +"    ,id_pais "
+					  +"    ,fono_cliente "
+					  +"    ,id_giroComercial "
+					  +"    ,id_tipocliente "
+					  +"    ,falta_cliente "
+					  +"    ,salta_cliente "
+					  +"    ,fmod_cliente "
+					  +"    ,smod_cliente "
+					  +"    ,felimina_cliente "
+					  +"    ,selimina_cliente "
+					  +"    ,elimina_cliente "
+					  +"    ,estado_cliente "
+					  +" FROM man_cliente "
+					  +" WHERE nombre_cliente = " + id;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.debug(query);
+			ResultSet rs = ps.executeQuery();
+			   	if(rs.next()) {
+			   		cliente = rs.getInt("id_cliente");
+			   		
+				}
+			 
+				return cliente;
+			  
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		
+		
+		
+	}
+	
+	
 }

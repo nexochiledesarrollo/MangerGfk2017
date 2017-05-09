@@ -11,4 +11,6 @@ public interface AccessComboBox {
 
 	public ObjComboSelect2ValueInt getValueComboDetalle(String id, int combo, String lang);
 
+	public String getValueComboSelected(String id);
+
 }

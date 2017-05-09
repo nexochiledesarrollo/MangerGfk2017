@@ -142,6 +142,8 @@ public interface AccessEstudio {
 	public void updateColaEstudio(int nuevo_estado,int id_operacion);
 	
 	public void fechasEstudio(ObjReunionKickOff re);
+
+	public int getExistEstudioByIdSam(String id, String cod);
 	
 	
 	

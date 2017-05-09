@@ -237,6 +237,9 @@ public class UploadEstudioController {
 	            	
 	            	list.add(fil);
 	            	
+	            	
+	            	
+	            	
             	
             	} catch (IllegalStateException e) {
 					// TODO Auto-generated catch block

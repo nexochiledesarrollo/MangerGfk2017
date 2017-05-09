@@ -54,6 +54,51 @@ public class Estudio implements AccessEstudio {
 	
 	private SecureRandom random  = new SecureRandom();
 	
+	
+	@Override
+	public int getExistEstudioByIdSam(String id, String cod){
+		int result = 0;
+		Connection conn = null;
+		
+		String query = " SELECT id_operacion "
+				  +"	 FROM man_proyecto_manager_medicion "
+				  +"	 WHERE "
+				  +" cod_sam = '" + id +"' "
+				  +" AND tipo_sam ='"+ cod +"'  ";
+				  
+		
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.debug(query);
+			ResultSet rs = ps.executeQuery();	
+			if(rs.next()) {
+
+				result = 1;
+				
+			}else{
+				
+				result = 0;
+			}
+			
+			return result;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+		
+		
+	}
+	
+	
 	@Override
 	public String getKeyEstudio(){
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");

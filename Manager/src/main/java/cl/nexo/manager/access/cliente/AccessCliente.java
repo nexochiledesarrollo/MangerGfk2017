@@ -11,4 +11,6 @@ public interface AccessCliente {
 
 	public ObjCliente getClienteById(int id);
 
+	public int getIdClienteByName(String id);
+
 }

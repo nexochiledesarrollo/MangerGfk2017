@@ -123,4 +123,45 @@ public class ComboBox implements AccessComboBox {
 		}
 		
 	}
+	@Override
+	public String getValueComboSelected(String id){
+		Connection conn = null;
+		String combo3 = "";
+		
+		String query="SELECT id_detalle "
+					 +"     ,id_combo "
+					 +"     ,valor_detalle "
+					 +"     ,des_detalle "
+					 +"     ,id_lang "
+					 +"     ,depende_detalle "
+					 +" FROM man_combo_box_detalle "
+					 +" WHERE id_lang = 'es-CL' "
+					 +" AND des_detalle =  '" + id +"' ";
+					
+					query= query +" ORDER BY valor_detalle";
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			logger.debug(query);
+			ResultSet rs = ps.executeQuery();
+			  
+			 if(rs.next()) {
+				 
+				 combo3 = rs.getString("valor_detalle");
+				 
+			  }
+			  return combo3;
+			  
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {}
+			}
+		}
+		
+	}
 }
