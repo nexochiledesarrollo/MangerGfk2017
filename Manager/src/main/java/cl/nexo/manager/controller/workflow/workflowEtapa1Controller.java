@@ -415,7 +415,8 @@ public class workflowEtapa1Controller {
 	}
 	@RequestMapping(value = { "/detalleInstructivo" }, method = RequestMethod.GET)
 	public ModelAndView  detalleInstructivo(@RequestParam("id") int id,
-									@RequestParam("nombre") String nombre
+									@RequestParam("nombre") String nombre,
+									@RequestParam("entrada") int entrada
 									) {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
@@ -472,6 +473,7 @@ public class workflowEtapa1Controller {
 			    model.addObject("permisoModulo", Integer.toString(permisoModulo));
 			    model.addObject("id_operacion", String.valueOf(id));
 			    model.addObject("lang",user.getLang_user());
+			    model.addObject("entrada",String.valueOf(entrada));
 			    model.addObject("tol",tol);
 				model.setViewName("/modulos/work1/instructivo/detalle");
 			}else{

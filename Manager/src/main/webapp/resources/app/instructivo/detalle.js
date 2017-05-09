@@ -933,6 +933,30 @@ if($('#tipo_entrevista').val() == '2'){
 		$('#form_btn_ok').show();
 
 	};
+	
+
+	if($('#txt_entrada').val() == '2'){
+		$('#form_btn_ok_cati').hide();
+		$('#form_btn_ok').hide();
+		$('#form_btn_aprobar').show();
+		$("input").prop('disabled', true);
+		$("textarea").prop('disabled', true);
+		$("select").prop('disabled', true);
+		$('.BSswitch').bootstrapSwitch('disabled',true);
+			
+		
+			
+		
+
+		
+	}else{
+		$('#form_btn_aprobar').hide();
+	
+	};
+	
+	
+
+
 }
 
 
@@ -1269,7 +1293,7 @@ var getDetailInstructivo = function(){
 }
 
 
-function aceptarInstructivo (){
+function aprobarInstructivo (){
 
 	     var param = {
 	    	 id_oper : $('#txt_idope_1').val(),
@@ -1288,7 +1312,8 @@ function aceptarInstructivo (){
 				$("#modalg-success-text-asignacion" ).empty();
 				$('#modalg-success-text-asignacion').html('<center>'+ data.text +'</center><br>');
 				$("#modalg-success_asignacion").modal("show");
-
+				
+			
 			
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
@@ -1316,6 +1341,13 @@ function aceptarInstructivo (){
 
 
 
+
+
+
+
+
+
+
 //---------------------------------------
 var Proyecto = function() {
 	"use strict";
@@ -1333,13 +1365,11 @@ var Proyecto = function() {
 			$('#form_btn_ok_cati').hide();
 			$('#recomend_cati').hide();
 			$('#realiza_cita_cati').hide();
-			showTipoEncuesta();
+			
 			getDetailInstructivo();
-			
-			
-			//$("input").attr('disabled','disabled');
-			//$("textarea").attr('disabled','disabled');
-			//$("radio").bootstrapSwitch('disable');
+			//$('#form_btn_aprobar').hide();
+			showTipoEncuesta();
+		
 		
 	
 		}

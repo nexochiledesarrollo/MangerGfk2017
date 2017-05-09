@@ -24,7 +24,7 @@
  int id_tipo = Integer.parseInt((String) request.getParameter("id_tipo"));
  String urlRestServiceDelivery = (String) request.getAttribute("urlRestServiceDelivery");
  ObjConfigTools tol = (ObjConfigTools) request.getAttribute("tol");
- 
+ int entrada = Integer.parseInt((String) request.getParameter("entrada"));
  //lang option
  String langOption = (String) request.getAttribute("lang");
  URL url = application.getResource("/WEB-INF/lang/"+langOption+"/activity7.properties");
@@ -108,6 +108,7 @@
 		
 		<!-- Configuracion Interna  -->
 		<input type="hidden" id="txt_idope_1" name="txt_idope_1" value="<%=  id_operacion %>" />
+		<input type="hidden" id="txt_entrada" name="txt_entrada" value="<%=  entrada %>" />
 		<input type="hidden" id="conf_01"  name="conf_01" value="<%= perfil.getEs_admin() %>" />
 		<input type="hidden" id="conf_02"  name="conf_02" value="<%= urlRestServiceDelivery %>" />
 		<input type="hidden" id="conf_03"  name="conf_03" value="<%= permiso_access %>" />
@@ -166,7 +167,7 @@
                            	  		
                            
                            	  
-                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: createInstructivo();" id="btn_activae">
+                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: createInstructivo();" id="btn_activae1">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
                            	  			OK
                            	  		</a>
@@ -182,13 +183,34 @@
                            	  	</div>
                            	  	
                            	  	
+                           	  	
+                           	  	
+                           	  	
+                           	  	<div class="form-group col-md-6" id="form_btn_aprobar">
+                           	  		<p class="pull-right">
+
+                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: aprobarInstructivo();" id="btn_activae1">
+                           	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
+                           	  			Aprobar
+                           	  		</a>
+
+                           	  		</p>
+                           	  		
+                           	  	</div>
+                           	  	
+                           	  	
+                           	  	
+                           	  	
+                           	  	
+                           	  	
+                           	  	
                            	  	<div class="form-group col-md-6" id="form_btn_ok_cati">
                            	  		<p class="pull-right">
                            	  		
                            	        
                            	    
                            	  
-                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: createInstructivoCati();" id="btn_activae">
+                           	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: createInstructivoCati();" id="btn_activae2">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
                            	  			OK
                            	  		</a>
@@ -2197,6 +2219,33 @@ persona (s) responsable(s). *</label>
 	   
 	   <!-- Incluir modal generico -->
        <%@ include file="../../../general-modal.jsp" %>
+       
+       
+         <!-- #modal-success-->
+	<div class="modal fade"  id="modalg-success_asignacion" >
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					<h1 class="modal-title">
+					<span class="fa-stack fa-2x text-success">
+						<i class="fa fa-circle-o fa-stack-2x"></i>
+						<i class="fa fa-check fa-stack-1x "></i>
+					</span>
+					Solicitud Generada!</h1>
+				</div>
+				<div class="modal-body" id="modalg-success-text-asignacion"></div>
+				
+				
+			</div>
+		</div>
+	</div>
+		
+      
+       
+       
+       
+       
 		
 		
 	<!-- ================== BEGIN BASE JS ================== -->

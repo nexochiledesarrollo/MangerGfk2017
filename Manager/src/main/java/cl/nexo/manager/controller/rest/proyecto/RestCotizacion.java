@@ -106,7 +106,7 @@ public class RestCotizacion {
 	       int status_instructivo = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Carga_Instructivo);
 	 	   int status_asigna = agendar.buscarStatusActividadEstudio(id_oper, Constantes.Actividad_Asig_personal);
 	 	   
-	 	   if ((status_instructivo==Constantes.Estado_Instructivo_Aceptado) && (status_asigna==Constantes.Estado_Asignacion_perso_aceptada) ){
+	 	   if ((status_instructivo==Constantes.Estado_Instructivo_Cargado) && (status_asigna==Constantes.Estado_Asignacion_perso_aceptada) ){
 	 		   nueva_cola_estudio=Constantes.Cola_Pdte_agenda_kickOff; /// Pendiente Agenda KickOff
 	 	   }else{
 	 		   nueva_cola_estudio=Constantes.Cola_En_proceso_desarrollo_org; /// En Proceso Desarrollo Materiales y  Organizacion

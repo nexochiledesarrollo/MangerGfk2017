@@ -539,13 +539,13 @@
                            	  			<i class="fa fa-search fa-2x pull-left"></i>
                            	  			Ver Instructivo
                            	  		</a>
-                           	  		
+                           	  		<!-- 
                            	  		<a href="#" class="btn btn-success m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: aprobInstructivo();" id="btn_activae">
                            	  			<i class="fa fa-check-square-o fa-2x pull-left"></i>
                            	  			Aprobar
                            	  		</a>
                            	  		
-                           	  		<!--   
+                           	  		  
                            	  		
 	                           	  		<a href="#" class="btn btn-danger m-r-5" style="margin-top: 5px; text-align: center;" onclick="JavaScript: rechazaInstructivo();" id="btn_deletee">
 	                           	  			<i class="fa fa-times fa-2x pull-left"></i>

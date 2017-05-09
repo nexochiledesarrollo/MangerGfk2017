@@ -71,6 +71,35 @@ public class RestInstructivo {
 	    AccessEstudio est = (AccessEstudio) context.getBean("AccessEstudio");
   
         ObjGeneralResultInt result = new ObjGeneralResultInt();
+        
+        
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy");
+//        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateInString = "7-Jun-13";
+//
+//        try {
+//
+//            Date date = formatter.parse(dateInString);
+//            String date2;
+//            logger.info(" /////////// 1 " + date);
+//            
+//            System.out.println(date);
+//            
+//            logger.info(" /////////// 2 " + formatter.format(date));
+//            System.out.println(formatter.format(date));
+//            
+//            date2 = formatter1.format(date);
+//            
+//            logger.info(" /////////// 3 " + date2);
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        
+        
+        
+        
+        
 
         //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         int nuevo_estado=Constantes.Estado_Instructivo_Aceptado;
@@ -104,32 +133,24 @@ public class RestInstructivo {
 							@RequestParam("loi") int loi,
 							@RequestParam("incidencia") int incidencia,
 							@RequestParam("tasa") int tasa,	
-							
 							@RequestParam("vista_1") String vista_1,	
 							@RequestParam("vista_2") String vista_2,
-							
 							@RequestParam("grupo_1") String grupo_1,	
 							@RequestParam("grupo_2") String grupo_2,
-							
 							@RequestParam("estructura") String estructura,	
 							@RequestParam("glosario") String glosario,
-							
 							@RequestParam("quest_papi1") String quest_papi1,	
 							@RequestParam("quest_papi2") String quest_papi2,
-							
 							@RequestParam("quest_capi1") String quest_capi1,	
 							@RequestParam("quest_capi2") String quest_capi2,
 							@RequestParam("quest_capi3") String quest_capi3,
-
-							@RequestParam("cuota1") String cuota1,	
+                            @RequestParam("cuota1") String cuota1,	
 							@RequestParam("cuota2") boolean cuota2,
 							@RequestParam("cuota3") String cuota3,
 							@RequestParam("cuota4") String cuota4,	
 							@RequestParam("cuota5") String cuota5,
 							@RequestParam("cuota6") boolean cuota6,
-							
 							@RequestParam("cuota7") int cuota7,
-							
 							@RequestParam("t_campo_desde") String t_campo_desde,	
 							@RequestParam("t_campo_hasta") String t_campo_hasta,
 							@RequestParam("p_temporal") String p_temporal,	
@@ -137,7 +158,6 @@ public class RestInstructivo {
 							@RequestParam("desc_obj") String desc_obj,	
 							@RequestParam("dia_mes") String dia_mes,
 							@RequestParam("planificacion") String planificacion,
-							
 							@RequestParam("txt_plazo_papi_01") String plazo_papi_01,	
 							@RequestParam("txt_plazo_papi_02") String plazo_papi_02,
 							@RequestParam("txt_plazo_papi_03") String plazo_papi_03,	
