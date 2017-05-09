@@ -5,14 +5,14 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
-		<property name="url" value="jdbc:jtds:sqlserver://DESKTOP-GG03UCF:1433;databaseName=Manager;" />
+		<property name="url" value="jdbc:jtds:sqlserver://DESKTOP-LBFIND4:1433;databaseName=Manager;" />
 		<property name="username" value="delivery" />
 		<property name="password" value="delivery.2016" />
 	</bean>
 	
 	<bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
-		<property name="url" value="jdbc:jtds:sqlserver://DESKTOP-GG03UCF:1433;databaseName=Delivery;" />
+		<property name="url" value="jdbc:jtds:sqlserver://DESKTOP-LBFIND4:1433;databaseName=Delivery;" />
 		<property name="username" value="delivery" />
 		<property name="password" value="delivery.2016" />
 	</bean>
